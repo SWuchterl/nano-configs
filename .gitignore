@@ -5,3 +5,10 @@
 .settings/
 .DS_Store
 
+*.log
+crab_projects_*/
+__pycache__
+
+# also the final config files
+data_201*_NANO.py
+mc_201*_NANO.py

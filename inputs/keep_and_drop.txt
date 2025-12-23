@@ -1,0 +1,115 @@
+# PFCands
+dropmatch n?PFCands_.+
+dropmatch n?PFCand_.+
+dropmatch n?BeamSpot_.*
+
+# AK4 jets
+dropmatch Jet_(b|c)Reg(Corr|res)
+dropmatch Jet_btagDeepFlav(B|C|CvB|CvL|L|Le|b|bb|c|g|udsg|QG)
+#drop Jet_*EF
+keep Jet_*EmEF
+
+# objects
+dropmatch n?boostedTau_.+
+dropmatch n?Tau_.+
+dropmatch n?SoftActivity.+
+dropmatch n?FsrPhoton_.+
+dropmatch n?IsoTrack_.+
+dropmatch n?btagWeight_.+
+dropmatch n?Photon_.*
+dropmatch n?SV_.*
+dropmatch n?LowPtElectron_.*
+
+# HLT
+drop HLT*
+drop DST*
+keep HLT_Iso*Mu24
+keep HLT_IsoMu24_eta2p1
+keep HLT_IsoMu27
+keep HLT_Mu50
+keep HLT_Ele28_eta2p1_WPTight_Gsf_HT150
+keep HLT_Ele30_WPTight_Gsf
+keep HLT_Ele32_WPTight_Gsf
+keep HLT_Ele32_WPTight_Gsf_L1DoubleEG
+keep HLT_Ele35_WPTight_Gsf
+keep HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL
+keep HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
+keep HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL
+keep HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
+keep HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL
+keep HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
+keep HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
+keep HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL
+keep HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ
+keep HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
+keep HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8
+keep HLT_PFMET*_PFMHT*_IDTight*
+keep HLT_PFHT*_PFMET*_PFMHT*_IDTight
+keep HLT_Photon175
+keep HLT_Photon200
+keep HLT_PFJet450
+keep HLT_*PNet*
+keepmatch HLT_PFHT[0-9]+
+# 2024 menu
+keep HLT_PFHT340_QuadPFJet70_50_40_40_PNet2BTagMean0p70
+keep HLT_*PNet*
+keep HLT_IsoMu24
+keep HLT_PFMETTypeOne200_BeamHaloCleaned
+keep HLT_PFMETTypeOne140_PFMHT140_IDTight
+keep HLT_PFMET120_PFMHT120_IDTight
+
+keep HLT_PFMET130_PFMHT130_IDTight
+keep HLT_PFMET140_PFMHT140_IDTight
+keep HLT_PFMETNoMu120_PFMHTNoMu120_IDTight
+keep HLT_PFMETNoMu130_PFMHTNoMu130_IDTight
+keep HLT_PFMETNoMu140_PFMHTNoMu140_IDTight
+keep HLT_PFMET200_BeamHaloCleaned
+
+keep Flag_*
+
+# L1/TrigObj
+dropmatch n?L1_.+
+
+# GEN
+dropmatch n?GenDressedLepton_.+
+dropmatch n?GenVisTau_.+
+dropmatch n?LHEPart_.+
+dropmatch n?Generator_.+
+dropmatch n?LHEReweightingWeight
+dropmatch n?HTXS_.+
+dropmatch n?GenIsolatedPhoton_.+
+dropmatch n?CaloMET_.+
+dropmatch n?ChsMET_.+
+dropmatch n?GenProton_.+
+
+dropmatch n?TrigObj_.+
+#dropmatch n?GenPart_.+
+
+dropmatch n?PVBS_.+
+dropmatch n?TauSpinner_.+
+dropmatch n?TauProd_.+
+drop L1simulation_step
+drop L1Reco_step
+drop ScoutingPFOutput
+drop ScoutingCaloMuonOutput
+
+dropmatch n?TrackGenJet_.+
+dropmatch n?OtherPV_.+
+dropmatch n?GenVtx_.+
+dropmatch n?PFMET_.+
+drop PV_chi2
+drop PV_ndof
+drop PV_score
+drop PV_sumpt2
+drop PV_sumpx
+drop PV_sumpy
+drop PV_x
+drop PV_y
+drop PV_z
+
+drop Pileup_gpudensity
+drop Pileup_pudensity
+drop Pileup_sumEOOT
+drop Pileup_sumLOOT
+drop orbitNumber
+
