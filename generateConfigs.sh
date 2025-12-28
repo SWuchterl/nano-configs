@@ -29,8 +29,7 @@ cmsDriver.py data_2016ULpostVFP --data --eventcontent NANOAOD --datatier NANOAOD
 
 # ----------------------------------------
 # now apply some customizations
-
-for cfg in $(ls mc*UL*.py); do
-    echo "Skimming genParticles in ${cfg}"
-    sed -i -e 's@# Customisation from command line@# Customisation from command line\nprocess.genParticleTable.cut = cms.string("(statusFlags.isFirstCopy() || statusFlags.isLastCopy()) \&\& (abs(pdgId) == 1 || abs(pdgId) == 2 || abs(pdgId) == 3 || abs(pdgId) == 4 || abs(pdgId) == 5 || abs(pdgId) == 6 || abs(pdgId) == 11 || abs(pdgId) == 13 || abs(pdgId) == 15 || abs(pdgId) == 24 || abs(pdgId) == 23 || abs(pdgId) == 25)")\n@' ${cfg}
-done
+# for cfg in $(ls mc*UL*.py); do
+#     echo "Skimming genParticles in ${cfg}"
+#     sed -i -e 's@# Customisation from command line@# Customisation from command line\nprocess.genParticleTable.cut = cms.string("(statusFlags.isFirstCopy() || statusFlags.isLastCopy()) \&\& (abs(pdgId) == 1 || abs(pdgId) == 2 || abs(pdgId) == 3 || abs(pdgId) == 4 || abs(pdgId) == 5 || abs(pdgId) == 6 || abs(pdgId) == 11 || abs(pdgId) == 13 || abs(pdgId) == 15 || abs(pdgId) == 24 || abs(pdgId) == 23 || abs(pdgId) == 25)")\n@' ${cfg}
+# done

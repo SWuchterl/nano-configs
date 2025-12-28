@@ -23,8 +23,8 @@ Customizations:
 - Store all PS weights.
 - Store topPt weights for 13 and 13.6 TeV.
 - Store sumW for renormalization weights for each tt+X subprocess.
-- Skim genParticle collection via customization in command line.
-- Skim nanoAOD heavily using NANOAOD PostProcessing tools.
+<!-- - Skim genParticle collection via customization in command line. -->
+- Skim nanoAOD "heavily" using NANOAOD PostProcessing tools.
 
 ---
 

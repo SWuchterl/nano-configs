@@ -70,6 +70,10 @@ echo "Final selection: $finalsel"
 # run the postprocessor with the final selection
 nano_postproc.py . orig_nano.root -s _keepdrop --bi $WORKDIR/inputs/keep_and_drop.txt -c "$finalsel"
 
+# now merge the output files into one final nanoAOD file to reduce size
+haddnano.py final.root orig_nano_keepdrop.root
+
 # now name the new one nano.root
-mv orig_nano_keepdrop.root nano.root
+mv final.root nano.root
+
 # that one should be copied now by crab

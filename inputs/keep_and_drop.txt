@@ -8,6 +8,89 @@ dropmatch Jet_(b|c)Reg(Corr|res)
 dropmatch Jet_btagDeepFlav(B|C|CvB|CvL|L|Le|b|bb|c|g|udsg|QG)
 #drop Jet_*EF
 keep Jet_*EmEF
+# let's try to also remov other jet related branches, that probably we do not need
+Jet_svIdx1
+Jet_svIdx2
+Jet_hfadjacentEtaStripsSize
+Jet_hfcentralEtaStripSize
+Jet_PNetRegPtRawCorrNeutrino
+Jet_PNetRegPtRawRes
+Jet_UParTAK4RegPtRawCorrNeutrino
+Jet_UParTAK4RegPtRawRes
+Jet_UParTAK4V1RegPtRawCorrNeutrino
+Jet_UParTAK4V1RegPtRawRes
+Jet_btagUParTAK4Ele
+Jet_btagUParTAK4Mu
+Jet_btagUParTAK4probb
+Jet_btagUParTAK4probbb
+Jet_hfEmEF
+Jet_hfHEF
+Jet_hfsigmaEtaEta
+Jet_hfsigmaPhiPhi
+
+# and electrons
+drop Electron_cutBased_HEEP
+drop Electron_isEcalDriven
+drop Electron_jetNDauCharged
+drop Electron_lostHits
+drop Electron_mvaNoIso_WP80
+drop Electron_mvaNoIso_WP90
+drop Electron_mvaNoIso_WPL
+drop Electron_seedGain
+drop Electron_tightCharge
+drop Electron_seediEtaOriX
+drop Electron_seediPhiOriY
+drop Electron_svIdx
+drop Electron_vidNestedWPBitmap
+drop Electron_vidNestedWPBitmapHEEP
+drop Electron_PreshowerEnergy
+drop Electron_dr03EcalRecHitSumEt
+drop Electron_dr03HcalDepth1TowerSumEt
+drop Electron_dr03TkSumPt
+drop Electron_dr03TkSumPtHEEP
+drop Electron_dxy
+drop Electron_dxyErr
+drop Electron_dz
+drop Electron_dzErr
+drop Electron_eInvMinusPInv
+drop Electron_ecalEnergy
+drop Electron_ecalEnergyError
+drop Electron_fbrem
+drop Electron_gsfTrketaMode
+drop Electron_gsfTrkpMode
+drop Electron_gsfTrkpModeErr
+drop Electron_gsfTrkphiMode
+
+#muons
+drop Muon_svIdx
+drop Muon_VXBS_Cov00
+drop Muon_VXBS_Cov03
+drop Muon_VXBS_Cov33
+drop Muon_dxy
+drop Muon_dxyErr
+drop Muon_dxybs
+drop Muon_dxybsErr
+drop Muon_dz
+drop Muon_dzErr
+drop Muon_jetDF
+drop Muon_segmentComp
+drop Muon_softMvaRun3
+drop Muon_softMva
+drop Muon_tuneP_charge
+drop Muon_tuneP_pterr
+drop Muon_tunepRelPt
+drop Muon_bsConstrainedChi2
+drop Muon_bsConstrainedPt
+drop Muon_bsConstrainedPtErr
+drop Muon_mvaLowPt
+
+#fatjets
+drop FatJet_globalParT3_XWW3q
+drop FatJet_globalParT3_XWW4q
+drop FatJet_globalParT3_XWWqqev
+drop FatJet_globalParT3_XWWqqmv
+
+
 
 # objects
 dropmatch n?boostedTau_.+
@@ -82,7 +165,7 @@ dropmatch n?CaloMET_.+
 dropmatch n?ChsMET_.+
 dropmatch n?GenProton_.+
 
-dropmatch n?TrigObj_.+
+#dropmatch n?TrigObj_.+
 #dropmatch n?GenPart_.+
 
 dropmatch n?PVBS_.+
