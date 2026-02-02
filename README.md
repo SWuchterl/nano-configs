@@ -37,7 +37,13 @@ cmsenv
 
 git cms-addpkg PhysicsTools/NanoAOD
 git cms-addpkg PhysicsTools/NanoAODTools
+# get the necessary modules from the TOP PAG, modified:
+mkdir TopQuarkAnalysis
+cd TopQuarkAnalysis
+git clone https://gitlab.cern.ch/tthcc-run-3/BFragmentationAnalyzer.git -b dev/CMSSW_15_0_17_nanoV15ExtSkim
+# now the modified release
 git cms-merge-topic -u SWuchterl:dev/CMSSW_15_0_17_nanoV15ExtSkim
+# anmd compile
 scram b -j8
 cmsenv
 ```
