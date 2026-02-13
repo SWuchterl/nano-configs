@@ -1,0 +1,8 @@
+# python3 crab.py -p mc_2017UL_NANO.py --max-memory 2500 --site T2_CH_CERN -o /store/group/cmst3/group/vhcc/NanoAOD/dev_Run2ULPuppi-v15ext/2017/mc -t NanoTuples-21Dec2025_Run2ULNanoAODv15 -i mc/mc_2017.conf --num-cores 1 -s FileBased -n 2 --work-area crab_projects_2017ULv15 --dryrun
+
+# ./crab.py --private-mc -p FAKEMiniAODv2_cfg.py --site T2_CH_CERN -o /store/group/cmst3/group/some/path/to/final/dist/2017/mc -t RunIISummer20UL17MiniAODv2 -i samples/mc_2017.conf -e exe.sh --script-args beginseed=0 -s EventBased -n 1000 --max-units 1000000 --input-files inputs --max-memory 10000 --num-cores 4 --work-area crab_projects_2017_mc_run1 --dryrun
+
+# real submit commands:
+python crab.py -p data_2017UL_NANO.py --site T2_CH_CERN -o /store/group/cmst3/group/vhcc/NanoAOD/dev_Run2ULPuppi-v15ext/2017/data -t NanoTuples-21Dec2025_Run2ULNanoAODv15 -i data/data_2017.conf -e exe_ULv15.sh --num-cores 4 -s EventAwareLumiBased -n 100000 -j 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt' --work-area crab_projects_data_2017ULv15 --input-files inputs --max-memory 6000 --no-publication
+
+./crab.py -p mc_2017UL_NANO.py --site T2_CH_CERN -o /store/group/cmst3/group/vhcc/NanoAOD/dev_Run2ULPuppi-v15ext/2017/mc -t NanoTuples-21Dec2025_Run2ULNanoAODv15 -i  mc/mc_2017.conf -e exe_ULv15.sh -s FileBased -n 2 --num-cores 4 --work-area crab_projects_2017ULv15 --input-files inputs --max-memory 6000 --no-publication

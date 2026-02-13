@@ -9,24 +9,47 @@ dropmatch Jet_btagDeepFlav(B|C|CvB|CvL|L|Le|b|bb|c|g|udsg|QG)
 #drop Jet_*EF
 keep Jet_*EmEF
 # let's try to also remov other jet related branches, that probably we do not need
-Jet_svIdx1
-Jet_svIdx2
-Jet_hfadjacentEtaStripsSize
-Jet_hfcentralEtaStripSize
-Jet_PNetRegPtRawCorrNeutrino
-Jet_PNetRegPtRawRes
-Jet_UParTAK4RegPtRawCorrNeutrino
-Jet_UParTAK4RegPtRawRes
-Jet_UParTAK4V1RegPtRawCorrNeutrino
-Jet_UParTAK4V1RegPtRawRes
-Jet_btagUParTAK4Ele
-Jet_btagUParTAK4Mu
-Jet_btagUParTAK4probb
-Jet_btagUParTAK4probbb
-Jet_hfEmEF
-Jet_hfHEF
-Jet_hfsigmaEtaEta
-Jet_hfsigmaPhiPhi
+drop Jet_svIdx1
+drop Jet_svIdx2
+drop Jet_hfadjacentEtaStripsSize
+drop Jet_hfcentralEtaStripSize
+drop Jet_PNetRegPtRawCorrNeutrino
+drop Jet_PNetRegPtRawRes
+drop Jet_UParTAK4RegPtRawCorrNeutrino
+drop Jet_UParTAK4RegPtRawRes
+drop Jet_UParTAK4V1RegPtRawCorrNeutrino
+drop Jet_UParTAK4V1RegPtRawRes
+drop Jet_btagUParTAK4Ele
+drop Jet_btagUParTAK4Mu
+drop Jet_btagUParTAK4probb
+drop Jet_btagUParTAK4probbb
+drop Jet_hfEmEF
+drop Jet_hfHEF
+drop Jet_hfsigmaEtaEta
+drop Jet_hfsigmaPhiPhi
+drop Jet_muonSubtrDeltaEta
+drop Jet_muonSubtrDeltaPhi
+# drop Jet_muonSubtrFactor # needed for T1 corrs
+
+# and all pnet and deepflav branches, which we do not use in the analysis
+drop Jet_btagDeepFlavB
+drop Jet_btagDeepFlavCvB
+drop Jet_btagDeepFlavCvL
+drop Jet_btagDeepFlavQG
+
+drop Jet_btagPNetB
+drop Jet_btagPNetCvB
+drop Jet_btagPNetCvL
+drop Jet_btagPNetCvNotB
+drop Jet_btagPNetQvG
+drop Jet_btagPNetTauVJet
+
+drop Jet_nConstituents
+drop Jet_nElectrons
+drop Jet_nSVs
+
+drop Jet_electronIdx1
+drop Jet_electronIdx2
 
 # and electrons
 drop Electron_cutBased_HEEP
@@ -36,7 +59,7 @@ drop Electron_lostHits
 drop Electron_mvaNoIso_WP80
 drop Electron_mvaNoIso_WP90
 drop Electron_mvaNoIso_WPL
-drop Electron_seedGain
+# drop Electron_seedGain # needed for S+S
 drop Electron_tightCharge
 drop Electron_seediEtaOriX
 drop Electron_seediPhiOriY
@@ -61,6 +84,23 @@ drop Electron_gsfTrkpMode
 drop Electron_gsfTrkpModeErr
 drop Electron_gsfTrkphiMode
 
+# add. list from Riccardo
+drop Electron_convVeto
+drop Electron_cutBased
+drop Electron_isPFcand
+drop Electron_isEB
+drop Electron_mvaIso_WPHZZ
+drop Electron_deltaEtaSC
+# drop Electron_mass
+drop Electron_miniPFRelIso_all
+drop Electron_miniPFRelIso_chg
+drop Electron_mvaHZZIso
+drop Electron_mvaIso
+drop Electron_mvaNoIso
+drop Electron_pfRelIso03_chg
+drop Electron_sieie
+drop Electron_scEtOverPt
+
 #muons
 drop Muon_svIdx
 drop Muon_VXBS_Cov00
@@ -83,6 +123,24 @@ drop Muon_bsConstrainedChi2
 drop Muon_bsConstrainedPt
 drop Muon_bsConstrainedPtErr
 drop Muon_mvaLowPt
+
+# add from riccardo
+drop Muon_bestTrackType
+drop Muon_inTimeMuon
+drop Muon_highPurity
+drop Muon_highPtId
+drop Muon_softId
+drop Muon_pfIsoId
+drop Muon_puppiIsoId
+drop Muon_tkIsoId
+drop Muon_triggerIdLoose
+drop Muon_mvaMuID
+#drop Muon_pnScore_heavy
+#drop Muon_pnScore_light
+#drop Muon_pnScore_prompt
+#drop Muon_pnScore_tau
+drop Muon_miniIsoId
+drop Muon_multiIsoId
 
 #fatjets
 drop FatJet_globalParT3_XWW3q
@@ -136,6 +194,7 @@ keepmatch HLT_PFHT[0-9]+
 # 2024 menu
 keep HLT_PFHT340_QuadPFJet70_50_40_40_PNet2BTagMean0p70
 keep HLT_*PNet*
+drop HLT_*PNetTauh*
 keep HLT_IsoMu24
 keep HLT_PFMETTypeOne200_BeamHaloCleaned
 keep HLT_PFMETTypeOne140_PFMHT140_IDTight
@@ -166,6 +225,15 @@ dropmatch n?ChsMET_.+
 dropmatch n?GenProton_.+
 
 #dropmatch n?TrigObj_.+
+#only need TrigObj_filterBits and TrigObj_id to emulate 2017 trigger
+drop TrigObj_eta
+drop TrigObj_l1charge
+drop TrigObj_l1iso
+drop TrigObj_l1pt
+drop TrigObj_l1pt_2
+drop TrigObj_l2pt
+drop TrigObj_phi
+drop TrigObj_pt
 #dropmatch n?GenPart_.+
 
 dropmatch n?PVBS_.+
