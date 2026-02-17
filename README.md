@@ -30,11 +30,15 @@ Customizations:
 
 ## Setup
 
+Use EL8 or singulari container `cmssw-el8`!
+
 ```bash
+export SCRAM_ARCH=el8_amd64_gcc12
 cmsrel CMSSW_15_0_17
 cd CMSSW_15_0_17/src
 cmsenv
 
+git cms-init
 git cms-addpkg PhysicsTools/NanoAOD
 git cms-addpkg PhysicsTools/NanoAODTools
 # get the necessary modules from the TOP PAG, modified:
