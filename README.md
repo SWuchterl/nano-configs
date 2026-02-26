@@ -15,26 +15,22 @@ Produce NanoAODs with customizations.
 
 ## Version
 
-The current version is based on the Run2UL config in CMSSW_13_2_2, so it is a mixture of [NanoAODv9](https://gitlab.cern.ch/cms-nanoAOD/nanoaod-doc/-/wikis/Releases/NanoAODv9) and [NanoAODv12](https://gitlab.cern.ch/cms-nanoAOD/nanoaod-doc/-/wikis/Releases/NanoAODv12).
+The current version is based on the Run3 config in CMSSW_15_0_2.
 
 Customizations:
 
-- Switched to Puppi jets for the AK4 jet collection.
-- Add the Run2UL version of ParticleNetAK4 (trained on CHS jets) on AK4 Puppi jets.
-- Add the new Run3 ParticleNetAK4 tagger (with regression) and the RobustParTAK4 tagger.
-- Add the new Run3 ParticleNetAK4-based tau taggers.
-- Store all ParticleNet raw scores for AK8 jets.
+- Addition of the Electron ParticleNet ID
 
 ---
 
 ## Setup
 
 ```bash
-cmsrel CMSSW_13_2_2
-cd CMSSW_13_2_2/src
+cmsrel CMSSW_15_0_2
+cd CMSSW_15_0_2/src
 cmsenv
 
-git cms-merge-topic -u hqucms:dev/CMSSW_13_2_2/NanoAOD-puppiAK4
+git cms-merge-topic -u JulesVandenbroeck:CMSSW_15_0_2_patchX_leptonPNet
 scram b -j8
 ```
 
@@ -43,6 +39,10 @@ scram b -j8
 **Step 0**: switch to the crab production directory and set up grid proxy, CRAB environment, etc.
 
 ```bash
+# clone the repository
+git clone -b dev/CMSSW_15_0_2/leptonPNet git@github.com:hqucms/nano-configs.git
+cd nano-configs
+
 # set up grid proxy
 voms-proxy-init -rfc -voms cms --valid 168:00
 # set up CRAB env (must be done after cmsenv)
@@ -56,26 +56,10 @@ source /cvmfs/cms.cern.ch/common/crab-setup.sh
 For MC:
 
 ```bash
-python crab.py -p mc_2018UL_NANO.py --max-memory 2500 --site T3_US_FNALLPC -o /store/group/[outputpath]/2018/mc -t [tagname, e.g., NanoAODv9_ParticleNetAK4] -i mc/mc_2018.conf --num-cores 1 -s FileBased -n 2 --work-area crab_projects_2018UL --dryrun
-
-python crab.py -p mc_2017UL_NANO.py --max-memory 2500 --site T3_US_FNALLPC -o /store/group/[outputpath]/2017/mc -t [tagname, e.g., NanoAODv9_ParticleNetAK4] -i mc/mc_2017.conf --num-cores 1 -s FileBased -n 2 --work-area crab_projects_2017UL --dryrun
-
-python crab.py -p mc_2016ULpostVFP_NANO.py --max-memory 2500 --site T3_US_FNALLPC -o /store/group/[outputpath]/2016/mc -t [tagname, e.g., NanoAODv9_ParticleNetAK4] -i mc/mc_2016post.conf --num-cores 1 -s FileBased -n 2 --work-area crab_projects_2016ULpostVFP --dryrun
-
-python crab.py -p mc_2016ULpreVFP_NANO.py --max-memory 2500 --site T3_US_FNALLPC -o /store/group/[outputpath]/2016APV/mc -t [tagname, e.g., NanoAODv9_ParticleNetAK4] -i mc/mc_2016pre.conf --num-cores 1 -s FileBased -n 2 --work-area crab_projects_2016ULpreVFP --dryrun
+python3 crab.py -p mc_2024_NANO.py --max-memory 2500 --site T2_BE_IIHE -o /store/group/[outputpath]/2024/mc -t NanoAODv15_leptonPNet -i mc/mc_2024.conf --num-cores 1 -s FileBased -n 2 --work-area crab_projects_2024 --dryrun
 ```
 
 For Data:
-
-```bash
-python crab.py -p data_2018UL_NANO.py --max-memory 2500 --site T3_US_FNALLPC -o /store/group/[outputpath]/2018/data -t [tagname, e.g., NanoAODv9_ParticleNetAK4] -i data/data_2018.conf --num-cores 1 -s EventAwareLumiBased -n 100000 -j 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt' --work-area crab_projects_data_2018UL --dryrun
-
-python crab.py -p data_2017UL_NANO.py --max-memory 2500 --site T3_US_FNALLPC -o /store/group/[outputpath]/2017/data -t [tagname, e.g., NanoAODv9_ParticleNetAK4] -i data/data_2017.conf --num-cores 1 -s EventAwareLumiBased -n 100000 -j 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt' --work-area crab_projects_data_2017UL --dryrun
-
-python crab.py -p data_2016ULpostVFP_NANO.py --max-memory 2500 --site T3_US_FNALLPC -o /store/group/[outputpath]/2016/data -t [tagname, e.g., NanoAODv9_ParticleNetAK4] -i data/data_2016post.conf --num-cores 1 -s EventAwareLumiBased -n 100000 -j 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt' --work-area crab_projects_data_2016ULpostVFP --dryrun
-
-python crab.py -p data_2016ULpreVFP_NANO.py --max-memory 2500 --site T3_US_FNALLPC -o /store/group/[outputpath]/2016APV/data -t [tagname, e.g., NanoAODv9_ParticleNetAK4] -i data/data_2016pre.conf --num-cores 1 -s EventAwareLumiBased -n 100000 -j 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt' --work-area crab_projects_data_2016ULpreVFP --dryrun
-```
 
 These commands will perform a "dryrun" to print out the CRAB configuration files. Please check everything is correct (e.g., the output path, version number, requested number of cores, etc.) before submitting the actual jobs. To actually submit the jobs to CRAB, just remove the `--dryrun` option at the end.
 
