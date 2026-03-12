@@ -20,6 +20,7 @@ The current version is based on the Run3 config in CMSSW_15_0_2.
 Customizations:
 
 - Addition of the Electron ParticleNet ID
+- Addition of the Muon ParticleTransformer ID
 
 ---
 
@@ -30,7 +31,11 @@ cmsrel CMSSW_15_0_2
 cd CMSSW_15_0_2/src
 cmsenv
 
-git cms-merge-topic -u JulesVandenbroeck:CMSSW_15_0_2_patchX_leptonPNet
+git cms-merge-topic -u JulesVandenbroeck:dev/CMSSW_15_0_2_patchX_leptonParT
+git cms-addpkg PhysicsTools/NanoAOD
+git cms-addpkg PhysicsTools/PatAlgos
+git cms-addpkg DataFormats/BTauReco
+git clone -b CMSSW_15_0_2_patchX_leptonParT git@github.com:JulesVandenbroeck/PhysicsTools-NanoAOD.git PhysicsTools/NanoAOD/data
 scram b -j8
 ```
 
@@ -40,7 +45,7 @@ scram b -j8
 
 ```bash
 # clone the repository
-git clone -b dev/CMSSW_15_0_2/leptonPNet git@github.com:hqucms/nano-configs.git
+git clone -b dev/CMSSW_15_0_2/leptonParT git@github.com:hqucms/nano-configs.git
 cd nano-configs
 
 # set up grid proxy
