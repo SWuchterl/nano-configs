@@ -2,7 +2,7 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: mc_2024 --mc --conditions 150X_mcRun3_2024_realistic_v2 --datatier NANOAODSIM --era Run3_2024 --eventcontent NANOAODSIM --customise_commands process.packedpuppi.useExistingWeights=False \n process.packedpuppiNoLep.useExistingWeights=False \n from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD; runMetCorAndUncFromMiniAOD(process,isData=False,jetCollUnskimmed='updatedJetsPuppi',metType='Puppi',postfix='Puppi',jetFlavor='AK4PFPuppi',puppiProducerLabel='packedpuppi',puppiProducerForMETLabel='packedpuppiNoLep',recoMetFromPFCs=True)  --filein file:inMINIAOD.root --fileout file:nano.root --geometry DB:Extended --no_exec -n -1 --step NANO:@JME
+# with command line options: mc_2024 --mc --step NANO --conditions 150X_mcRun3_2024_realistic_v2 --datatier NANOAODSIM --era Run3_2024 --eventcontent NANOAODSIM --filein file:inMINIAOD.root --fileout file:nano.root --geometry DB:Extended --no_exec -n -1
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run3_2024_cff import Run3_2024
@@ -29,12 +29,10 @@ process.maxEvents = cms.untracked.PSet(
 # Input source
 process.source = cms.Source("PoolSource",
     # fileNames = cms.untracked.vstring('file:inMINIAOD.root'),
-    # fileNames = cms.untracked.vstring('file:/afs/cern.ch/work/s/sewuchte/private/TTHcc/production/CMSSW_15_0_17/src/RunIII2024Summer24MiniAODv6.root'),
-    # fileNames = cms.untracked.vstring('/store/mc/RunIII2024Summer24MiniAODv6/TTtoLNu2Q_TuneCP5_13p6TeV_powheg-pythia8/MINIAODSIM/150X_mcRun3_2024_realistic_v2-v2/2810003/9b99e563-e72b-4e5e-86f8-98ec774a90d2.root'),
     fileNames = cms.untracked.vstring(
-            '/store/mc/RunIII2024Summer24MiniAODv6/TTTT_TuneCP5_13p6TeV_amcatnlo-pythia8/MINIAODSIM/150X_mcRun3_2024_realistic_v2-v2/2520000/e02b2659-22aa-4e6c-979a-c3a5773de5e8.root',
-            '/store/mc/RunIII2024Summer24MiniAODv6/TTTT_TuneCP5_13p6TeV_amcatnlo-pythia8/MINIAODSIM/150X_mcRun3_2024_realistic_v2-v2/2520000/ef452318-5ccc-4b85-8707-0fb32990ba12.root',
-        ),
+        '/store/mc/RunIII2024Summer24MiniAODv6/TTTT_TuneCP5_13p6TeV_amcatnlo-pythia8/MINIAODSIM/150X_mcRun3_2024_realistic_v2-v2/2520000/e02b2659-22aa-4e6c-979a-c3a5773de5e8.root',
+        '/store/mc/RunIII2024Summer24MiniAODv6/TTTT_TuneCP5_13p6TeV_amcatnlo-pythia8/MINIAODSIM/150X_mcRun3_2024_realistic_v2-v2/2520000/ef452318-5ccc-4b85-8707-0fb32990ba12.root',
+    ),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -114,34 +112,28 @@ from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeCommon
 #call to customisation function nanoAOD_customizeCommon imported from PhysicsTools.NanoAOD.nano_cff
 process = nanoAOD_customizeCommon(process)
 
-# Automatic addition of the customisation function from PhysicsTools.NanoAOD.custom_jme_cff
-from PhysicsTools.NanoAOD.custom_jme_cff import PrepJMECustomNanoAOD 
-
-#call to customisation function PrepJMECustomNanoAOD imported from PhysicsTools.NanoAOD.custom_jme_cff
-process = PrepJMECustomNanoAOD(process)
-
 # End of customisation functions
 
 
 # Customisation from command line
 
-process.packedpuppi.useExistingWeights=False 
-process.packedpuppiNoLep.useExistingWeights=False 
-from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD; runMetCorAndUncFromMiniAOD(process,isData=False,jetCollUnskimmed='updatedJetsPuppi',metType='Puppi',postfix='Puppi',jetFlavor='AK4PFPuppi',puppiProducerLabel='packedpuppi',puppiProducerForMETLabel='packedpuppiNoLep',recoMetFromPFCs=True) 
+process.source.delayReadingEventProducts = cms.untracked.bool(False)
+
 # Add early deletion of temporary data products to reduce peak memory need
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
 process = customiseEarlyDelete(process)
 # End adding early deletion
+
+# ===========================================================
+# ===========================================================
+# ===========================================================
+# customisation of the process for lepton trainings
 
 from ParticleNetNtuplizer.ParticleNetNtuplizer.electron_ntuplizer import customize_ntuplizer as customize_ntuplizer_electron
 from ParticleNetNtuplizer.ParticleNetNtuplizer.muon_ntuplizer import customize_ntuplizer as customize_ntuplizer_muon
 
 process = customize_ntuplizer_electron(process)
 process = customize_ntuplizer_muon(process)
-
-# let's also drop the nano.root output file, since we will write our own output file in the ntuplizer
-# process.NANOAODSIMoutput.fileName = 'file:/dev/null'
-
 
 # # do multithreading for local checks
 process.options.numberOfThreads = 1
@@ -150,7 +142,6 @@ process.options.numberOfStreams = 0
 
 # drop NANOAODSIMoutput_step from process.schedule = cms.Schedule(*[ process.nanoAOD_step, process.endjob_step, process.NANOAODSIMoutput_step ], tasks=[process.patAlgosToolsTask])
 process.schedule.remove(process.NANOAODSIMoutput_step)
-# remove process.NANOAODSIMoutput_step = cms.EndPath(process.NANOAODSIMoutput)
 del process.NANOAODSIMoutput_step
 del process.NANOAODSIMoutput
 
