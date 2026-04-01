@@ -15,7 +15,7 @@ Produce NanoAODs with customizations.
 
 ## Version
 
-The current version is based on the Run3 config in CMSSW_15_0_2.
+The current version is based on the Run3 config in CMSSW_15_0_17.
 
 Customizations:
 
@@ -30,8 +30,8 @@ Current workflow: Do not regenerate the `mc_2024_NANO.py`
 ## Setup
 
 ```bash
-cmsrel CMSSW_15_0_2
-cd CMSSW_15_0_2/src
+cmsrel CMSSW_15_0_17
+cd CMSSW_15_0_17/src
 cmsenv
 git cms-init
 
@@ -39,8 +39,8 @@ git cms-addpkg PhysicsTools/NanoAOD
 git cms-addpkg PhysicsTools/PatAlgos
 git cms-addpkg DataFormats/BTauReco
 
-git cms-merge-topic -u SWuchterl:dev/CMSSW_15_0_2_patchX_leptonParT_2
-# last commit should be cba6157c865f6eddcbd987659a2daec6f7002a31
+git cms-merge-topic -u SWuchterl:dev/CMSSW_15_0_17_leptonParT
+# last commit should be 762aaec468a096d3fba0c476682d4c9174d8220c
 
 git clone -b dev/CMSSW_15_0_2_patchX_leptonParT git@github.com:JulesVandenbroeck/PhysicsTools-NanoAOD.git PhysicsTools/NanoAOD/data
 scram b -j8
@@ -52,8 +52,7 @@ scram b -j8
 
 ```bash
 # clone the repository
-git clone -b dev/CMSSW_15_0_2/leptonParT git@github.com:SWuchterl/nano-configs.git
-# last commit should be 
+git clone -b dev/CMSSW_15_0_17_leptonParT git@github.com:SWuchterl/nano-configs.git
 cd nano-configs
 
 # set up grid proxy
