@@ -19,8 +19,11 @@ The current version is based on the Run3 config in CMSSW_15_0_2.
 
 Customizations:
 
-- Addition of the Electron ParticleNet ID
-- Addition of the Muon ParticleTransformer ID
+- Addition of the Muon+Electron ParticleNet ID
+- Addition of the Muon+Electron ParticleTransformer ID
+- Addint training nTuples for both
+
+Current workflow: Do not regenerate the `mc_2024_NANO.py`
 
 ---
 
@@ -30,12 +33,16 @@ Customizations:
 cmsrel CMSSW_15_0_2
 cd CMSSW_15_0_2/src
 cmsenv
+git cms-init
 
-git cms-merge-topic -u JulesVandenbroeck:dev/CMSSW_15_0_2_patchX_leptonParT
 git cms-addpkg PhysicsTools/NanoAOD
 git cms-addpkg PhysicsTools/PatAlgos
 git cms-addpkg DataFormats/BTauReco
-git clone -b CMSSW_15_0_2_patchX_leptonParT git@github.com:JulesVandenbroeck/PhysicsTools-NanoAOD.git PhysicsTools/NanoAOD/data
+
+git cms-merge-topic -u SWuchterl:dev/CMSSW_15_0_2_patchX_leptonParT_2
+# last commit should be cba6157c865f6eddcbd987659a2daec6f7002a31
+
+git clone -b dev/CMSSW_15_0_2_patchX_leptonParT git@github.com:JulesVandenbroeck/PhysicsTools-NanoAOD.git PhysicsTools/NanoAOD/data
 scram b -j8
 ```
 
@@ -45,7 +52,8 @@ scram b -j8
 
 ```bash
 # clone the repository
-git clone -b dev/CMSSW_15_0_2/leptonParT git@github.com:hqucms/nano-configs.git
+git clone -b dev/CMSSW_15_0_2/leptonParT git@github.com:SWuchterl/nano-configs.git
+# last commit should be 
 cd nano-configs
 
 # set up grid proxy
@@ -86,4 +94,20 @@ More options of this `crab.py` script can be found with:
 
 ```bash
 ./crab.py -h
+```
+
+
+
+
+# example submit
+```bash
+python3 crab.py \
+    -p mc_2024_NANO.py \
+    --site T2_CH_CERN \
+    -o /eos/cms/store/group/cmst3/group/deepjet/leptonid/2024/mc_v3 \
+    -t NanoAODv15_LeptonParT \
+    -i mc/mc_2024.conf \
+    -s FileBased -n 2 \
+    --max-memory 2000 \
+    --num-cores 1 --work-area crab_projects_2024 --no-publication
 ```
