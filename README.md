@@ -42,7 +42,7 @@ git cms-addpkg DataFormats/BTauReco
 git cms-merge-topic -u SWuchterl:dev/CMSSW_15_0_17_leptonParT
 # last commit should be 762aaec468a096d3fba0c476682d4c9174d8220c
 
-git clone -b dev/CMSSW_15_0_2_patchX_leptonParT git@github.com:JulesVandenbroeck/PhysicsTools-NanoAOD.git PhysicsTools/NanoAOD/data
+git clone -b CMSSW_15_0_2_patchX_leptonParT git@github.com:JulesVandenbroeck/PhysicsTools-NanoAOD.git PhysicsTools/NanoAOD/data
 scram b -j8
 ```
 
