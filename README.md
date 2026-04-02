@@ -19,9 +19,11 @@ The current version is based on the Run2UL config in `CMSSW_15_0_15_patch4`, but
 
 Customizations:
 
-- Add our custom UParTv2 output scores for AK4 Puppi jets.
+- Add our custom ParT output scores for AK4 Puppi jets w/o PID inputs.
 - Store all PS weights.
 - Store topPt weights for 13 and 13.6 TeV.
+- Store b and c fragmentation and decay BR weights.
+- Store TOP ML systematics weights, see [here](https://twiki.cern.ch/twiki/bin/view/CMS/MLReweighting).
 - Store sumW for renormalization weights for each tt+X subprocess.
 <!-- - Skim genParticle collection via customization in command line. -->
 - Skim nanoAOD "heavily" using NANOAOD PostProcessing tools.
@@ -30,7 +32,7 @@ Customizations:
 
 ## Setup
 
-Use EL8 or singulari container `cmssw-el8`!
+Use EL8 or singularity container `cmssw-el8`!
 
 ```bash
 export SCRAM_ARCH=el8_amd64_gcc12
@@ -39,15 +41,36 @@ cd CMSSW_15_0_17/src
 cmsenv
 
 git cms-init
+
+# For AK4Puppi ParT w/o PID, lepton PNET and ParT, and TOP weight modifications
+git cms-addpkg DataFormats/BTauReco
+git cms-addpkg PhysicsTools/PatAlgos
 git cms-addpkg PhysicsTools/NanoAOD
 git cms-addpkg PhysicsTools/NanoAODTools
+git cms-addpkg RecoBTag/Combined
+git cms-addpkg RecoBTag/Configuration
+git cms-addpkg RecoBTag/FeatureTools
+git cms-addpkg RecoBTag/ONNXRuntime
+
 # get the necessary modules from the TOP PAG, modified:
 mkdir TopQuarkAnalysis
 cd TopQuarkAnalysis
 git clone https://gitlab.cern.ch/tthcc-run-3/BFragmentationAnalyzer.git -b dev/CMSSW_15_0_17_nanoV15ExtSkim
-# now the modified release
+cd ..
+
+# now the modified release for TOP weights and AK4Puppi ParT
 git cms-merge-topic -u SWuchterl:dev/CMSSW_15_0_17_nanoV15ExtSkim
-# anmd compile
+
+# and for the leptons
+git cms-merge-topic -u JulesVandenbroeck:dev/CMSSW_15_0_17_leptonParT
+
+# get the ParT data files
+git clone git@github.com:SWuchterl/RecoBTag-Combined-data.git -b dev/CMSSW_15_0_17_nanoV15ExtSkim RecoBTag/Combined/data/
+
+# get the Lepton PNET and ParT data files
+git clone -b CMSSW_15_0_2_patchX_leptonParT git@github.com:JulesVandenbroeck/PhysicsTools-NanoAOD.git PhysicsTools/NanoAOD/data
+
+# and compile
 scram b -j8
 cmsenv
 ```

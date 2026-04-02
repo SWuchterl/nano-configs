@@ -47,7 +47,7 @@ cmsDriver.py mc_2024 --mc --era Run3_2024 --step NANO --conditions 150X_mcRun3_2
 # customizeAddWeights(process, addClassicBFragAndDecay=True, addMLBfrag=True, addMLHdamp=True, addMLNNLO=True)
 for cfg in $(ls mc*.py); do
     echo "Adding B fragmentation and TOP ML weight customizations to ${cfg}"
-    sed -i -e '/# Customisation from command line/a from TopQuarkAnalysis.BFragmentationAnalyzer.customizeAddAll import customizeAddWeights\ncustomizeAddWeights(process, addClassicBFragAndDecay=True, addMLBfrag=True, addMLHdamp=True, addMLNNLO=True)\n' ${cfg}
+    sed -i -e '/# Customisation from command line/a from TopQuarkAnalysis.BFragmentationAnalyzer.customizeAddAll import customizeAddWeights\ncustomizeAddWeights(process, addClassicBFragAndDecay=True, addClassicCFragAndDecay=True, addMLBfrag=True, addMLHdamp=True, addMLNNLO=True)\n' ${cfg}
 done
 
 # ----------------------------------------
