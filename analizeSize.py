@@ -1,6 +1,7 @@
 # write a python script that opens the root tree and checks which branches take what size to store
 import ROOT
 import sys
+import os
 
 
 # convert the size to human readable format
@@ -42,11 +43,14 @@ def analyze_tree(filename):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python analizeSize.py <root_file>")
+    if len(sys.argv) != 3:
+        print("Usage: python analizeSize.py <root_file> <output_folder>")
         sys.exit(1)
 
     filename = sys.argv[1]
+    output_folder = sys.argv[2]
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
     sizes, sizes_human, nEntries = analyze_tree(filename)
     # make a pie chart by groups with same beginning of the branch name split by "_"
     grouped_sizes = {}
@@ -71,11 +75,20 @@ if __name__ == "__main__":
     plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
     plt.title(f"Branch sizes in file: {filename.split('/')[-1]}")
     # plt.show()
-    plt.savefig(f"branch_sizes_pie_chart_{filename.split('/')[-1].replace('.root', '')}.png")
+    plt.savefig(f"{output_folder}/branch_sizes_pie_chart_{filename.split('/')[-1].replace('.root', '')}.png")
 
     # sort sizes by size d escending
     sizes = dict(sorted(sizes.items(), key=lambda item: item[1], reverse=True))
     sizes_human = dict(sorted(sizes_human.items(), key=lambda item: sizes[item[0]], reverse=True))
+
+    # write this into a log file
+    with open(f"{output_folder}/branch_sizes_{filename.split('/')[-1].replace('.root', '')}.log", "w") as f:
+        f.write(f"Branch sizes in file: {filename}\n")
+        for branch, size in sizes_human.items():
+            f.write(f"{branch}: {size} total\n")
+        total_size = sum(sizes.values())
+        f.write(f"\nTotal size of all branches: {sizeof_fmt(total_size)}\n")
+        f.write(f"Total size per entry: {sizeof_fmt(total_size/nEntries)} per entry\n")
 
     print("Branch sizes in file:", filename)
     for branch, size in sizes_human.items():

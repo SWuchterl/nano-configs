@@ -1,0 +1,79 @@
+keep Electron_pt
+keep Electron_mass
+keep Electron_eta
+keep Electron_phi
+keep Electron_charge
+keep Electron_mvaIso_WP90
+keep Electron_mvaIso_WP80
+
+keep Muon_pt
+keep Muon_mass
+keep Muon_eta
+keep Muon_phi
+keep Muon_charge
+keep Muon_tightId
+keep Muon_mediumId
+keep Muon_looseId
+keep Muon_isGlobal
+keep Muon_pfIsoId
+
+# keep Jet_pt_nano
+keep Jet_eta
+keep Jet_pt
+keep Jet_phi
+keep Jet_mass
+keep Jet_hadronFlavour
+#keep Jet_particleNetAK4_CvsL
+#keep Jet_particleNetAK4_CvsB
+#keep Jet_particleNetAK4_B
+#keep Jet_particleNetAK4_QvsG
+#keep Jet_jetId
+keep Jet_nSVs
+keep Jet_nMuons
+keep Jet_nElectrons
+keep Jet_nConstituents
+keep Jet_neHEF
+keep Jet_neEmEF
+keep Jet_chHEF
+keep Jet_chEmEF
+keep Jet_muEF
+keep Jet_chMultiplicity
+keep Jet_neMultiplicity
+
+keep SV_pt
+keep SV_eta
+keep SV_phi
+keep SV_mass
+keep SV_charge
+keep SV_dlen
+keep SV_dlenSig
+keep SV_dxy
+keep SV_dxySig
+keep SV_pAngle
+keep SV_chi2
+keep SV_x
+keep SV_y
+keep SV_z
+keep SV_ndof
+keep SV_ntracks
+
+keep PV_chi2
+keep PV_ndof
+keep PV_score
+keep PV_x
+keep PV_y
+keep PV_z
+keep PV_npvs
+
+keep Pileup_nPU
+
+keep Rho_fixedGridRhoAll
+
+keep PuppiMET_*
+keep RawPuppiMET_*
+
+keep GenVtx_z
+keep HTXS_*
+keep Photon_*
+keep GenPart_*
+keep HLT_Diphoton30_22_*

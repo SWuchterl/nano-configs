@@ -1,0 +1,41 @@
+# Calibrations from https://cms-analysis-corrections.docs.cern.ch/#24cdereprocessingfghiprompt-summer24
+
+# Muon POG
+keep Muon_pt
+keep Muon_eta
+keep Muon_phi
+keep Muon_nTrackerLayers
+
+# EGamma POG
+keep Electron_pt
+keep Electron_eta
+keep Electron_phi
+keep Electron_deltaEtaSC
+keep Electron_r9
+keep Electron_seedGain
+
+keep Photon_pt
+keep Photon_eta
+keep Photon_phi
+keep Photon_deltaEtaSC
+keep Photon_r9
+
+# LUM POG
+keep NumTrueInteractions
+
+# JME POG
+keep Jet_pt
+keep Jet_eta
+keep Jet_phi
+keep Jet_area
+keep Rho_fixedGridRhoAll
+keep Jet_chHEF
+keep Jet_neHEF
+keep Jet_chEmEF
+keep Jet_neEmEF
+keep Jet_muEF
+keep Jet_chMultiplicity
+keep Jet_neMultiplicity
+
+# BTV POG
+keep Jet_hadronFlavour

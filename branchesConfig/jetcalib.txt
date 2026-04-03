@@ -1,0 +1,127 @@
+# HLT
+keep HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
+keep HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
+keep HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
+keep HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8
+keep HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL
+keep HLT_IsoMu24
+keep HLT_IsoMu27
+keep HLT_Ele30_WPTight_Gsf
+
+# Jet
+keep Jet_pt
+keep Jet_eta
+keep Jet_phi
+keep Jet_area
+keep Jet_mass
+keep Jet_genJetIdx
+keep Jet_hadronFlavour
+keep Jet_partonFlavour
+keep Jet_neHEF
+keep Jet_neEmEF
+keep Jet_chHEF
+keep Jet_muEF
+keep Jet_chEmEF
+keep Jet_chMultiplicity
+keep Jet_neMultiplicity
+keep Jet_muonIdx1
+keep Jet_muonIdx2
+keep Jet_btagUParTAK4B
+keep Jet_btagUParTAK4CvB
+keep Jet_btagUParTAK4CvL
+keep Jet_btagUParTAK4UDG
+keep Jet_btagUParTAK4SvUDG
+keep Jet_rawFactor
+keep Jet_muonSubtrFactor
+
+# Electron
+keep Electron_pt
+keep Electron_eta
+keep Electron_phi
+keep Electron_mass
+keep Electron_deltaEtaSC
+keep Electron_superclusterEta
+keep Electron_promptMVA
+keep Electron_mvaIso_WP80
+keep Electron_charge
+keep Electron_mass
+keep Electron_r9
+keep Electron_seedGain
+keep Electron_genPartIdx
+
+# Muon
+keep Muon_pt
+keep Muon_eta
+keep Muon_phi
+keep Muon_mass
+keep Muon_tightId
+keep Muon_promptMVA
+keep Muon_pfRelIso04_all
+keep Muon_charge
+keep Muon_mass
+keep Muon_dxy
+keep Muon_dxyErr
+keep Muon_jetIdx
+keep Muon_nTrackerLayers
+keep Muon_genPartIdx
+
+# PuppiMET
+keep PuppiMET_pt
+keep PuppiMET_phi
+keep PuppiMET_ptUnclusteredUp
+keep PuppiMET_phiUnclusteredUp
+keep PuppiMET_ptUnclusteredDown
+keep PuppiMET_phiUnclusteredDown
+
+# TrkMET
+keep TrkMET_phi
+
+# RawPuppiMET
+keep RawPuppiMET_phi
+keep RawPuppiMET_pt
+
+# CorrT1METJet
+keep CorrT1METJet_EmEF
+keep CorrT1METJet_area
+keep CorrT1METJet_eta
+keep CorrT1METJet_muonSubtrFactor
+keep CorrT1METJet_phi
+keep CorrT1METJet_rawPt
+
+# Rho
+keep Rho_fixedGridRhoFastjetAll
+
+# PV
+keep PV_npvsGood
+
+# Flag
+keep Flag_goodVertices
+keep Flag_globalSuperTightHalo2016Filter
+keep Flag_EcalDeadCellTriggerPrimitiveFilter
+keep Flag_BadPFMuonFilter
+keep Flag_BadPFMuonDzFilter
+keep Flag_hfNoisyHitsFilter
+keep Flag_eeBadScFilter
+
+# GenPart
+keep GenPart_pt
+keep GenPart_pdgId
+keep GenPart_statusFlags
+
+# Pileup
+Pileup_nTrueInt
+
+# Weights
+keep genWeight
+keep LHEPdfWeight
+keep PSWeight
+keep LHEScaleWeight
+
+# Events
+keep luminosityBlock
+keep run
+
+# Runs
+keep run
+keep luminosityBlock
+keep genEventSumw
