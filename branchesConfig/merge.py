@@ -35,6 +35,20 @@ def natural_key(s: str):
     return key
 
 
+def action_group(action: str) -> int:
+    """Return sorting group for an action: dropmatch=0, drop=1, keep=2, others=3."""
+    if not action:
+        return 3
+    a = action.lower()
+    if a == "dropmatch":
+        return 0
+    if a.startswith("drop"):
+        return 1
+    if a.startswith("keep"):
+        return 2
+    return 3
+
+
 def parse_keepdrop_file(path: str) -> Dict[str, str]:
     """Parse a single txt file and return mapping variable->action ('keep'/'drop').
 
@@ -115,6 +129,7 @@ def merge_mappings(per_file: Dict[str, Dict[str, str]]):
 
         has_keep = any(a.startswith("keep") for a in action_values)
         has_drop = any(a.startswith("drop") for a in action_values)
+        has_dropmatch = any(a == "dropmatch" for a in action_values)
 
         if has_keep:
             merged_action = "keep"
@@ -143,7 +158,7 @@ def merge_mappings(per_file: Dict[str, Dict[str, str]]):
 
 def write_merged_txt(path: str, merged: Dict[str, str]):
     with open(path, "w", encoding="utf-8") as f:
-        for key in sorted(merged.keys(), key=natural_key):
+        for key in sorted(merged.keys(), key=lambda k: (action_group(merged.get(k)), natural_key(k))):
             f.write(f"{merged[key]} {key}\n")
 
 
@@ -152,7 +167,7 @@ def write_report_csv(path: str, rows, files: List[str]):
     with open(path, "w", newline="", encoding="utf-8") as csvf:
         writer = csv.writer(csvf)
         writer.writerow(header)
-        for key, actions, merged_action in sorted(rows, key=lambda r: natural_key(r[0])):
+        for key, actions, merged_action in sorted(rows, key=lambda r: (action_group(r[2]), natural_key(r[0]))):
             row = [key]
             for f in files:
                 row.append(actions.get(f, ""))

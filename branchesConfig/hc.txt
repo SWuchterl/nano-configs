@@ -77,3 +77,14 @@ keep HTXS_*
 keep Photon_*
 keep GenPart_*
 keep HLT_Diphoton30_22_*
+
+keep BeamSpot_sigmaZ
+keep BeamSpot_sigmaZError
+
+keep GenVtx_z
+keep HTXS_Higgs_pt
+keep HTXS_Higgs_y
+keep HTXS_njets30
+keep HTXS_stage_0
+
+keep OtherPV_z

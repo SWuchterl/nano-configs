@@ -1,217 +1,217 @@
 # triggers for fake-rate
-HLT_Mu3_PFJet40
-HLT_Mu15
-HLT_Mu17
-HLT_Mu19
-HLT_Mu20
-HLT_Mu27
-HLT_Mu50
-HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30
-HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30
-HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30
-HLT_Ele15_IsoVVVL_PFHT450
-HLT_Ele50_IsoVVVL_PFHT450
+keep HLT_Mu3_PFJet40
+keep HLT_Mu15
+keep HLT_Mu17
+keep HLT_Mu19
+keep HLT_Mu20
+keep HLT_Mu27
+keep HLT_Mu50
+keep HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30
+keep HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30
+keep HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30
+keep HLT_Ele15_IsoVVVL_PFHT450
+keep HLT_Ele50_IsoVVVL_PFHT450
 
 # Run
-luminosityBlock
-run
+keep luminosityBlock
+keep run
 
 # weights
-genEventSumw
-genWeight
-LHEWeight_originalXWGTUP
-LHEScaleWeight
-LHEPdfWeight
-PSWeight
+keep genEventSumw
+keep genWeight
+keep LHEWeight_originalXWGTUP
+keep LHEScaleWeight
+keep LHEPdfWeight
+keep PSWeight
 
 # analysis triggers
-HLT_Ele30_WPTight_Gsf
-HLT_Ele32_WPTight_Gsf
-HLT_Ele115_CaloIdVT_GsfTrkIdT
-HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL
-HLT_Photon200
-HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL
-HLT_DoubleEle25_CaloIdL_MW
-HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL
-HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
-HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
-HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
-HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL
-HLT_Mu27_Ele37_CaloIdL_MW
-HLT_Mu37_Ele27_CaloIdL_MW
-HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ
-HLT_Mu8_DiEle12_CaloIdL_TrackIdL
-HLT_IsoMu24
-HLT_IsoMu27
-HLT_Mu50
-HLT_OldMu100
-HLT_TkMu100
-HLT_Mu37_TkMu27
-HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
-HLT_TripleMu_10_5_5_DZ
-HLT_TripleMu_5_3_3_Mass3p8_DZ
-HLT_TripleMu_12_10_5
+keep HLT_Ele30_WPTight_Gsf
+keep HLT_Ele32_WPTight_Gsf
+keep HLT_Ele115_CaloIdVT_GsfTrkIdT
+keep HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL
+keep HLT_Photon200
+keep HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL
+keep HLT_DoubleEle25_CaloIdL_MW
+keep HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL
+keep HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ
+keep HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
+keep HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ
+keep HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL
+keep HLT_Mu27_Ele37_CaloIdL_MW
+keep HLT_Mu37_Ele27_CaloIdL_MW
+keep HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ
+keep HLT_Mu8_DiEle12_CaloIdL_TrackIdL
+keep HLT_IsoMu24
+keep HLT_IsoMu27
+keep HLT_Mu50
+keep HLT_OldMu100
+keep HLT_TkMu100
+keep HLT_Mu37_TkMu27
+keep HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8
+keep HLT_TripleMu_10_5_5_DZ
+keep HLT_TripleMu_5_3_3_Mass3p8_DZ
+keep HLT_TripleMu_12_10_5
 
 # Electrons
-Electron_pt
-Electron_eta
-Electron_phi
-Electron_mass
-Electron_dxy
-Electron_dz
-Electron_r9
-Electron_lostHits
-Electron_charge
-Electron_tightCharge
-Electron_convVeto
-Electron_jetRelIso
-Electron_jetIdx
-Electron_jetNDauCharged
-Electron_jetPtRelv2
-Electron_deltaEtaSC
-Electron_miniPFRelIso_all
-Electron_miniPFRelIso_chg
-Electron_pfRelIso03_all
-Electron_sip3d
-Electron_seedGain
-Electron_seediEtaOriX
-Electron_seediPhiOriY
-Electron_mvaIso
-Electron_pdgId
-Electron_genPartFlav
-Electron_genPartIdx
+keep Electron_pt
+keep Electron_eta
+keep Electron_phi
+keep Electron_mass
+keep Electron_dxy
+keep Electron_dz
+keep Electron_r9
+keep Electron_lostHits
+keep Electron_charge
+keep Electron_tightCharge
+keep Electron_convVeto
+keep Electron_jetRelIso
+keep Electron_jetIdx
+keep Electron_jetNDauCharged
+keep Electron_jetPtRelv2
+keep Electron_deltaEtaSC
+keep Electron_miniPFRelIso_all
+keep Electron_miniPFRelIso_chg
+keep Electron_pfRelIso03_all
+keep Electron_sip3d
+keep Electron_seedGain
+keep Electron_seediEtaOriX
+keep Electron_seediPhiOriY
+keep Electron_mvaIso
+keep Electron_pdgId
+keep Electron_genPartFlav
+keep Electron_genPartIdx
 
 # Muons
-Muon_pt
-Muon_eta
-Muon_phi
-Muon_mass
-Muon_dxy
-Muon_dz
-Muon_jetRelIso
-Muon_jetIdx
-Muon_jetNDauCharged
-Muon_jetPtRelv2
-Muon_deltaEtaSC
-Muon_miniPFRelIso_all
-Muon_miniPFRelIso_chg
-Muon_pfRelIso03_all
-Muon_sip3d
-Muon_segmentComp
-Muon_isGlobal
-Muon_isPFcand
-Muon_isTracker
-Muon_mediumId
-Muon_promptMVA
-Muon_pnScore_heavy
-Muon_pnScore_light
-Muon_pnScore_tau
-Muon_pnScore_prompt
-Muon_pdgId
-Muon_genPartFlav
-Muon_genPartIdx
-Muon_nStations
+keep Muon_pt
+keep Muon_eta
+keep Muon_phi
+keep Muon_mass
+keep Muon_dxy
+keep Muon_dz
+keep Muon_jetRelIso
+keep Muon_jetIdx
+keep Muon_jetNDauCharged
+keep Muon_jetPtRelv2
+keep Muon_deltaEtaSC
+keep Muon_miniPFRelIso_all
+keep Muon_miniPFRelIso_chg
+keep Muon_pfRelIso03_all
+keep Muon_sip3d
+keep Muon_segmentComp
+keep Muon_isGlobal
+keep Muon_isPFcand
+keep Muon_isTracker
+keep Muon_mediumId
+keep Muon_promptMVA
+keep Muon_pnScore_heavy
+keep Muon_pnScore_light
+keep Muon_pnScore_tau
+keep Muon_pnScore_prompt
+keep Muon_pdgId
+keep Muon_genPartFlav
+keep Muon_genPartIdx
+keep Muon_nStations
 
 # Jets
-Jet_pt
-Jet_eta
-Jet_phi
-Jet_mass
-Jet_chEmEF
-Jet_chHEF
-Jet_chMultiplicity
-Jet_neEmEF
-Jet_neHEF
-Jet_neMultiplicity
-Jet_muEF
-Jet_rawFactor
-Jet_area
-Jet_btagDeepFlavB
-Jet_btagUParTAK4B
-Jet_btagUParTAK4CvB
-Jet_btagUParTAK4CvNotB
-Jet_btagUParTAK4CvL
-Jet_btagUParTAK4QvG
-Jet_btagUParTAK4SvCB
-Jet_btagUParTAK4SvCB
-Jet_btagUParTAK4SvUDG
-Jet_btagUParTAK4UDG
-Jet_genJetIdx
-Jet_hadronFlavour
-Jet_nConstituents
-Jet_nElectrons
-Jet_nMuons
+keep Jet_pt
+keep Jet_eta
+keep Jet_phi
+keep Jet_mass
+keep Jet_chEmEF
+keep Jet_chHEF
+keep Jet_chMultiplicity
+keep Jet_neEmEF
+keep Jet_neHEF
+keep Jet_neMultiplicity
+keep Jet_muEF
+keep Jet_rawFactor
+keep Jet_area
+keep Jet_btagDeepFlavB
+keep Jet_btagUParTAK4B
+keep Jet_btagUParTAK4CvB
+keep Jet_btagUParTAK4CvNotB
+keep Jet_btagUParTAK4CvL
+keep Jet_btagUParTAK4QvG
+keep Jet_btagUParTAK4SvCB
+keep Jet_btagUParTAK4SvCB
+keep Jet_btagUParTAK4SvUDG
+keep Jet_btagUParTAK4UDG
+keep Jet_genJetIdx
+keep Jet_hadronFlavour
+keep Jet_nConstituents
+keep Jet_nElectrons
+keep Jet_nMuons
 
 # FatJet
-FatJet_pt
-FatJet_eta
-FatJet_phi
-FatJet_mass
+keep FatJet_pt
+keep FatJet_eta
+keep FatJet_phi
+keep FatJet_mass
 
 # PuppiMET
-PuppiMET_pt
-PuppiMET_phi
+keep PuppiMET_pt
+keep PuppiMET_phi
 
 # RawPuppiMET
-RawPuppiMET_pt
-RawPuppiMET_phi
+keep RawPuppiMET_pt
+keep RawPuppiMET_phi
 
 # Photon
-Photon_pt
-Photon_eta
-Photon_phi
+keep Photon_pt
+keep Photon_eta
+keep Photon_phi
 
 # GenPart
-GenPart_pt
-GenPart_eta
-GenPart_phi
-GenPart_mass
-GenPart_genPartIdxMother
-GenPart_pdgId
-GenPart_status
-GenPart_statusFlags
+keep GenPart_pt
+keep GenPart_eta
+keep GenPart_phi
+keep GenPart_mass
+keep GenPart_genPartIdxMother
+keep GenPart_pdgId
+keep GenPart_status
+keep GenPart_statusFlags
 
 # GenJet
-GenJet_pt
-GenJet_eta
-GenJet_phi
-GenJet_mass
-GenJet_hadronFlavour
+keep GenJet_pt
+keep GenJet_eta
+keep GenJet_phi
+keep GenJet_mass
+keep GenJet_hadronFlavour
 
 # Pileup
-Pileup_nPU
-Pileup_nTrueInt
+keep Pileup_nPU
+keep Pileup_nTrueInt
 
 
 # Rho
-Rho_*
+keep Rho_*
 
 # SV
-SV_pt
-SV_eta
-SV_phi
-SV_mass
+keep SV_pt
+keep SV_eta
+keep SV_phi
+keep SV_mass
 
 # SubJet
-SubJet_pt
-SubJet_eta
-SubJet_phi
-SubJet_mass
+keep SubJet_pt
+keep SubJet_eta
+keep SubJet_phi
+keep SubJet_mass
 
 # Tau
-Tau_pt
-Tau_eta
-Tau_phi
-Tau_mass
-Tau_jetIdx
-Tau_decayMode
+keep Tau_pt
+keep Tau_eta
+keep Tau_phi
+keep Tau_mass
+keep Tau_jetIdx
+keep Tau_decayMode
 
 # Some other stuff good to keep
-GenDressedLepton*
-GenJet*
-GenJetAK8*
-FatJet_globalParT*
-FatJet_tau*
-Generator*
-LHE*
-genTtbarId
+keep GenDressedLepton*
+keep GenJet*
+keep GenJetAK8*
+keep FatJet_globalParT*
+keep FatJet_tau*
+keep Generator*
+keep LHE*
+keep genTtbarId

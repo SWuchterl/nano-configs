@@ -15,10 +15,10 @@ drop Jet_hfadjacentEtaStripsSize
 drop Jet_hfcentralEtaStripSize
 #drop Jet_PNetRegPtRawCorrNeutrino
 #drop Jet_PNetRegPtRawRes
-drop Jet_UParTAK4RegPtRawCorrNeutrino
-drop Jet_UParTAK4RegPtRawRes
-drop Jet_UParTAK4V1RegPtRawCorrNeutrino
-drop Jet_UParTAK4V1RegPtRawRes
+#drop Jet_UParTAK4RegPtRawCorrNeutrino
+#drop Jet_UParTAK4RegPtRawRes
+#drop Jet_UParTAK4V1RegPtRawCorrNeutrino
+#drop Jet_UParTAK4V1RegPtRawRes
 drop Jet_btagUParTAK4Ele
 drop Jet_btagUParTAK4Mu
 drop Jet_btagUParTAK4probb
@@ -164,8 +164,10 @@ dropmatch n?SV_.*
 dropmatch n?LowPtElectron_.*
 
 # HLT
-drop HLT*
-drop DST*
+#drop HLT*
+#drop DST*
+keep HLT*
+keep DST*
 keep HLT_Iso*Mu24
 keep HLT_IsoMu24_eta2p1
 keep HLT_IsoMu27
@@ -214,7 +216,7 @@ keep Flag_*
 dropmatch n?L1_.+
 
 # GEN
-dropmatch n?GenDressedLepton_.+
+#dropmatch n?GenDressedLepton_.+
 dropmatch n?GenVisTau_.+
 dropmatch n?LHEPart_.+
 dropmatch n?Generator_.+
