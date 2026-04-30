@@ -3,25 +3,25 @@
 # technically CMSSW_15_0_15_patch4 but we use the same for 15_0_17
 
 # # MC, 2018UL
-cmsDriver.py mc_2018UL --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --fileout file:nano.root --conditions 150X_mc2018_realistic_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2018,run2_nanoAOD_106Xv2 --no_exec -n -1 --nThreads 4
+# cmsDriver.py mc_2018UL --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --fileout file:nano.root --conditions 150X_mc2018_realistic_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2018,run2_nanoAOD_106Xv2 --no_exec -n -1
 
 # # # Data, 2018UL
 # cmsDriver.py data_2018UL --data --eventcontent NANOAOD --datatier NANOAOD --fileout file:nano.root --conditions 150X_dataRun2_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2018,run2_nanoAOD_106Xv2 --no_exec -n -1 --nThreads 4
 
 # # MC, 2017UL
-cmsDriver.py mc_2017UL --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --fileout file:nano.root --conditions 150X_mc2017_realistic_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2017,run2_nanoAOD_106Xv2 --no_exec -n -1 --nThreads 4
+# cmsDriver.py mc_2017UL --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --fileout file:nano.root --conditions 150X_mc2017_realistic_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2017,run2_nanoAOD_106Xv2 --no_exec -n -1
 
 # # # Data, 2017UL
 # cmsDriver.py data_2017UL --data --eventcontent NANOAOD --datatier NANOAOD --fileout file:nano.root --conditions 150X_dataRun2_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2017,run2_nanoAOD_106Xv2 --no_exec -n -1 --nThreads 4
 
 # # # MC, 2016ULpreVFP
-cmsDriver.py mc_2016ULpreVFP --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --fileout file:nano.root --conditions 150X_mcRun2_asymptotic_preVFP_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2016_HIPM,run2_nanoAOD_106Xv2 --no_exec -n -1 --nThreads 4
+# cmsDriver.py mc_2016ULpreVFP --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --fileout file:nano.root --conditions 150X_mcRun2_asymptotic_preVFP_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2016_HIPM,run2_nanoAOD_106Xv2 --no_exec -n -1
 
 # # # Data, 2016ULpreVFP
 # cmsDriver.py data_2016ULpreVFP --data --eventcontent NANOAOD --datatier NANOAOD --fileout file:nano.root --conditions 150X_dataRun2_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2016_HIPM,run2_nanoAOD_106Xv2 --no_exec -n -1 --nThreads 4
 
 # # # MC, 2016ULpostVFP
-cmsDriver.py mc_2016ULpostVFP --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --fileout file:nano.root --conditions 150X_mcRun2_asymptotic_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2016,run2_nanoAOD_106Xv2 --no_exec -n -1 --nThreads 4
+# cmsDriver.py mc_2016ULpostVFP --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --fileout file:nano.root --conditions 150X_mcRun2_asymptotic_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2016,run2_nanoAOD_106Xv2 --no_exec -n -1
 
 # # # Data, 2016ULpostVFP
 # cmsDriver.py data_2016ULpostVFP --data --eventcontent NANOAOD --datatier NANOAOD --fileout file:nano.root --conditions 150X_dataRun2_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2016,run2_nanoAOD_106Xv2 --no_exec -n -1 --nThreads 4
@@ -30,10 +30,10 @@ cmsDriver.py mc_2016ULpostVFP --mc --eventcontent NANOAODSIM --datatier NANOAODS
 # now for Run 3
 
 # MC, 2024
-cmsDriver.py mc_2024 --mc --era Run3_2024 --step NANO --conditions 150X_mcRun3_2024_realistic_v2 --datatier NANOAODSIM --eventcontent NANOAODSIM --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 4
+cmsDriver.py mc_2024 --mc --era Run3_2024 --step NANO --conditions 150X_mcRun3_2024_realistic_v2 --datatier NANOAODSIM --eventcontent NANOAODSIM --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1
 
 # Data, 2024
-# cmsDriver.py data_2024 --data --era Run3_2024 --step NANO --conditions 150X_dataRun3_v2 --datatier NANOAOD --eventcontent NANOAOD --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 4
+cmsDriver.py data_2024 --data --era Run3_2024 --step NANO --conditions 150X_dataRun3_v2 --datatier NANOAOD --eventcontent NANOAOD --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1
 
 # ----------------------------------------
 # now apply some customizations

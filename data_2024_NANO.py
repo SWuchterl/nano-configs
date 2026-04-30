@@ -2,7 +2,7 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: data_2024 --data --era Run3_2024 --step NANO --conditions 150X_dataRun3_v2 --datatier NANOAOD --eventcontent NANOAOD --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 4
+# with command line options: data_2024 --data --era Run3_2024 --step NANO --conditions 150X_dataRun3_v2 --datatier NANOAOD --eventcontent NANOAOD --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run3_2024_cff import Run3_2024
@@ -98,10 +98,6 @@ process.NANOAODoutput_step = cms.EndPath(process.NANOAODoutput)
 process.schedule = cms.Schedule(process.nanoAOD_step,process.endjob_step,process.NANOAODoutput_step)
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
-
-#Setup FWK for multithreaded
-process.options.numberOfThreads = 4
-process.options.numberOfStreams = 0
 
 # customisation of the process.
 

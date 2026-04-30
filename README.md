@@ -18,14 +18,13 @@ Produce NanoAODs with customizations.
 The current version is based on the Run2UL config in `CMSSW_15_0_15_patch4`, but we use `CMSSW_15_0_17`, so it is based on [NanoAODv15](https://gitlab.cern.ch/cms-nanoAOD/nanoaod-doc/-/wikis/Releases/NanoAODv15).
 
 Customizations:
-
+- Add custom PNet and two ParT output scores for electrons and muons.
 - Add our custom ParT output scores for AK4 Puppi jets w/o PID inputs.
 - Store all PS weights.
 - Store topPt weights for 13 and 13.6 TeV.
-- Store b and c fragmentation and decay BR weights.
+- Store b and c fragmentation and b and c hadron decay BR weights.
 - Store TOP ML systematics weights, see [here](https://twiki.cern.ch/twiki/bin/view/CMS/MLReweighting).
-- Store sumW for renormalization weights for each tt+X subprocess.
-<!-- - Skim genParticle collection via customization in command line. -->
+- Store sumW for renormalization weights for each tt+(cc/cj/2c/bb/bj/2b/lf) subprocess.
 - Skim nanoAOD "heavily" using NANOAOD PostProcessing tools.
 
 ---
@@ -59,16 +58,26 @@ git clone https://gitlab.cern.ch/tthcc-run-3/BFragmentationAnalyzer.git -b dev/C
 cd ..
 
 # now the modified release for TOP weights and AK4Puppi ParT
-git cms-merge-topic -u SWuchterl:dev/CMSSW_15_0_17_nanoV15ExtSkim
+git cms-merge-topic -u SWuchterl:dev/CMSSW_15_0_17_nanoV15ExtSkimLeptonParT
 
-# and for the leptons
-git cms-merge-topic -u JulesVandenbroeck:dev/CMSSW_15_0_17_leptonParT
+# and for the leptons (not needed anymore)
+# git cms-merge-topic -u JulesVandenbroeck:dev/CMSSW_15_0_17_leptonParT
 
-# get the ParT data files
+# get the jet ParT data files
 git clone git@github.com:SWuchterl/RecoBTag-Combined-data.git -b dev/CMSSW_15_0_17_nanoV15ExtSkim RecoBTag/Combined/data/
 
-# get the Lepton PNET and ParT data files
+# get the lepton PNET and ParT data files (nearly all)
 git clone -b CMSSW_15_0_2_patchX_leptonParT git@github.com:JulesVandenbroeck/PhysicsTools-NanoAOD.git PhysicsTools/NanoAOD/data
+
+# we need for local tests to add the following files/folders, but it would increase the tarball for CRAB too much (>120 MB), so when submitting needs to be deleted. It will be handled by out shell excutable.
+mkdir -p PhysicsTools/NanoAOD/data/ParTElectronId/v2/
+mkdir -p PhysicsTools/NanoAOD/data/ParTMuonId/v2
+
+wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTElectronId/v2/electron_ParT_2024.onnx PhysicsTools/NanoAOD/data/ParTElectronId/v2/
+wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTElectronId/v2/preprocess.json PhysicsTools/NanoAOD/data/ParTElectronId/v2/
+
+wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/muon_ParT_2024.onnx PhysicsTools/NanoAOD/data/ParTMuonId/v2/
+wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/preprocess.json PhysicsTools/NanoAOD/data/ParTMuonId/v2/
 
 # and compile
 scram b -j8

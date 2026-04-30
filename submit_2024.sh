@@ -5,4 +5,8 @@
 # real submit commands:
 # python crab.py -p data_2024_NANO.py --site T2_CH_CERN -o /store/group/cmst3/group/vhcc/NanoAOD/dev_Run3-v15ext/2024/data -t NanoTuples-30Jan2026_Run3NanoAODv15 -i data/data_2024.conf -e exe_ULv15.sh --num-cores 4 -s EventAwareLumiBased -n 100000 -j 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt' --work-area crab_projects_data_2024v15 --input-files inputs --max-memory 6000 --no-publication
 
-./crab.py -p mc_2024_NANO.py --site T2_CH_CERN -o /store/group/cmst3/group/vhcc/NanoAOD/dev_Run3-v15ext/2024/mc -t NanoTuples-30Jan2026_Run3NanoAODv15 -i  mc/mc_2024.conf -e exe_ULv15.sh -s FileBased -n 2 --num-cores 4 --work-area crab_projects_2024v15 --input-files inputs --max-memory 6000 --no-publication
+# ./crab.py -p mc_2024_NANO.py --site T2_CH_CERN -o /store/group/cmst3/group/vhcc/NanoAOD/dev_Run3-v15ext/2024/mc -t NanoTuples-30Jan202?6_Run3NanoAODv15 -i  mc/mc_2024.conf -e exe_ULv15.sh -s FileBased -n 2 --num-cores 4 --work-area crab_projects_2024v15 --input-files inputs --max-memory 6000 --no-publication
+
+
+
+./crab.py -p mc_2024_NANO.py --site T2_CH_CERN -o /store/group/cmst3/group/vhcc/NanoAOD/dev_Run3-v15extV0/2024/mc -t NanoTuples-23Apr2026_Run3NanoAODv15 -i  mc/mc_2024.conf -e exe_ULv15_nosel.sh -s FileBased -n 2 --num-cores 1 --work-area crab_projects_2024v15V0 --input-files inputs --no-publication

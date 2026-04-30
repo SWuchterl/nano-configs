@@ -30,7 +30,8 @@ mv nano.root orig_nano.root
 # 2) postprocessing with nano_postproc.py
 
 # run the postprocessor with the final selection
-nano_postproc.py . orig_nano.root -s _keepdrop --bi $WORKDIR/inputs/keep_and_drop.txt
+# nano_postproc.py . orig_nano.root -s _keepdrop --bi $WORKDIR/inputs/keep_and_drop.txt
+nano_postproc.py . orig_nano.root -s _keepdrop
 
 # now merge the output files into one final nanoAOD file to reduce size
 haddnano.py final.root orig_nano_keepdrop.root
