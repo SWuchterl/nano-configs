@@ -14,15 +14,16 @@ drop Jet_svIdx2
 drop Jet_hfadjacentEtaStripsSize
 drop Jet_hfcentralEtaStripSize
 #drop Jet_PNetRegPtRawCorrNeutrino
-#drop Jet_PNetRegPtRawRes
+drop Jet_PNetRegPtRawRes
 #drop Jet_UParTAK4RegPtRawCorrNeutrino
-#drop Jet_UParTAK4RegPtRawRes
+drop Jet_UParTAK4RegPtRawRes
 #drop Jet_UParTAK4V1RegPtRawCorrNeutrino
-#drop Jet_UParTAK4V1RegPtRawRes
+drop Jet_UParTAK4V1RegPtRawRes
 drop Jet_btagUParTAK4Ele
 drop Jet_btagUParTAK4Mu
 drop Jet_btagUParTAK4probb
 drop Jet_btagUParTAK4probbb
+drop Jet_btagDeepFlav*
 drop Jet_hfEmEF
 drop Jet_hfHEF
 drop Jet_hfsigmaEtaEta
@@ -43,6 +44,8 @@ drop Jet_btagPNetCvL
 drop Jet_btagPNetCvNotB
 drop Jet_btagPNetQvG
 #drop Jet_btagPNetTauVJet
+
+drop Jet_btagNoPIDParTAK4probpu
 
 drop Jet_nConstituents
 drop Jet_nElectrons
@@ -99,6 +102,8 @@ drop Electron_mvaNoIso
 drop Electron_pfRelIso03_chg
 drop Electron_sieie
 drop Electron_scEtOverPt
+drop Electron_parTScore_*
+drop Electron_pnScore_*
 
 #muons
 drop Muon_svIdx
@@ -122,6 +127,8 @@ drop Muon_bsConstrainedChi2
 drop Muon_bsConstrainedPt
 drop Muon_bsConstrainedPtErr
 drop Muon_mvaLowPt
+drop Muon_parTScore_*
+drop Muon_pnScore_*
 
 # add from riccardo
 drop Muon_bestTrackType
@@ -150,8 +157,11 @@ drop FatJet_electronIdx3SJ
 drop FatJet_muonIdx3SJ
 drop FatJet_n2b1
 drop FatJet_n3b1
+drop FatJet_particleNet_*
+drop FatJet_particleNetWithMass_*
+drop FatJet_particleNetLegacy_*
 
-
+keep DeepMET*
 
 # objects
 dropmatch n?boostedTau_.+
@@ -226,6 +236,8 @@ dropmatch n?GenIsolatedPhoton_.+
 dropmatch n?CaloMET_.+
 dropmatch n?ChsMET_.+
 dropmatch n?GenProton_.+
+dropmatch n?PPSLocalTrack_.+
+dropmatch n?Proton_.+
 
 #dropmatch n?TrigObj_.+
 #only need TrigObj_filterBits and TrigObj_id to emulate 2017 trigger
@@ -248,6 +260,7 @@ drop ScoutingPFOutput
 drop ScoutingCaloMuonOutput
 
 dropmatch n?TrackGenJet_.+
+dropmatch n?TrackGenJetAK4_.+
 dropmatch n?OtherPV_.+
 dropmatch n?GenVtx_.+
 dropmatch n?PFMET_.+

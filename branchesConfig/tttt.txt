@@ -107,6 +107,7 @@ keep Muon_pnScore_heavy
 keep Muon_pnScore_light
 keep Muon_pnScore_tau
 keep Muon_pnScore_prompt
+keep Muon_pnScore_*
 keep Muon_pdgId
 keep Muon_genPartFlav
 keep Muon_genPartIdx

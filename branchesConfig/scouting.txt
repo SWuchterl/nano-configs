@@ -1,0 +1,167 @@
+# Event bookkeeping
+keep run
+keep luminosityBlock
+keep event
+
+# Triggers
+keep HLT_DST_PFScouting_JetHT
+keep HLT_DST_PFScouting_SingleMuon
+keep HLT_DST_*
+
+# Rho
+keep ScoutingRho_fixedGridRhoFastjetAll
+
+# MET
+drop ScoutingMET_*
+keep ScoutingMET_pt
+keep ScoutingMET_phi
+
+# Fat AK8 jets
+drop ScoutingFatPFJetRecluster_*
+keep ScoutingFatPFJetRecluster_pt
+keep ScoutingFatPFJetRecluster_eta
+keep ScoutingFatPFJetRecluster_phi
+keep ScoutingFatPFJetRecluster_mass
+
+keep ScoutingFatPFJetRecluster_msoftdrop
+keep ScoutingFatPFJetRecluster_scoutGlobalParT_massCorrResonance
+
+keep ScoutingFatPFJetRecluster_tau1
+keep ScoutingFatPFJetRecluster_tau2
+keep ScoutingFatPFJetRecluster_tau3
+
+# Needed for jet_id(fj)
+keep ScoutingFatPFJetRecluster_nConstituents
+keep ScoutingFatPFJetRecluster_nCh
+keep ScoutingFatPFJetRecluster_neEmEF
+keep ScoutingFatPFJetRecluster_muEF
+keep ScoutingFatPFJetRecluster_neHEF
+keep ScoutingFatPFJetRecluster_nNh
+
+keep ScoutingFatPFJetRecluster_scoutGlobalParT*
+
+drop ScoutingPFJet*
+
+# Fat AK15 jets
+drop ScoutingFatPFJet15Recluster*
+drop ScoutingFatPFJet15Recluster_*
+keep ScoutingFatPFJet15Recluster_pt
+keep ScoutingFatPFJet15Recluster_eta
+keep ScoutingFatPFJet15Recluster_phi
+keep ScoutingFatPFJet15Recluster_mass
+
+keep ScoutingFatPFJet15Recluster_msoftdrop
+keep ScoutingFatPFJet15Recluster_scoutGlobalParT_massCorrResonance
+
+keep ScoutingFatPFJet15Recluster_tau1
+keep ScoutingFatPFJet15Recluster_tau2
+keep ScoutingFatPFJet15Recluster_tau3
+
+keep ScoutingFatPFJet15Recluster_scoutGlobalParT*
+
+drop ScoutingMuonNoVtx*
+drop ScoutingPhoton*
+
+keep ScoutingFatPFJet_nConstituents
+keep ScoutingFatPFJet_nCh
+keep ScoutingFatPFJet_neEmEF
+keep ScoutingFatPFJet_muEF
+keep ScoutingFatPFJet_neHEF
+keep ScoutingFatPFJet_nNh
+
+# AK4 jets
+drop ScoutingPFJetRecluster_*
+keep ScoutingPFJetRecluster_pt
+keep ScoutingPFJetRecluster_eta
+keep ScoutingPFJetRecluster_phi
+keep ScoutingPFJetRecluster_mass
+
+keep ScoutingPFJetRecluster_particleNet_prob*
+
+keep ScoutingPFJetRecluster_nConstituents
+keep ScoutingPFJetRecluster_nCh
+keep ScoutingPFJetRecluster_neEmEF
+keep ScoutingPFJetRecluster_muEF
+keep ScoutingPFJetRecluster_neHEF
+keep ScoutingPFJetRecluster_nNh
+
+drop ScoutingPFJet_*
+keep ScoutingPFJet_nConstituents
+keep ScoutingPFJet_nCh
+keep ScoutingPFJet_neEmEF
+keep ScoutingPFJet_muEF
+keep ScoutingPFJet_neHEF
+keep ScoutingPFJet_nNh
+keep ScoutingPFJet_pt
+keep ScoutingPFJet_eta
+keep ScoutingPFJet_phi
+keep ScoutingPFJet_m
+keep ScoutingPFJet_mass
+
+# Electrons
+drop ScoutingElectron_*
+keep ScoutingElectron_pt
+keep ScoutingElectron_eta
+keep ScoutingElectron_phi
+keep ScoutingElectron_sigmaIetaIeta
+keep ScoutingElectron_dEtaIn
+keep ScoutingElectron_dPhiIn
+keep ScoutingElectron_ooEMOop
+keep ScoutingElectron_hOverE
+keep ScoutingElectron_trackIso
+keep ScoutingElectron_ecalIso
+keep ScoutingElectron_hcalIso
+
+
+# Muons
+drop ScoutingMuonVtx*
+keep ScoutingMuonVtx_pt
+keep ScoutingMuonVtx_eta
+keep ScoutingMuonVtx_phi
+keep ScoutingMuonVtx_normchi2
+keep ScoutingMuonVtx_nValidRecoMuonHits
+keep ScoutingMuonVtx_nRecoMuonMatchedStations
+keep ScoutingMuonVtx_nTrackerLayersWithMeasurement
+keep ScoutingMuonVtx_nValidPixelHits
+keep ScoutingMuonVtx_trackIso
+keep ScoutingMuonVtx_trk_vx
+keep ScoutingMuonVtx_trk_vy
+keep ScoutingMuonVtx_trk_vz
+
+# Primary vertices
+drop ScoutingPrimaryVertex_*
+keep ScoutingPrimaryVertex_x
+keep ScoutingPrimaryVertex_y
+keep ScoutingPrimaryVertex_z
+
+# MC weights
+keep genWeight
+keep LHEScaleWeight
+keep LHEPdfWeight
+keep PSWeight
+
+# GenPart
+keep GenPart_pt
+keep GenPart_eta
+keep GenPart_phi
+keep GenPart_mass
+keep GenPart_pdgId
+keep GenPart_statusFlags
+keep GenPart_genPartIdxMother
+
+# Gen AK4 jets
+keep GenJet_pt
+keep GenJet_eta
+keep GenJet_phi
+keep GenJet_mass
+
+# Gen AK8 jets
+keep GenJetAK8_pt
+keep GenJetAK8_eta
+keep GenJetAK8_phi
+keep GenJetAK8_mass
+
+keep GenJetAK15_pt
+keep GenJetAK15_eta
+keep GenJetAK15_phi
+keep GenJetAK15_mass

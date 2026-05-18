@@ -15,7 +15,7 @@ Produce NanoAODs with customizations.
 
 ## Version
 
-The current version is based on the Run2UL config in `CMSSW_15_0_15_patch4`, but we use `CMSSW_15_0_17`, so it is based on [NanoAODv15](https://gitlab.cern.ch/cms-nanoAOD/nanoaod-doc/-/wikis/Releases/NanoAODv15).
+The current version is based on the Run2UL config in `CMSSW_15_0_15_patch4`, but we use `CMSSW_15_0_17`, so it is based on [NanoAODv15](https://gitlab.cern.ch/cms-nanoAOD/nanoaod-doc/-/wikis/Releases/NanoAODv15) and runs for all eras.
 
 Customizations:
 - Add custom PNet and two ParT output scores for electrons and muons.
@@ -73,11 +73,29 @@ git clone -b CMSSW_15_0_2_patchX_leptonParT git@github.com:JulesVandenbroeck/Phy
 mkdir -p PhysicsTools/NanoAOD/data/ParTElectronId/v2/
 mkdir -p PhysicsTools/NanoAOD/data/ParTMuonId/v2
 
-wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTElectronId/v2/electron_ParT_2024.onnx PhysicsTools/NanoAOD/data/ParTElectronId/v2/
-wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTElectronId/v2/preprocess.json PhysicsTools/NanoAOD/data/ParTElectronId/v2/
+wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTElectronId/v2/electron_ParT_2024.onnx -O ${CMSSW_BASE}/src//PhysicsTools/NanoAOD/data/ParTElectronId/v2/electron_ParT_2024.onnx
+wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTElectronId/v2/preprocess.json -O ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTElectronId/v2/preprocess.json
 
-wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/muon_ParT_2024.onnx PhysicsTools/NanoAOD/data/ParTMuonId/v2/
-wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/preprocess.json PhysicsTools/NanoAOD/data/ParTMuonId/v2/
+wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/muon_ParT_2024.onnx -O ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTMuonId/v2/muon_ParT_2024.onnx
+wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/preprocess.json -O ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTMuonId/v2/preprocess.json
+
+# and some more custom models for boosted jets
+mkdir -p RecoBTag/Combined/data/HLT/GlobalParticleTransformerAK15/V00/
+mkdir -p RecoBTag/Combined/data/InclParticleTransformer-MD/ak15/V02/
+mkdir -p RecoBTag/Combined/data/MassRegression/ak15/V01c
+mkdir -p RecoBTag/Combined/data/OfflineGlobalParticleTransformerAK15/
+mkdir -p RecoBTag/Combined/data/ParticleNet-MD/ak15/V02d
+
+wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/HLT/GlobalParticleTransformerAK15/V00/model_ak15_2024.onnx -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/HLT/GlobalParticleTransformerAK15/V00/model_ak15_2024.onnx
+wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/HLT/GlobalParticleTransformerAK15/V00/preprocess.json -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/HLT/GlobalParticleTransformerAK15/V00/preprocess.json
+wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/InclParticleTransformer-MD/ak15/V02/model.onnx -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/InclParticleTransformer-MD/ak15/V02/model.onnx
+wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/InclParticleTransformer-MD/ak15/V02/preprocess_corr.json -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/InclParticleTransformer-MD/ak15/V02/preprocess_corr.json
+wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/MassRegression/ak15/V01c/particle_net_regression.onnx -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/MassRegression/ak15/V01c/particle_net_regression.onnx
+wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/MassRegression/ak15/V01c/preprocess.json -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/MassRegression/ak15/V01c/preprocess.json
+wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/OfflineGlobalParticleTransformerAK15/model_ak15.onnx -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/OfflineGlobalParticleTransformerAK15/model_ak15.onnx
+wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/OfflineGlobalParticleTransformerAK15/preprocess.json -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/OfflineGlobalParticleTransformerAK15/preprocess.json
+wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/ParticleNet-MD/ak15/V02d/particle-net.onnx -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/ParticleNet-MD/ak15/V02d/particle-net.onnx
+wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/ParticleNet-MD/ak15/V02d/preprocess.json -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/ParticleNet-MD/ak15/V02d/preprocess.json
 
 # and compile
 scram b -j8
@@ -163,4 +181,9 @@ More options of this `crab.py` script can be found with:
 
 ```bash
 ./crab.py -h
+```
+
+## Alternative for resubmission: Use [mrCrabs](github.com:CMS-L1T-Jet-Tagging/mrCrabs)
+```bash
+git clone git@github.com:CMS-L1T-Jet-Tagging/mrCrabs.git
 ```
