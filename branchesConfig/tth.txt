@@ -102,7 +102,7 @@ drop Electron_mvaNoIso
 drop Electron_pfRelIso03_chg
 drop Electron_sieie
 drop Electron_scEtOverPt
-drop Electron_parTScore_*
+keep Electron_parTScore_*
 drop Electron_pnScore_*
 
 #muons
@@ -127,8 +127,8 @@ drop Muon_bsConstrainedChi2
 drop Muon_bsConstrainedPt
 drop Muon_bsConstrainedPtErr
 drop Muon_mvaLowPt
-drop Muon_parTScore_*
-drop Muon_pnScore_*
+keep Muon_parTScore_*
+#drop Muon_pnScore_*
 
 # add from riccardo
 drop Muon_bestTrackType

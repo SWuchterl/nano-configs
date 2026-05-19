@@ -56,7 +56,6 @@ Electron_mvaIso_WPHZZ,,,,,drop,,drop
 Electron_mvaNoIso,,,,,drop,,drop
 Electron_mvaNoIso_WP80,,,,,drop,,drop
 Electron_mvaNoIso_WP90,,,,,drop,,drop
-Electron_parTScore_*,,,,,drop,,drop
 Electron_pfRelIso03_chg,,,,,drop,,drop
 Electron_pnScore_*,,,,,drop,,drop
 Electron_PreshowerEnergy,,,,,drop,,drop
@@ -80,6 +79,7 @@ Jet_btagDeepFlav*,,,,,drop,,drop
 Jet_btagDeepFlavCvB,,,,,drop,,drop
 Jet_btagDeepFlavCvL,,,,,drop,,drop
 Jet_btagDeepFlavQG,,,,,drop,,drop
+Jet_btagNoPIDParTAK4probpu,,,,,drop,,drop
 Jet_btagPNetB,,,,,drop,,drop
 Jet_btagPNetCvB,,,,,drop,,drop
 Jet_btagPNetCvL,,,,,drop,,drop
@@ -99,8 +99,11 @@ Jet_hfsigmaEtaEta,,,,,drop,,drop
 Jet_hfsigmaPhiPhi,,,,,drop,,drop
 Jet_muonSubtrDeltaEta,,,,,drop,,drop
 Jet_muonSubtrDeltaPhi,,,,,drop,,drop
+Jet_PNetRegPtRawRes,,,,,drop,,drop
 Jet_svIdx1,,,,,drop,,drop
 Jet_svIdx2,,,,,drop,,drop
+Jet_UParTAK4RegPtRawRes,,,,,drop,,drop
+Jet_UParTAK4V1RegPtRawRes,,,,,drop,,drop
 L1Reco_step,,,,,drop,,drop
 L1simulation_step,,,,,drop,,drop
 Muon_bestTrackType,,,,,drop,,drop
@@ -118,8 +121,6 @@ Muon_miniIsoId,,,,,drop,,drop
 Muon_multiIsoId,,,,,drop,,drop
 Muon_mvaLowPt,,,,,drop,,drop
 Muon_mvaMuID,,,,,drop,,drop
-Muon_parTScore_*,,,,,drop,,drop
-Muon_pnScore_*,,,,,drop,,drop
 Muon_puppiIsoId,,,,,drop,,drop
 Muon_softId,,,,,drop,,drop
 Muon_softMva,,,,,drop,,drop
@@ -214,6 +215,7 @@ Electron_miniPFRelIso_chg,,,,,drop,keep,keep
 Electron_mvaIso,,,,,drop,keep,keep
 Electron_mvaIso_WP80,keep,keep,,,,,keep
 Electron_mvaIso_WP90,keep,,,,,,keep
+Electron_parTScore_*,,,,,keep,,keep
 Electron_pdgId,,,,,,keep,keep
 Electron_pfRelIso03_all,,,,,,keep,keep
 Electron_phi,keep,keep,keep,,,keep,keep
@@ -403,11 +405,13 @@ Muon_miniPFRelIso_all,,,,,,keep,keep
 Muon_miniPFRelIso_chg,,,,,,keep,keep
 Muon_nStations,,,,,,keep,keep
 Muon_nTrackerLayers,,keep,keep,,,,keep
+Muon_parTScore_*,,,,,keep,,keep
 Muon_pdgId,,,,,,keep,keep
 Muon_pfIsoId,keep,,,,drop,,keep
 Muon_pfRelIso03_all,,,,,,keep,keep
 Muon_pfRelIso04_all,,keep,,,,,keep
 Muon_phi,keep,keep,keep,,,keep,keep
+Muon_pnScore_*,,,,,,keep,keep
 Muon_pnScore_heavy,,,,,,keep,keep
 Muon_pnScore_light,,,,,,keep,keep
 Muon_pnScore_prompt,,,,,,keep,keep
