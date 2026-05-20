@@ -88,7 +88,7 @@ source /cvmfs/cms.cern.ch/common/crab-setup.sh
 **Step 1**: clone the repo and generate the python config file with `generateConfigs.sh`:
 
 ```bash
-git clone https://github.com/SWuchterl/nano-configs.git -b dev/CMSSW_15_0_17_nanoV15ExtSkim
+git clone https://github.com/SWuchterl/nano-configs.git -b prod/CMSSW_15_0_17_nanoV15ExtSkim
 cd nano-configs
 ./generateConfigs.sh
 ```
