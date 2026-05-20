@@ -22,11 +22,11 @@ wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0
 wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/preprocess.json -O $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonId/v2/preprocess.json
 
 # and some more custom models for boosted jets
-mkdir -p RecoBTag/Combined/data/HLT/GlobalParticleTransformerAK15/V00/
-mkdir -p RecoBTag/Combined/data/InclParticleTransformer-MD/ak15/V02/
-mkdir -p RecoBTag/Combined/data/MassRegression/ak15/V01c
-mkdir -p RecoBTag/Combined/data/OfflineGlobalParticleTransformerAK15/
-mkdir -p RecoBTag/Combined/data/ParticleNet-MD/ak15/V02d
+mkdir -p ${CMSSW_BASE}/src/RecoBTag/Combined/data/HLT/GlobalParticleTransformerAK15/V00/
+mkdir -p ${CMSSW_BASE}/src/RecoBTag/Combined/data/InclParticleTransformer-MD/ak15/V02/
+mkdir -p ${CMSSW_BASE}/src/RecoBTag/Combined/data/MassRegression/ak15/V01c
+mkdir -p ${CMSSW_BASE}/src/RecoBTag/Combined/data/OfflineGlobalParticleTransformerAK15/
+mkdir -p ${CMSSW_BASE}/src/RecoBTag/Combined/data/ParticleNet-MD/ak15/V02d
 
 wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/HLT/GlobalParticleTransformerAK15/V00/model_ak15_2024.onnx -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/HLT/GlobalParticleTransformerAK15/V00/model_ak15_2024.onnx
 wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/HLT/GlobalParticleTransformerAK15/V00/preprocess.json -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/HLT/GlobalParticleTransformerAK15/V00/preprocess.json
