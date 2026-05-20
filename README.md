@@ -69,34 +69,6 @@ git clone git@github.com:SWuchterl/RecoBTag-Combined-data.git -b dev/CMSSW_15_0_
 # get the lepton PNET and ParT data files (nearly all)
 git clone -b CMSSW_15_0_2_patchX_leptonParT git@github.com:JulesVandenbroeck/PhysicsTools-NanoAOD.git PhysicsTools/NanoAOD/data
 
-# we need for local tests to add the following files/folders, but it would increase the tarball for CRAB too much (>120 MB), so when submitting needs to be deleted. It will be handled by out shell excutable.
-mkdir -p PhysicsTools/NanoAOD/data/ParTElectronId/v2/
-mkdir -p PhysicsTools/NanoAOD/data/ParTMuonId/v2
-
-wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTElectronId/v2/electron_ParT_2024.onnx -O ${CMSSW_BASE}/src//PhysicsTools/NanoAOD/data/ParTElectronId/v2/electron_ParT_2024.onnx
-wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTElectronId/v2/preprocess.json -O ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTElectronId/v2/preprocess.json
-
-wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/muon_ParT_2024.onnx -O ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTMuonId/v2/muon_ParT_2024.onnx
-wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/preprocess.json -O ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTMuonId/v2/preprocess.json
-
-# and some more custom models for boosted jets
-mkdir -p RecoBTag/Combined/data/HLT/GlobalParticleTransformerAK15/V00/
-mkdir -p RecoBTag/Combined/data/InclParticleTransformer-MD/ak15/V02/
-mkdir -p RecoBTag/Combined/data/MassRegression/ak15/V01c
-mkdir -p RecoBTag/Combined/data/OfflineGlobalParticleTransformerAK15/
-mkdir -p RecoBTag/Combined/data/ParticleNet-MD/ak15/V02d
-
-wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/HLT/GlobalParticleTransformerAK15/V00/model_ak15_2024.onnx -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/HLT/GlobalParticleTransformerAK15/V00/model_ak15_2024.onnx
-wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/HLT/GlobalParticleTransformerAK15/V00/preprocess.json -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/HLT/GlobalParticleTransformerAK15/V00/preprocess.json
-wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/InclParticleTransformer-MD/ak15/V02/model.onnx -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/InclParticleTransformer-MD/ak15/V02/model.onnx
-wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/InclParticleTransformer-MD/ak15/V02/preprocess_corr.json -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/InclParticleTransformer-MD/ak15/V02/preprocess_corr.json
-wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/MassRegression/ak15/V01c/particle_net_regression.onnx -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/MassRegression/ak15/V01c/particle_net_regression.onnx
-wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/MassRegression/ak15/V01c/preprocess.json -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/MassRegression/ak15/V01c/preprocess.json
-wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/OfflineGlobalParticleTransformerAK15/model_ak15.onnx -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/OfflineGlobalParticleTransformerAK15/model_ak15.onnx
-wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/OfflineGlobalParticleTransformerAK15/preprocess.json -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/OfflineGlobalParticleTransformerAK15/preprocess.json
-wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/ParticleNet-MD/ak15/V02d/particle-net.onnx -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/ParticleNet-MD/ak15/V02d/particle-net.onnx
-wget https://github.com/SWuchterl/RecoBTag-Combined-data/raw/refs/heads/dev/CMSSW_15_0_17_nanoV15ExtSkimMore/ParticleNet-MD/ak15/V02d/preprocess.json -O ${CMSSW_BASE}/src/RecoBTag/Combined/data/ParticleNet-MD/ak15/V02d/preprocess.json
-
 # and compile
 scram b -j8
 cmsenv
@@ -123,64 +95,43 @@ cd nano-configs
 
 **Step 2**: use the `crab.py` script to submit the CRAB jobs:
 
-For MC:
+For 2024:
 
-- 2018:
-
-```bash
-python3 crab.py -p mc_2018UL_NANO.py --site T2_CH_CERN -o /store/group/cmst3/group/vhcc/NanoAOD/dev_Run2ULPuppi-v15ext/2018/mc -t NanoTuples-21Dec2025_Run2ULNanoAODv15 -i mc/mc_2018.conf --num-cores 1 -s FileBased -n 2 --work-area crab_projects_2018ULv15 --input-files inputs --max-memory 3000 --no-publication --dryrun
-```
-
-- 2017:
 
 ```bash
-./crab.py -p mc_2017UL_NANO.py --site T2_CH_CERN -o /store/group/cmst3/group/vhcc/NanoAOD/dev_Run2ULPuppi-v15ext/2017/mc -t NanoTuples-21Dec2025_Run2ULNanoAODv15 -i mc/mc_2017.conf -e exe_ULv15.sh -s FileBased -n 2 --num-cores 1 --work-area crab_projects_2017ULv15 --input-files inputs --max-memory 3000 --no-publication --dryrun
+./runT2B.sh 2024 --dryrun  # for T2B-USERS
+./runLXplus.sh 2024 --dryrun  # for LXPLUS-USERS
 ```
 
-- 2016postVFP:
+This command will perform a "dryrun" to print out the CRAB configuration files. Please check everything is correct (e.g., the output path, version number, requested number of cores, etc.) before submitting the actual jobs. Also check that the automatic generated sample list for your user are correct in `mc/mc_2024.conf` and `data/data_2024.conf` To actually submit the jobs to CRAB, just remove the `--dryrun` option at the end.
+
+**Step 3**: check job status using mrCrabs
+
+The status of the CRAB jobs can be checked using mrCrabs.
+This will provide an overview of all the jobs submitted in the crab_projects folder
 
 ```bash
-python3 crab.py -p mc_2016ULpostVFP_NANO.py --site T2_CH_CERN -o /store/group/cmst3/group/vhcc/NanoAOD/dev_Run2ULPuppi-v15ext/2016/mc -t NanoTuples-21Dec2025_Run2ULNanoAODv15 -i mc/mc_2016post.conf --num-cores 1 -s FileBased -n 2 --work-area crab_projects_2016ULpostVFPv15 --input-files inputs --max-memory 3000 --no-publication --dryrun
+git clone git@github.com:CMS-L1T-Jet-Tagging/mrCrabs.git
+python3 mrCrabs/mrCrabs.py crab_projects/*/crab_*
 ```
-
-- 2016preVFP:
+For resubmission of jobs in case of failed jobs (DISCLAIMER: only re-submit if few jobs fail due to access issues, in other cases talk with experts on why the jobs might have failed):
 
 ```bash
-python3 crab.py -p mc_2016ULpreVFP_NANO.py --site T2_CH_CERN -o /store/group/cmst3/group/vhcc/NanoAOD/dev_Run2ULPuppi-v15ext/2016APV/mc -t NanoTuples-21Dec2025_Run2ULNanoAODv15 -i mc/mc_2016pre.conf --num-cores 1 -s FileBased -n 2 --work-area crab_projects_2016ULpreVFPv15 --input-files inputs --max-memory 3000 --no-publication --dryrun
+python3 mrCrabs/mrCrabs.py crab_projects/*/crab_* --resubmit
 ```
 
-For Data:
-
+crab itself can also be used to get more detailed information on one submission in case of failed jobs:
 ```bash
-python crab.py -p data_2018UL_NANO.py --site T2_CH_CERN -o /store/group/cmst3/group/vhcc/NanoAOD/dev_Run2ULPuppi-v15ext/2016APV/data -t NanoTuples-21Dec2025_Run2ULNanoAODv15 -i data/data_2018.conf --num-cores 1 -s EventAwareLumiBased -n 100000 -j 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt' --work-area crab_projects_data_2018ULv15 --input-files inputs --max-memory 3000 --no-publication --dryrun
-
-python crab.py -p data_2017UL_NANO.py --site T2_CH_CERN -o /store/group/[outputpath]/2017/data -t NanoTuples-21Dec2025_Run2ULNanoAODv15 -i data/data_2017.conf --num-cores 1 -s EventAwareLumiBased -n 100000 -j 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt' --work-area crab_projects_data_2017ULv15 --input-files inputs --max-memory 3000 --no-publication --dryrun
-
-python crab.py -p data_2016ULpostVFP_NANO.py --site T2_CH_CERN -o /store/group/[outputpath]/2016/data -t NanoTuples-21Dec2025_Run2ULNanoAODv15 -i data/data_2016post.conf --num-cores 1 -s EventAwareLumiBased -n 100000 -j 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt' --work-area crab_projects_data_2016ULpostVFPv15 --input-files inputs --max-memory 3000 --no-publication --dryrun
-
-python crab.py -p data_2016ULpreVFP_NANO.py --site T2_CH_CERN -o /store/group/[outputpath]/2016APV/data -t NanoTuples-21Dec2025_Run2ULNanoAODv15 -i data/data_2016pre.conf --num-cores 1 -s EventAwareLumiBased -n 100000 -j 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt' --work-area crab_projects_data_2016ULpreVFPv15 --input-files inputs --max-memory 3000 --no-publication --dryrun
+crab status -d crab_projects/crab_projects_mc_2024v15/crab_project_sample_name
 ```
-
-These commands will perform a "dryrun" to print out the CRAB configuration files. Please check everything is correct (e.g., the output path, version number, requested number of cores, etc.) before submitting the actual jobs. To actually submit the jobs to CRAB, just remove the `--dryrun` option at the end.
-
-**Step 3**: check job status
-
-The status of the CRAB jobs can be checked with:
-
-```bash
-./crab.py --status --work-area crab_projects_* --options "maxjobruntime=2500 maxmemory=3500" && ./crab.py --summary
-```
-
-Note that this will also **resubmit** failed jobs automatically.
-
 The crab dashboard can also be used to get a quick overview of the job status:
 
 - [https://monit-grafana.cern.ch/d/cmsTMGlobal/cms-tasks-monitoring-globalview?orgId=11](https://monit-grafana.cern.ch/d/cmsTMGlobal/cms-tasks-monitoring-globalview?orgId=11)
 
-More options of this `crab.py` script can be found with:
+More options of this `crab` script can be found with:
 
 ```bash
-./crab.py -h
+crab -h
 ```
 
 ## Alternative for resubmission: Use [mrCrabs](github.com:CMS-L1T-Jet-Tagging/mrCrabs)
