@@ -68,6 +68,16 @@ for cfg in $(ls mc*.py); do
     fi
 done
 
+for cfg in $(ls data*.py); do
+    echo "--- Adding AK15 jets to ${cfg}"
+    sed -i -e '/# Customisation from command line/a from NanoTuples.NanoTuples.nanoTuples_cff import nanoTuples_withAK15\nnanoTuples_withAK15(process)\n' ${cfg}
+    # if 202 in cfg; then
+    # if [[ ${cfg} == *2024* ]]; then
+    #     echo "--- Adding scouting info to ${cfg}"
+    #     sed -i -e '/# Customisation from command line/a process.load("PhysicsTools.NanoAOD.custom_run3scouting_cff")\nprocess.nanoScouting_step = cms.Path(process.nanoSequence)\nprocess.schedule.extend([process.nanoScouting_step])\n' ${cfg}
+    # fi
+done
+
 # ----------------------------------------
 
 # in case, for testing 2024
