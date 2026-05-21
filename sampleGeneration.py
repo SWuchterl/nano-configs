@@ -119,8 +119,8 @@ def write_split_confs(entries, year, requested_user=None):
             continue
 
         sample_type = normalize(e.get("type")).lower()
+        dataset = e["miniaod"]
         if sample_type == "data":
-            dataset = e["nanoaod"] or e["miniaod"]
             if not dataset or not dataset.startswith("/"):
                 continue
             if dataset in seen_data:
@@ -129,7 +129,6 @@ def write_split_confs(entries, year, requested_user=None):
             data_selected.append(dataset)
             continue
 
-        dataset = e["miniaod"] or e["nanoaod"]
         if not dataset or not dataset.startswith("/"):
             continue
         if dataset in seen_mc:
@@ -188,68 +187,76 @@ def validate_datasets(entries, requested_user=None):
     issues = []
     total = 0
 
+    # check for duplicates in MiniAOD column
+    seen_mini = set()
+
     for e in entries:
+        nano = e["nanoaod"]
+        expected_parent = e["miniaod"]
+        sample_type = normalize(e.get("type"))
+
+        if not expected_parent or not expected_parent.startswith("/"):
+            continue
+
+        if expected_parent in seen_mini:
+            issues.append(
+                {
+                    "type": "duplicate_miniaod",
+                    "miniaod": expected_parent,
+                    "details": "Duplicate MiniAOD dataset found"
+                }
+            )
+            print(f"  -> DUPLICATE MiniAOD: {expected_parent}")
+            continue
+
+        seen_mini.add(expected_parent)
+
         if requested_user and not assignment_matches(
             e["assignment"], requested_user
         ):
             continue
 
-        nano = e["nanoaod"]
-        expected_parent = e["miniaod"]
-        sample_type = normalize(e.get("type"))
-
-        if not nano or not nano.startswith("/"):
-            continue
-
         total += 1
-        print(f"[CHECK] {nano}")
+        print(f"[CHECK] {expected_parent}")
 
-        rc_ds, ds_out, ds_err = run_dasgoclient_query(f"dataset={nano}")
-        exists = (rc_ds == 0 and nano in ds_out)
+        rc_ds, ds_out, ds_err = run_dasgoclient_query(
+            f"dataset={expected_parent}")
+        exists = (rc_ds == 0 and expected_parent in ds_out)
 
         if not exists:
             issues.append(
                 {
-                    "type": "missing_nanoaod",
+                    "type": "missing_miniaod",
+                    "miniaod": expected_parent,
                     "nanoaod": nano,
-                    "expected_miniaod": expected_parent,
                     "details": ds_err or "dataset not found in DAS output",
                 }
             )
-            print("  -> MISSING NanoAOD")
+            print("  -> MiniAOD dataset not found in DAS")
+            continue
+
+        if expected_parent.endswith("/USER"):
             continue
 
         rc_parent, parent_out, parent_err = run_dasgoclient_query(
             f"parent dataset={nano}")
         parents = [p for p in parent_out if p.startswith("/")]
 
-        if not expected_parent:
-            if parents:
-                details = (
-                    "MiniAOD column is empty; DAS parent found:\n"
-                    f"{parents[0]}"
-                )
-                suggested_miniaod = parents[0]
-            else:
-                details = (
-                    "MiniAOD column is empty; no parent was returned by DAS. "
-                    "Add the missing MiniAOD to the spreadsheet"
-                )
-                suggested_miniaod = suggest_from_nano(nano)
-
+        if not nano:
+            details = (
+                "NanoAOD column is empty"
+            )
             issues.append(
                 {
-                    "type": "missing_expected_miniaod",
-                    "nanoaod": nano,
-                    "found_parents": parents,
-                    "suggested_miniaod": suggested_miniaod,
+                    "type": "missing_nanoaod",
+                    "miniaod": expected_parent,
                     "details": details,
                 }
             )
-            print(f"  -> WARNING: MiniAOD column is empty: {details}")
+            print(f"  -> WARNING: {details}")
             continue
 
-        if rc_parent != 0 or not parents:
+        elif rc_parent != 0 or not parents:
             issues.append(
                 {
                     "type": "missing_parent",
@@ -262,10 +269,10 @@ def validate_datasets(entries, requested_user=None):
                     ),
                 }
             )
-            print("  -> MISSING parent MiniAOD")
+            print("  -> MISSING parent MiniAOD in DAS")
             continue
 
-        if sample_type.lower() != "data":
+        if sample_type.lower() == "data":
             continue
 
         if expected_parent not in parents:
@@ -336,6 +343,12 @@ def parse_args():
         action="store_true",
         help="Skip DAS validation checks",
     )
+
+    parser.add_argument(
+        "--skip-write",
+        action="store_true",
+        help="Skip writing output config files (only perform checks)",
+    )
     return parser.parse_args()
 
 
@@ -355,17 +368,18 @@ def main():
 
     entries = parse_spreadsheet(csv_path)
 
-    mc_path, data_path, mc_selected, data_selected = write_split_confs(
-        entries,
-        year=args.year,
-        requested_user=args.user,
-    )
-    print(f"Wrote {len(mc_selected)} MC datasets to {mc_path}")
-    print(f"Wrote {len(data_selected)} Data datasets to {data_path}")
-    if args.user:
-        print(
-            f"Filter used for output config: Assignment contains '{args.user}'"
+    if not args.skip_write:
+        mc_path, data_path, mc_selected, data_selected = write_split_confs(
+            entries,
+            year=args.year,
+            requested_user=args.user,
         )
+        print(f"Wrote {len(mc_selected)} MC datasets to {mc_path}")
+        print(f"Wrote {len(data_selected)} Data datasets to {data_path}")
+        if args.user:
+            print(
+                f"Filter used for output config: Assignment contains '{args.user}'"
+            )
 
     if args.skip_check:
         return
