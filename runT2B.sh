@@ -17,7 +17,7 @@ if [[ $1 == 2024* ]]; then
         -p data_2024_NANO.py \
         --site T2_BE_IIHE \
         -o /store/group/CustomNanoAODv15/NanoTuples/2024/data \
-        -t NanoTuples-May2026_NanoAODv15 \
+        -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2024.conf \
         -e exe_ULv15_nosel.sh \
         --num-cores 2 \
@@ -31,7 +31,7 @@ if [[ $1 == 2024* ]]; then
         -p mc_2024_NANO.py \
         --site T2_BE_IIHE \
         -o /store/group/CustomNanoAODv15/NanoTuples/2024/mc \
-        -t NanoTuples-May2026_NanoAODv15 \
+        -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i  mc/mc_2024.conf \
         -e exe_ULv15_nosel.sh \
         --num-cores 2 \
@@ -46,7 +46,7 @@ if [[ $1 == 2025* ]]; then
         -p data_2025_NANO.py \
         --site T2_BE_IIHE \
         -o /store/group/CustomNanoAODv15/NanoTuples/2025/data \
-        -t NanoTuples-May2026_NanoAODv15 \
+        -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2025.conf \
         -e exe_ULv15_nosel.sh \
         --num-cores 2 \
@@ -61,7 +61,7 @@ if [[ $1 == 2022* ]]; then
         -p data_2022_NANO.py \
         --site T2_BE_IIHE \
         -o /store/group/CustomNanoAODv15/NanoTuples/2022/data \
-        -t NanoTuples-May2026_NanoAODv15 \
+        -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2022.conf \
         -e exe_ULv15_nosel.sh \
         --num-cores 2 \
@@ -76,7 +76,7 @@ if [[ $1 == 2023* ]]; then
         -p data_2023_NANO.py \
         --site T2_BE_IIHE \
         -o /store/group/CustomNanoAODv15/NanoTuples/2023/data \
-        -t NanoTuples-May2026_NanoAODv15 \
+        -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2023.conf \
         -e exe_ULv15_nosel.sh \
         --num-cores 2 \
