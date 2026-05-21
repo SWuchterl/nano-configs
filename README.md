@@ -60,8 +60,7 @@ git cms-addpkg RecoBTag/ONNXRuntime
 
 # get the necessary modules from the TOP PAG, modified:
 mkdir TopQuarkAnalysis
-git clone ssh://git@gitlab.cern.ch:7999/tthcc-run-3/BFragmentationAnalyzer.git -b dev/CMSSW_15_0_17_nanoV15ExtSkim
- TopQuarkAnalysis/BFragmentationAnalyzer -b dev/CMSSW_15_0_17_nanoV15ExtSkim  
+git clone ssh://git@gitlab.cern.ch:7999/tthcc-run-3/BFragmentationAnalyzer.git TopQuarkAnalysis/BFragmentationAnalyzer -b dev/CMSSW_15_0_17_nanoV15ExtSkim
 
 # now the modified release for TOP weights and AK4Puppi ParT
 git cms-merge-topic -u SWuchterl:dev/CMSSW_15_0_17_nanoV15ExtSkimLeptonParT
