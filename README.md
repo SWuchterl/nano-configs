@@ -31,9 +31,16 @@ Customizations:
 
 ## Setup
 
-Use EL8 or singularity container `cmssw-el8`!
+Use EL8 or singularity container `cmssw-el8`:
+```
+export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
+source $VO_CMS_SW_DIR/cmsset_default.sh
+cmssw-el8
+```
 
 ```bash
+export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
+source $VO_CMS_SW_DIR/cmsset_default.sh
 export SCRAM_ARCH=el8_amd64_gcc12
 cmsrel CMSSW_15_0_17
 cd CMSSW_15_0_17/src
@@ -53,9 +60,8 @@ git cms-addpkg RecoBTag/ONNXRuntime
 
 # get the necessary modules from the TOP PAG, modified:
 mkdir TopQuarkAnalysis
-cd TopQuarkAnalysis
-git clone https://gitlab.cern.ch/tthcc-run-3/BFragmentationAnalyzer.git -b dev/CMSSW_15_0_17_nanoV15ExtSkim
-cd ..
+git clone ssh://git@gitlab.cern.ch:7999/tthcc-run-3/BFragmentationAnalyzer.git -b dev/CMSSW_15_0_17_nanoV15ExtSkim
+ TopQuarkAnalysis/BFragmentationAnalyzer -b dev/CMSSW_15_0_17_nanoV15ExtSkim  
 
 # now the modified release for TOP weights and AK4Puppi ParT
 git cms-merge-topic -u SWuchterl:dev/CMSSW_15_0_17_nanoV15ExtSkimLeptonParT
