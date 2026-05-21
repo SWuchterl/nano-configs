@@ -25,9 +25,7 @@ if [[ $1 == 2024* ]]; then
         -n 100000 \
         --work-area crab_projects/crab_projects_data_2024v15 \
         --input-files inputs \
-        --max-memory 4500 \
-        --no-publication \
-        --options "siteblacklist=T2_US_Florida" $DRYRUN
+        --max-memory 4500 $DRYRUN
 
     python3 crab.py \
         -p mc_2024_NANO.py \
@@ -41,9 +39,7 @@ if [[ $1 == 2024* ]]; then
         -n 2 \
         --work-area crab_projects/crab_projects_mc_2024v15_v5 \
         --input-files inputs \
-        --max-memory 4500 \
-        --no-publication \
-        --options "siteblacklist=T2_US_Florida" $DRYRUN
+        --max-memory 4500 $DRYRUN
 fi 
 if [[ $1 == 2025* ]]; then
     python crab.py \
@@ -58,9 +54,7 @@ if [[ $1 == 2025* ]]; then
         -n 100000 \
         --work-area crab_projects/crab_projects_data_2025v15 \
         --input-files inputs \
-        --max-memory 4500 \
-        --no-publication \
-        --options "siteblacklist=T2_US_Florida" $DRYRUN
+        --max-memory 4500 $DRYRUN
 fi 
 if [[ $1 == 2022* ]]; then
     python crab.py \
@@ -75,9 +69,7 @@ if [[ $1 == 2022* ]]; then
         -n 100000 \
         --work-area crab_projects/crab_projects_data_2022v15 \
         --input-files inputs \
-        --max-memory 4500 \
-        --no-publication \
-        --options "siteblacklist=T2_US_Florida" $DRYRUN
+        --max-memory 4500 $DRYRUN
 fi 
 if [[ $1 == 2023* ]]; then
     python crab.py \
@@ -92,7 +84,5 @@ if [[ $1 == 2023* ]]; then
         -n 100000 \
         --work-area crab_projects/crab_projects_data_2023v15 \
         --input-files inputs \
-        --max-memory 4500 \
-        --no-publication \
-        --options "siteblacklist=T2_US_Florida" $DRYRUN
+        --max-memory 4500  $DRYRUN
 fi
