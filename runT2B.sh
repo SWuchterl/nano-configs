@@ -37,7 +37,7 @@ if [[ $1 == 2024* ]]; then
         --num-cores 2 \
         -s FileBased \
         -n 2 \
-        --work-area crab_projects/crab_projects_mc_2024v15_v5 \
+        --work-area crab_projects/crab_projects_mc_2024v15 \
         --input-files inputs \
         --max-memory 4500 $DRYRUN
 fi 
