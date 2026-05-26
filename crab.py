@@ -17,11 +17,13 @@ def configLogger(name, loglevel=logging.INFO):
     logger.setLevel(loglevel)
     console = logging.StreamHandler()
     console.setLevel(loglevel)
-    console.setFormatter(logging.Formatter('[%(asctime)s] %(levelname)s: %(message)s'))
+    console.setFormatter(logging.Formatter(
+        '[%(asctime)s] %(levelname)s: %(message)s'))
     logger.addHandler(console)
     logfile = logging.FileHandler('autocrab.log')
     logfile.setLevel(loglevel)
-    logfile.setFormatter(logging.Formatter('[%(asctime)s] %(levelname)s: %(message)s'))
+    logfile.setFormatter(logging.Formatter(
+        '[%(asctime)s] %(levelname)s: %(message)s'))
     logger.addHandler(logfile)
 
 
@@ -32,7 +34,8 @@ _separator = '-' * 50
 
 def natural_sort(l):
     def convert(text): return int(text) if text.isdigit() else text.lower()
-    def alphanum_key(key): return [convert(c) for c in re.split('([0-9]+)', key)]
+    def alphanum_key(key): return [convert(c)
+                                   for c in re.split('([0-9]+)', key)]
     return sorted(l, key=alphanum_key)
 
 
@@ -63,8 +66,10 @@ def check_grid_proxy(verbose=False, retry=3):
             break
         else:
             if verbose:
-                logging.info('No valid grid proxy, will run `voms-proxy-init -rfc -voms cms -valid 192:00`.')
-            p = subprocess.Popen('voms-proxy-init -rfc -voms cms -valid 192:00', shell=True)
+                logging.info(
+                    'No valid grid proxy, will run `voms-proxy-init -rfc -voms cms -valid 192:00`.')
+            p = subprocess.Popen(
+                'voms-proxy-init -rfc -voms cms -valid 192:00', shell=True)
             p.communicate()
 
 
@@ -131,10 +136,12 @@ def getDatasetSiteInfo(dataset, retry=2):
             time.sleep(3)
         retry_count += 1
         if retry_count > retry:
-            logger.error('Failed to retrieve site info from DAS for: %s' % dataset)
+            logger.error(
+                'Failed to retrieve site info from DAS for: %s' % dataset)
             return None, None
 #             raise RuntimeError('Failed to retrieve site info from DAS for: %s' % dataset)
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         outs, errs = proc.communicate()
         if errs:
             logger.error('DAS error: %s' % errs)
@@ -203,6 +210,7 @@ def createConfig(args, dataset):
     config.JobType.allowUndistributedCMSSW = True
     config.JobType.numCores = args.num_cores
     config.JobType.maxMemoryMB = args.max_memory
+    config.JobType.maxJobRuntimeMin = args.max_job_runtime
     if args.set_input_dataset:
         config.JobType.pyCfgParams = ['inputDataset=%s' % dataset]
     if len(args.input_files) > 0:
@@ -283,15 +291,18 @@ def calcLumiForRecovery(config, status_dict, work_area_rsb):
     else:
         logger.info('No lumi mask for the original dataset, will use the full lumi from input dataset %s' %
                     config.Data.inputDataset)
-        lumiIn = getLumiListInValidFiles(config.Data.inputDataset, dbsurl=config.Data.inputDBS)
+        lumiIn = getLumiListInValidFiles(
+            config.Data.inputDataset, dbsurl=config.Data.inputDBS)
 
     # get lumis of the processed dataset
     outputDataset = ast.literal_eval(status_dict['outdatasets'])[0]
     logger.info('Getting lumis in the output dataset %s' % outputDataset)
     lumiDone = getLumiListInValidFiles(outputDataset, dbsurl='phys03')
-    lumiDone.writeJSON(os.path.join(cfgdir, config.General.requestName + '_lumi_processed.json'))
+    lumiDone.writeJSON(os.path.join(
+        cfgdir, config.General.requestName + '_lumi_processed.json'))
 
-    outpath = os.path.abspath(os.path.join(cfgdir, config.General.requestName + '_lumiMask.json'))
+    outpath = os.path.abspath(os.path.join(
+        cfgdir, config.General.requestName + '_lumiMask.json'))
     newLumiMask = lumiIn - lumiDone
     newLumiMask.writeJSON(outpath)
     return outpath
@@ -344,8 +355,10 @@ def resubmit(args):
     for work_area in args.work_area:
         for dirname in os.listdir(work_area):
             if os.path.isdir('%s/%s' % (work_area, dirname)) and dirname != 'configs':
-                logger.info('Resubmitting job %s/%s with options %s' % (work_area, dirname, str(kwargs)))
-                runCrabCommand('resubmit', dir='%s/%s' % (work_area, dirname), **kwargs)
+                logger.info('Resubmitting job %s/%s with options %s' %
+                            (work_area, dirname, str(kwargs)))
+                runCrabCommand('resubmit', dir='%s/%s' %
+                               (work_area, dirname), **kwargs)
 
 
 def _analyze_crab_status(ret):
@@ -367,7 +380,8 @@ def _analyze_crab_status(ret):
             # do not consider failed jobs that are re-scheduled
             states.pop('failed')
         for jobStatus in statesSJ:
-            states[jobStatus] = states.setdefault(jobStatus, 0) + statesSJ[jobStatus]
+            states[jobStatus] = states.setdefault(
+                jobStatus, 0) + statesSJ[jobStatus]
 
     return states
 
@@ -386,7 +400,8 @@ def status(args):
 
         if args.prepare_recovery_task or args.submit_recovery_task:
             work_area_rsb = work_area.rstrip('/') + args.recovery_task_suffix
-            _recovery_task_file = os.path.join(work_area_rsb, 'recovery_tasks.json')
+            _recovery_task_file = os.path.join(
+                work_area_rsb, 'recovery_tasks.json')
             if not os.path.exists(work_area_rsb):
                 os.makedirs(work_area_rsb)
             if args.prepare_recovery_task:
@@ -420,16 +435,20 @@ def status(args):
                 job_status[dirname] = '\033[1;101mUNKNOWN\033[0m'
                 continue
             try:
-                percent_finished = 100. * states['finished'] / sum(states.values())
+                percent_finished = 100. * \
+                    states['finished'] / sum(states.values())
             except KeyError:
                 percent_finished = 0
             pcts_str = ' (\033[1;%dm%.1f%%\033[0m)' % (32
                                                        if percent_finished > 90 else 34
                                                        if percent_finished > 70 else 35
                                                        if percent_finished > 50 else 31, percent_finished)
-            job_status[dirname] = ret['status'] + pcts_str + '\n    ' + str(states)
+            job_status[dirname] = ret['status'] + \
+                pcts_str + '\n    ' + str(states)
             if ret['publicationEnabled']:
-                pcts_published = 100. * ret['publication'].get('done', 0) / max(sum(states.values()), 1)
+                pcts_published = 100. * \
+                    ret['publication'].get('done', 0) / \
+                    max(sum(states.values()), 1)
                 pub_pcts_str = '\033[1;%dm%.1f%%\033[0m' % (32
                                                             if pcts_published > 90 else 34
                                                             if pcts_published > 70 else 35
@@ -448,10 +467,13 @@ def status(args):
                         continue
                     # first kill the task
                     if _confirm(
-                        'Kill job %s/%s and prepare a recovery task?' % (work_area, dirname),
+                        'Kill job %s/%s and prepare a recovery task?' % (
+                            work_area, dirname),
                             silent_mode=args.yes):
-                        runCrabCommand('kill', dir='%s/%s' % (work_area, dirname))  # FIXME
-                        recovery_tasks[dirname] = {'completed': percent_finished, 'resubmit': True}
+                        runCrabCommand('kill', dir='%s/%s' %
+                                       (work_area, dirname))  # FIXME
+                        recovery_tasks[dirname] = {
+                            'completed': percent_finished, 'resubmit': True}
 
                 elif args.submit_recovery_task:
                     if 'KILLED' not in ret['status']:
@@ -463,13 +485,15 @@ def status(args):
                             continue
                     config = loadConfig(work_area, dirname)
                     config.General.workArea = work_area_rsb
-                    config.Data.lumiMask = calcLumiForRecovery(config, ret, work_area_rsb)
+                    config.Data.lumiMask = calcLumiForRecovery(
+                        config, ret, work_area_rsb)
                     cfgpath = writeConfig(config, work_area_rsb)
                     if args.dryrun:
                         print('-' * 50)
                         print(config)
                         continue
-                    logger.info('Submitting recovery task for %s/%s' % (work_area, dirname))
+                    logger.info('Submitting recovery task for %s/%s' %
+                                (work_area, dirname))
                     cmd = 'crab submit -c {cfgpath}'.format(cfgpath=cfgpath)
                     p = subprocess.Popen(cmd, shell=True)
                     p.communicate()
@@ -482,19 +506,24 @@ def status(args):
                 if not args.no_resubmit:
                     logger.info('Resubmitting submit-failed job %s.' % dirname)
                     shutil.rmtree('%s/%s' % (work_area, dirname))
-                    cfgpath = os.path.join(work_area, 'configs', dirname.lstrip('crab_') + '.py')
+                    cfgpath = os.path.join(
+                        work_area, 'configs', dirname.lstrip('crab_') + '.py')
                     cmd = 'crab submit -c {cfgpath}'.format(cfgpath=cfgpath)
                     p = subprocess.Popen(cmd, shell=True)
                     p.communicate()
                     if p.returncode != 0:
                         submit_failed.append(ret['inputDataset'])
             elif states.get('failed', 0) > 0 and 'killed' not in ret['status'].lower() and not args.no_resubmit:
-                logger.info('Resubmitting job %s with options %s' % (dirname, str(kwargs)))
-                runCrabCommand('resubmit', dir='%s/%s' % (work_area, dirname), **kwargs)
+                logger.info('Resubmitting job %s with options %s' %
+                            (dirname, str(kwargs)))
+                runCrabCommand('resubmit', dir='%s/%s' %
+                               (work_area, dirname), **kwargs)
 
             if ret['publication'].get('failed', 0) > 0:
-                logger.info('Resubmitting job %s for failed publication' % dirname)
-                runCrabCommand('resubmit', dir='%s/%s' % (work_area, dirname), publication=True)
+                logger.info(
+                    'Resubmitting job %s for failed publication' % dirname)
+                runCrabCommand('resubmit', dir='%s/%s' %
+                               (work_area, dirname), publication=True)
 
         logger.info('====== Summary (%s) ======\n' % (work_area) +
                     '\n'.join(['%s: %s' % (k, job_status[k]) for k in natural_sort(job_status.keys())]))
@@ -552,7 +581,8 @@ def main():
                         )
     parser.add_argument('-s', '--splitting',
                         default='Automatic',
-                        choices=['Automatic', 'FileBased', 'LumiBased', 'EventAwareLumiBased', 'EventBased'],
+                        choices=['Automatic', 'FileBased', 'LumiBased',
+                                 'EventAwareLumiBased', 'EventBased'],
                         help='Job splitting method. Default: %(default)s')
     parser.add_argument('-n', '--units-per-job',
                         default=300, type=int,
@@ -602,6 +632,10 @@ def main():
     parser.add_argument('--max-memory',
                         default=2000, type=int,
                         help='Number of memory. Default: %(default)d MB'
+                        )
+    parser.add_argument('--max-job-runtime',
+                        default=1250, type=int,
+                        help='Maximum job runtime in minutes. Default: %(default)d'
                         )
     parser.add_argument('--private-mc',
                         action='store_true', default=False,
@@ -713,9 +747,11 @@ def main():
 
     if len(submit_failed):
         logger.warning('Submit failed:\n%s' % '\n'.join(submit_failed))
-    duplicate_names = {name: request_names[name] for name in request_names if len(request_names[name]) > 1}
+    duplicate_names = {name: request_names[name] for name in request_names if len(
+        request_names[name]) > 1}
     if len(duplicate_names):
-        logger.warning('Dataset with the same request names:\n%s' % str(duplicate_names))
+        logger.warning('Dataset with the same request names:\n%s' %
+                       str(duplicate_names))
 
 
 if __name__ == '__main__':
