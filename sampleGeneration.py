@@ -36,7 +36,7 @@ def normalize(text):
 
 
 def find_header_and_indices(rows):
-    needed = {"miniaod", "nanoaod", "assignment", "type"}
+    needed = {"miniaod", "nanoaod", "assignment", "type", "status"}
     for i, row in enumerate(rows):
         lowered = [normalize(c).lower() for c in row]
         if not needed.issubset(set(lowered)):
@@ -46,6 +46,7 @@ def find_header_and_indices(rows):
             "nanoaod": lowered.index("nanoaod"),
             "assignment": lowered.index("assignment"),
             "type": lowered.index("type"),
+            "status": lowered.index("status"),
         }
     raise ValueError(
         "Could not find CSV header with MiniAOD, NanoAOD, Assignment, "
@@ -70,6 +71,7 @@ def parse_spreadsheet(csv_path):
         miniaod = normalize(row[col["miniaod"]])
         nanoaod = normalize(row[col["nanoaod"]])
         assignment = normalize(row[col["assignment"]])
+        status = normalize(row[col["status"]])
         sample_type = normalize(row[col["type"]])
 
         if not nanoaod and not miniaod:
@@ -80,6 +82,7 @@ def parse_spreadsheet(csv_path):
                 "miniaod": miniaod,
                 "nanoaod": nanoaod,
                 "assignment": assignment,
+                "status": status,
                 "type": sample_type,
             }
         )
@@ -108,7 +111,9 @@ def write_split_confs(entries, year, requested_user=None):
     data_path.parent.mkdir(parents=True, exist_ok=True)
 
     mc_selected = []
+    mc_commented_out = []
     data_selected = []
+    data_commented_out = []
     seen_mc = set()
     seen_data = set()
 
@@ -120,6 +125,7 @@ def write_split_confs(entries, year, requested_user=None):
 
         sample_type = normalize(e.get("type")).lower()
         dataset = e["miniaod"]
+
         if dataset and dataset.endswith("/USER"):
             continue
 
@@ -136,16 +142,29 @@ def write_split_confs(entries, year, requested_user=None):
             continue
         if dataset in seen_mc:
             continue
+
+        if not (e.get("status").lower() == "not started"):
+            if sample_type == "data":
+                data_commented_out.append(dataset)
+            else:
+                mc_commented_out.append(dataset)
+
         seen_mc.add(dataset)
         mc_selected.append(dataset)
 
     with open(mc_path, "w", encoding="utf-8") as mc_out:
         for dataset in mc_selected:
-            mc_out.write(dataset + "\n")
+            if dataset in mc_commented_out:
+                mc_out.write("# " + dataset + "\n")
+            else:
+                mc_out.write(dataset + "\n")
 
     with open(data_path, "w", encoding="utf-8") as data_out:
         for dataset in data_selected:
-            data_out.write(dataset + "\n")
+            if dataset in data_commented_out:
+                data_out.write("# " + dataset + "\n")
+            else:
+                data_out.write(dataset + "\n")
 
     return mc_path, data_path, mc_selected, data_selected
 
