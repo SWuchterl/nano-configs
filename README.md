@@ -106,7 +106,8 @@ For 2024:
 
 ```bash
 ./runT2B.sh 2024 --dryrun  # for T2B-USERS
-./runLXplus.sh 2024 --dryrun  # for LXPLUS-USERS
+./runLXplusBTV.sh 2024 --dryrun  # for LXPLUS-USERS THAT WRITE TO BTV /eos
+./runLXplusT2_CH_CSCS.sh 2024 --dryrun  # for T2_CH_CSCS USERS
 ```
 
 This command will perform a "dryrun" to print out the CRAB configuration files. Please check everything is correct (e.g., the output path, version number, requested number of cores, etc.) before submitting the actual jobs. Also check that the automatic generated sample list for your user are correct in `mc/mc_2024.conf` and `data/data_2024.conf` To actually submit the jobs to CRAB, just remove the `--dryrun` option at the end.
