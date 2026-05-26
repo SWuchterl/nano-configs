@@ -40,7 +40,8 @@ if [[ $1 == 2024* ]]; then
         --work-area crab_projects/crab_projects_mc_2024v15 \
         --input-files inputs \
         --max-memory 4500 --max-job-runtime 2750 $DRYRUN
-fi if [[ $1 == 2025* ]]; then
+fi 
+if [[ $1 == 2025* ]]; then
     python crab.py \
         -p data_2025_NANO.py \
         --site T2_CH_CERN \
@@ -54,7 +55,8 @@ fi if [[ $1 == 2025* ]]; then
         --work-area crab_projects/crab_projects_data_2025v15 \
         --input-files inputs \
         --max-memory 4500 --max-job-runtime 2750 $DRYRUN
-fi if [[ $1 == 2022* ]]; then
+fi 
+if [[ $1 == 2022* ]]; then
     python crab.py \
         -p data_2022_NANO.py \
         --site T2_CH_CERN \
@@ -68,7 +70,8 @@ fi if [[ $1 == 2022* ]]; then
         --work-area crab_projects/crab_projects_data_2022v15 \
         --input-files inputs \
         --max-memory 4500 --max-job-runtime 2750 $DRYRUN
-fi if [[ $1 == 2023* ]]; then
+fi 
+if [[ $1 == 2023* ]]; then
     python crab.py \
         -p data_2023_NANO.py \
         --site T2_CH_CERN \
