@@ -120,6 +120,9 @@ def write_split_confs(entries, year, requested_user=None):
 
         sample_type = normalize(e.get("type")).lower()
         dataset = e["miniaod"]
+        if dataset and dataset.endswith("/USER"):
+            continue
+
         if sample_type == "data":
             if not dataset or not dataset.startswith("/"):
                 continue
