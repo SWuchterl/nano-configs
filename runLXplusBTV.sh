@@ -10,7 +10,7 @@ for arg in "$@"; do
 done
 set -- "${args[@]}"
 
-python3 sampleGeneration.py --year $1 --user $USER --skip-check
+python3 sampleGeneration.py $1 --user $USER --skip-check
 
 if [[ $1 == 2024* ]]; then
     python crab.py \
