@@ -82,7 +82,7 @@ cmsenv
 
 ## Production
 
-**Step 0**: switch to the crab production directory and set up grid proxy, CRAB environment, etc.
+**Step 0**: setup the crab production directory in `CMSSW_15_0_17/src` and set up grid proxy, CRAB environment, etc.
 
 ```bash
 # set up grid proxy
