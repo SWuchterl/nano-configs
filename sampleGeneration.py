@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 import argparse
 import csv
+import json
 import os
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 
@@ -36,7 +38,7 @@ def normalize(text):
 
 
 def find_header_and_indices(rows):
-    needed = {"miniaod", "nanoaod", "assignment", "type", "status"}
+    needed = {"miniaod", "nanoaod", "assignment", "type", "status", "events"}
     for i, row in enumerate(rows):
         lowered = [normalize(c).lower() for c in row]
         if not needed.issubset(set(lowered)):
@@ -47,11 +49,22 @@ def find_header_and_indices(rows):
             "assignment": lowered.index("assignment"),
             "type": lowered.index("type"),
             "status": lowered.index("status"),
+            "events": lowered.index("events"),
         }
     raise ValueError(
         "Could not find CSV header with MiniAOD, NanoAOD, Assignment, "
-        "and Type columns"
+        "Type, Status, and Events columns"
     )
+
+
+def parse_int_value(value):
+    text = normalize(value).replace(",", "")
+    if not text:
+        return None
+    try:
+        return int(text)
+    except ValueError:
+        return None
 
 
 def parse_spreadsheet(csv_path):
@@ -73,6 +86,7 @@ def parse_spreadsheet(csv_path):
         assignment = normalize(row[col["assignment"]])
         status = normalize(row[col["status"]])
         sample_type = normalize(row[col["type"]])
+        events = parse_int_value(row[col["events"]])
 
         if not nanoaod and not miniaod:
             continue
@@ -84,10 +98,65 @@ def parse_spreadsheet(csv_path):
                 "assignment": assignment,
                 "status": status,
                 "type": sample_type,
+                "events": events,
             }
         )
 
     return entries
+
+
+def extract_dataset_name(miniaod):
+    parts = normalize(miniaod).split("/")
+    if len(parts) > 2 and parts[1]:
+        return parts[1]
+    return ""
+
+
+def extract_campaign_name(miniaod):
+    parts = normalize(miniaod).split("/")
+    if len(parts) > 2 and parts[2]:
+        return parts[2]
+    return ""
+
+
+def build_progress_dataset_name(miniaod, sample_type):
+    dataset_name = extract_dataset_name(miniaod)
+    campaign_name = extract_campaign_name(miniaod)
+
+    if not dataset_name or not campaign_name:
+        return ""
+
+    if normalize(sample_type).lower() == "data":
+        new_campaign = campaign_name
+    else:
+        new_campaign = campaign_name.replace("_mcRun3_2024_realistic", "")
+
+    return (
+        f"/{dataset_name}/"
+        "CustomNanoAODv15-NanoTuples-uParTv3-parTlepID-"
+        f"NanoAODv15_{new_campaign}-"
+        "00000000000000000000000000000000/USER"
+    )
+
+
+def print_progress_bar(current, total, width=30):
+    if total <= 0:
+        return
+
+    fraction = current / total
+    filled = int(width * fraction)
+    bar = "#" * filled + "-" * (width - filled)
+    percent = fraction * 100.0
+    sys.stdout.write(f"\r[{bar}] {current}/{total} ({percent:5.1f}%)")
+    sys.stdout.flush()
+
+
+def format_progress_line(user, dataset_name, miniaod, new_dataset_name,
+                         expected_events, found_events):
+    return (
+        f"{user} {dataset_name} {miniaod} {new_dataset_name} "
+        f"{expected_events} {found_events}"
+    )
 
 
 def parse_assignment_list(value):
@@ -313,6 +382,94 @@ def validate_datasets(entries, requested_user=None):
     return total, issues
 
 
+def run_progress_check(entries, year):
+    progress_root = Path("sample_progress") / str(year)
+    progress_root.mkdir(parents=True, exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    progress_path = progress_root / f"{timestamp}__{year}.txt"
+    total_expected_events = 0
+    total_published_events = 0
+    samples = [entry for entry in entries if entry.get("miniaod")]
+    total_samples = len(samples)
+
+    with open(progress_path, "w", encoding="utf-8") as progress_out:
+        for index, entry in enumerate(samples, start=1):
+            miniaod = entry["miniaod"]
+            user_assignment = entry.get("assignment", "N/A")
+            sample_type = normalize(entry.get("type")).lower()
+            expected_events = entry.get("events")
+
+            if isinstance(expected_events, int) and expected_events > 0:
+                total_expected_events += expected_events
+
+            dataset_name = extract_dataset_name(miniaod)
+            new_dataset_name = build_progress_dataset_name(
+                miniaod, sample_type
+            )
+
+            if not new_dataset_name:
+                found_events = 0
+                progress_out.write(
+                    format_progress_line(
+                        user_assignment,
+                        dataset_name,
+                        miniaod,
+                        new_dataset_name,
+                        expected_events,
+                        found_events,
+                    )
+                    + "\n"
+                )
+                continue
+
+            query = f"summary dataset={new_dataset_name} instance=/prod/phys03"
+            completed = subprocess.run(
+                ["dasgoclient", "--query", query],
+                capture_output=True,
+                text=True,
+            )
+
+            summary_text = completed.stdout.strip()
+            found_events = 0
+
+            if summary_text:
+                try:
+                    summary_data = json.loads(summary_text)
+                except json.JSONDecodeError:
+                    summary_data = []
+
+                if summary_data:
+                    first_entry = (
+                        summary_data[0]
+                        if isinstance(summary_data, list)
+                        else {}
+                    )
+                    found_events = first_entry.get("num_event", 0) or 0
+
+            total_published_events += found_events
+
+            progress_out.write(
+                format_progress_line(
+                    user_assignment,
+                    dataset_name,
+                    miniaod,
+                    new_dataset_name,
+                    expected_events,
+                    found_events,
+                )
+                + "\n"
+            )
+
+            print_progress_bar(index, total_samples)
+
+    if total_samples > 0:
+        sys.stdout.write("\n")
+        sys.stdout.flush()
+
+    print(f"Wrote progress report to {progress_path}")
+
+
 def print_report(total_checked, issues):
     print("\n=== Validation Summary ===")
     print(f"Checked NanoAOD datasets: {total_checked}")
@@ -350,7 +507,10 @@ def parse_args():
     )
     parser.add_argument(
         "year",
-        help="Year used to pick the spreadsheet and output filenames (e.g. 2024)",
+        help=(
+            "Year used to pick the spreadsheet and output filenames "
+            "(e.g. 2024)"
+        ),
     )
     parser.add_argument(
         "--user",
@@ -364,6 +524,12 @@ def parse_args():
         "--skip-check",
         action="store_true",
         help="Skip DAS validation checks",
+    )
+
+    parser.add_argument(
+        "--track-progress",
+        action="store_true",
+        help="Check publication progress of the new NanoAOD samples",
     )
 
     parser.add_argument(
@@ -390,6 +556,17 @@ def main():
 
     entries = parse_spreadsheet(csv_path)
 
+    if args.track_progress:
+        if os.system("which dasgoclient > /dev/null 2>&1") != 0:
+            print(
+                "ERROR: dasgoclient is not available in PATH. "
+                "Install/setup DAS client first."
+            )
+            sys.exit(2)
+
+        run_progress_check(entries, args.year)
+        return
+
     if not args.skip_write:
         mc_path, data_path, mc_selected, data_selected = write_split_confs(
             entries,
@@ -400,7 +577,8 @@ def main():
         print(f"Wrote {len(data_selected)} Data datasets to {data_path}")
         if args.user:
             print(
-                f"Filter used for output config: Assignment contains '{args.user}'"
+                "Filter used for output config: Assignment contains "
+                f"'{args.user}'"
             )
 
     if args.skip_check:
