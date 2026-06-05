@@ -10,13 +10,13 @@ for arg in "$@"; do
 done
 set -- "${args[@]}"
 
-python3 sampleGeneration.py $1 --user $USER --skip-check
+# python3 sampleGeneration.py $1 --user $USER --skip-check
 
 if [[ $1 == 2024* ]]; then
     python crab.py \
         -p data_2024_NANO.py \
         --site T2_CH_CERN \
-        -o /store/group/phys_higgs/ttHcc/NanoAOD/NanoTuples/2024/data \
+        -o /store/group/cmst3/group/vhcc/NanoAOD/NanoTuples/2024/data \
         -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2024.conf \
         -e exe_ULv15_nosel.sh \
@@ -30,7 +30,7 @@ if [[ $1 == 2024* ]]; then
     python3 crab.py \
         -p mc_2024_NANO.py \
         --site T2_CH_CERN \
-        -o /store/group/phys_higgs/ttHcc/NanoAOD/NanoTuples/2024/mc \
+        -o /store/group/cmst3/group/vhcc/NanoAOD/NanoTuples/2024/mc \
         -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i  mc/mc_2024.conf \
         -e exe_ULv15_nosel.sh \
@@ -45,7 +45,7 @@ if [[ $1 == 2025* ]]; then
     python crab.py \
         -p data_2025_NANO.py \
         --site T2_CH_CERN \
-        -o /store/group/phys_higgs/ttHcc/NanoAOD/NanoTuples/2025/data \
+        -o /store/group/cmst3/group/vhcc/NanoAOD/NanoTuples/2025/data \
         -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2025.conf \
         -e exe_ULv15_nosel.sh \
@@ -60,7 +60,7 @@ if [[ $1 == 2022* ]]; then
     python crab.py \
         -p data_2022_NANO.py \
         --site T2_CH_CERN \
-        -o /store/group/phys_higgs/ttHcc/NanoAOD/NanoTuples/2022/data \
+        -o /store/group/cmst3/group/vhcc/NanoAOD/NanoTuples/2022/data \
         -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2022.conf \
         -e exe_ULv15_nosel.sh \
@@ -75,7 +75,7 @@ if [[ $1 == 2023* ]]; then
     python crab.py \
         -p data_2023_NANO.py \
         --site T2_CH_CERN \
-        -o /store/group/phys_higgs/ttHcc/NanoAOD/NanoTuples/2023/data \
+        -o /store/group/cmst3/group/vhcc/NanoAOD/NanoTuples/2023/data \
         -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2023.conf \
         -e exe_ULv15_nosel.sh \
