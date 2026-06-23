@@ -271,40 +271,20 @@ def createConfig(args, dataset):
     return config, cfgpath
 
 
-def calcLumiForRecovery(config, status_dict, work_area_rsb):
-    import ast
-    from CRABClient.UserUtilities import getLumiListInValidFiles
-    from WMCore.DataStructs.LumiList import LumiList
+def calcLumiForRecovery(config, status_dict, work_area, work_area_rsb):
 
-    cfgdir = os.path.join(work_area_rsb, 'configs')
-    if not os.path.exists(cfgdir):
-        os.makedirs(cfgdir)
-
-    # get lumis of the input dataset
-    lumifile = getattr(config.Data, 'lumiMask', '')
-    if lumifile:
-        logger.info('Lumi mask for the original dataset: %s' % lumifile)
-        if lumifile.startswith('http'):
-            lumiIn = LumiList(url=lumifile)
-        else:
-            lumiIn = LumiList(lumifile)
-    else:
-        logger.info('No lumi mask for the original dataset, will use the full lumi from input dataset %s' %
-                    config.Data.inputDataset)
-        lumiIn = getLumiListInValidFiles(
-            config.Data.inputDataset, dbsurl=config.Data.inputDBS)
-
-    # get lumis of the processed dataset
-    outputDataset = ast.literal_eval(status_dict['outdatasets'])[0]
-    logger.info('Getting lumis in the output dataset %s' % outputDataset)
-    lumiDone = getLumiListInValidFiles(outputDataset, dbsurl='phys03')
-    lumiDone.writeJSON(os.path.join(
-        cfgdir, config.General.requestName + '_lumi_processed.json'))
+    cfgdir_rsb = os.path.join(work_area, 'configs')
+    if not os.path.exists(cfgdir_rsb):
+        os.makedirs(cfgdir_rsb)
 
     outpath = os.path.abspath(os.path.join(
-        cfgdir, config.General.requestName + '_lumiMask.json'))
-    newLumiMask = lumiIn - lumiDone
-    newLumiMask.writeJSON(outpath)
+        work_area,
+        'crab_' + config.General.requestName + '/results/lumisToProcess.json',
+    ))
+
+    cmd = "crab report -d " + work_area + "/crab_" + config.General.requestName
+    subprocess.Popen(cmd, shell=True)
+
     return outpath
 
 
@@ -486,7 +466,7 @@ def status(args):
                     config = loadConfig(work_area, dirname)
                     config.General.workArea = work_area_rsb
                     config.Data.lumiMask = calcLumiForRecovery(
-                        config, ret, work_area_rsb)
+                        config, ret, work_area, work_area_rsb)
                     cfgpath = writeConfig(config, work_area_rsb)
                     if args.dryrun:
                         print('-' * 50)
