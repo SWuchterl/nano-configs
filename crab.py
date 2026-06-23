@@ -270,6 +270,7 @@ def createConfig(args, dataset):
     cfgpath = writeConfig(config, args.work_area)
     return config, cfgpath
 
+# new implementation
 
 def calcLumiForRecovery(config, status_dict, work_area, work_area_rsb):
 
@@ -283,10 +284,85 @@ def calcLumiForRecovery(config, status_dict, work_area, work_area_rsb):
     ))
 
     cmd = "crab report -d " + work_area + "/crab_" + config.General.requestName
-    subprocess.Popen(cmd, shell=True)
+    subprocess.call(cmd, shell=True)
+
+    if not os.path.exists(outpath):
+        logger.error(
+            'Cannot find the notFinishedLumis.json file for %s.' %
+            config.General.requestName)
 
     return outpath
 
+def calcFilesForRecovery(config, status_dict, work_area, work_area_rsb):
+
+    cfgdir_rsb = os.path.join(work_area, 'configs')
+    if not os.path.exists(cfgdir_rsb):
+        os.makedirs(cfgdir_rsb)
+
+    outpath = os.path.abspath(os.path.join(
+        work_area,
+        'crab_' + config.General.requestName + '/results/failedFiles.json',
+    ))
+
+    cmd = "crab report -d " + work_area + "/crab_" + config.General.requestName
+    subprocess.call(cmd, shell=True)
+
+    if not os.path.exists(outpath):
+        logger.error(
+            'Cannot find the failedFiles.json file for %s.' %
+            config.General.requestName
+        )
+
+    # convert failedFiles.json to a list of files
+    from functools import reduce
+    from operator import add
+    import json
+
+    with open(outpath, 'r') as f:
+        failed_files = json.load(f)
+
+    flat_failed_files = reduce(add, failed_files.values())
+
+    return flat_failed_files
+
+# old implementation
+
+# def calcLumiForRecovery(config, status_dict, work_area_rsb):
+#     import ast
+#     from CRABClient.UserUtilities import getLumiListInValidFiles
+#     from FWCore.PythonUtilities.LumiList import LumiList
+# 
+#     cfgdir = os.path.join(work_area_rsb, 'configs')
+#     if not os.path.exists(cfgdir):
+#         os.makedirs(cfgdir)
+# 
+#     # get lumis of the input dataset
+#     lumifile = getattr(config.Data, 'lumiMask', '')
+#     if lumifile:
+#         logger.info('Lumi mask for the original dataset: %s' % lumifile)
+#         if lumifile.startswith('http'):
+#             lumiIn = LumiList(url=lumifile)
+#         else:
+#             lumiIn = LumiList(lumifile)
+#     else:
+#         logger.info('No lumi mask for the original dataset, will use the full lumi from input dataset %s' %
+#                     config.Data.inputDataset)
+#         lumiIn = getLumiListInValidFiles(
+#             config.Data.inputDataset, dbsurl=config.Data.inputDBS)
+# 
+#     # get lumis of the processed dataset
+#     outputDataset = ast.literal_eval(status_dict['outdatasets'])[0]
+#     logger.info('Getting lumis in the output dataset %s' % outputDataset)
+#     lumiDone = getLumiListInValidFiles(outputDataset, dbsurl='phys03')
+#     lumiDone.writeJSON(os.path.join(
+#         cfgdir, config.General.requestName + '_lumi_processed.json'))
+# 
+#     outpath = os.path.abspath(os.path.join(
+#         cfgdir, config.General.requestName + '_lumiMask.json'))
+#     newLumiMask = lumiIn - lumiDone
+#     newLumiMask.writeJSON(outpath)
+# 
+#     return outpath
 
 def parseOptions(args):
 
@@ -456,17 +532,21 @@ def status(args):
                             'completed': percent_finished, 'resubmit': True}
 
                 elif args.submit_recovery_task:
-                    if 'KILLED' not in ret['status']:
+                    if ('KILLED' not in ret['status']) and ('FAILED' not in ret['status']):
                         skip = _confirm(
-                            'Task %s/%s is not in status KILLED, wait and submit the recovery task later?' %
+                            'Task %s/%s is not in status KILLED or FAILED, wait and submit the recovery task later?' %
                             (work_area, dirname),
                             silent_mode=args.yes)
                         if skip:
                             continue
                     config = loadConfig(work_area, dirname)
                     config.General.workArea = work_area_rsb
-                    config.Data.lumiMask = calcLumiForRecovery(
-                        config, ret, work_area, work_area_rsb)
+                    if config.Data.splitting in ('LumiBased', 'EventAwareLumiBased'):
+                        config.Data.lumiMask = calcLumiForRecovery(
+                            config, ret, work_area, work_area_rsb)
+                    elif config.Data.splitting == 'FileBased':
+                        config.Data.userInputFiles = calcFilesForRecovery(
+                            config, ret, work_area, work_area_rsb)
                     cfgpath = writeConfig(config, work_area_rsb)
                     if args.dryrun:
                         print('-' * 50)
