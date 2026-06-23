@@ -1,9 +1,19 @@
 # parse --dryrun flag (remove it from positional args so $1 stays as the year)
-DRYRUN=""
 args=()
 for arg in "$@"; do
     if [[ "$arg" == "--dryrun" ]]; then
         DRYRUN="--dryrun"
+    fi
+    if [[ "$arg" == "--prepare-recovery-task" ]]; then
+        PREPARE_RECOVERY_TASK="--prepare-recovery-task"
+        RECOVERY_PREFIX="--recovery-task-suffix _recovery_v1"
+    fi
+    if [[ "$arg" == "--submit-recovery-task" ]]; then
+        SUBMIT_RECOVERY_TASK="--submit-recovery-task"
+        RECOVERY_PREFIX="--recovery-task-suffix _recovery_v1"
+    fi
+    if [[ "$arg" == "--force" && -n "$RECOVERY_PREFIX" ]]; then
+        FORCE="--yes"
     else
         args+=("$arg")
     fi
@@ -13,7 +23,7 @@ set -- "${args[@]}"
 python3 sampleGeneration.py $1 --user $USER --skip-check
 
 if [[ $1 == 2024* ]]; then
-    python crab.py \
+    python3 crab.py \
         -p data_2024_NANO.py \
         --site T2_CH_CERN \
         -o /store/group/phys_higgs/ttHcc/NanoAOD/NanoTuples/2024/data \
@@ -25,7 +35,12 @@ if [[ $1 == 2024* ]]; then
         -n 100000 \
         --work-area crab_projects/crab_projects_data_2024v15 \
         --input-files inputs \
-        --max-memory 4500 --max-job-runtime 2750 $DRYRUN
+        --max-memory 4500 \
+        --max-job-runtime 2750 \
+        $DRYRUN \
+        $PREPARE_RECOVERY_TASK \
+        $SUBMIT_RECOVERY_TASK \
+        $RECOVERY_PREFIX $FORCE
 
     python3 crab.py \
         -p mc_2024_NANO.py \
@@ -39,10 +54,15 @@ if [[ $1 == 2024* ]]; then
         -n 2 \
         --work-area crab_projects/crab_projects_mc_2024v15 \
         --input-files inputs \
-        --max-memory 4500 --max-job-runtime 2750 $DRYRUN
+        --max-memory 4500 \
+        --max-job-runtime 2750 \
+        $DRYRUN \
+        $PREPARE_RECOVERY_TASK \
+        $SUBMIT_RECOVERY_TASK \
+        $RECOVERY_PREFIX $FORCE
 fi 
 if [[ $1 == 2025* ]]; then
-    python crab.py \
+    python3 crab.py \
         -p data_2025_NANO.py \
         --site T2_CH_CERN \
         -o /store/group/phys_higgs/ttHcc/NanoAOD/NanoTuples/2025/data \
@@ -54,10 +74,15 @@ if [[ $1 == 2025* ]]; then
         -n 100000 \
         --work-area crab_projects/crab_projects_data_2025v15 \
         --input-files inputs \
-        --max-memory 4500 --max-job-runtime 2750 $DRYRUN
+        --max-memory 4500 \
+        --max-job-runtime 2750 \
+        $DRYRUN \
+        $PREPARE_RECOVERY_TASK \
+        $SUBMIT_RECOVERY_TASK \
+        $RECOVERY_PREFIX $FORCE
 fi 
 if [[ $1 == 2022* ]]; then
-    python crab.py \
+    python3 crab.py \
         -p data_2022_NANO.py \
         --site T2_CH_CERN \
         -o /store/group/phys_higgs/ttHcc/NanoAOD/NanoTuples/2022/data \
@@ -69,10 +94,15 @@ if [[ $1 == 2022* ]]; then
         -n 100000 \
         --work-area crab_projects/crab_projects_data_2022v15 \
         --input-files inputs \
-        --max-memory 4500 --max-job-runtime 2750 $DRYRUN
+        --max-memory 4500 \
+        --max-job-runtime 2750 \
+        $DRYRUN \
+        $PREPARE_RECOVERY_TASK \
+        $SUBMIT_RECOVERY_TASK \
+        $RECOVERY_PREFIX $FORCE
 fi 
 if [[ $1 == 2023* ]]; then
-    python crab.py \
+    python3 crab.py \
         -p data_2023_NANO.py \
         --site T2_CH_CERN \
         -o /store/group/phys_higgs/ttHcc/NanoAOD/NanoTuples/2023/data \
@@ -84,5 +114,10 @@ if [[ $1 == 2023* ]]; then
         -n 100000 \
         --work-area crab_projects/crab_projects_data_2023v15 \
         --input-files inputs \
-        --max-memory 4500 --max-job-runtime 2750 $DRYRUN
+        --max-memory 4500 \
+        --max-job-runtime 2750 \
+        $DRYRUN \
+        $PREPARE_RECOVERY_TASK \
+        $SUBMIT_RECOVERY_TASK \
+        $RECOVERY_PREFIX $FORCE
 fi

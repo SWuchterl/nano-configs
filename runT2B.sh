@@ -1,4 +1,4 @@
-# parse --dryrun flag (remove it from positional args so $1 stays as the year)
+
 DRYRUN=""
 PREPARE_RECOVERY_TASK=""
 SUBMIT_RECOVERY_TASK=""
@@ -30,7 +30,7 @@ python3 sampleGeneration.py $1 --user $USER --skip-check
 
 
 if [[ $1 == 2024* ]]; then
-    python crab.py \
+    python3 crab.py \
         -p data_2024_NANO.py \
         --site T2_BE_IIHE \
         -o /store/group/CustomNanoAODv15/NanoTuples/2024/data \
@@ -49,27 +49,27 @@ if [[ $1 == 2024* ]]; then
         $SUBMIT_RECOVERY_TASK \
         $RECOVERY_PREFIX $FORCE
 
-    # python3 crab.py \
-    #     -p mc_2024_NANO.py \
-    #     --site T2_BE_IIHE \
-    #     -o /store/group/CustomNanoAODv15/NanoTuples/2024/mc \
-    #     -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
-    #     -i  mc/mc_2024.conf \
-    #     -e exe_ULv15_nosel.sh \
-    #     --num-cores 2 \
-    #     -s FileBased \
-    #     -n 2 \
-    #     --work-area crab_projects/crab_projects_mc_2024v15 \
-    #     --input-files inputs \
-    #     --max-memory 4500 \
-    #     --max-job-runtime 2750 \
-    #     $DRYRUN \
-    #     $PREPARE_RECOVERY_TASK \
-    #     $SUBMIT_RECOVERY_TASK \
-    #     $RECOVERY_PREFIX $FORCE
+    python3 crab.py \
+        -p mc_2024_NANO.py \
+        --site T2_BE_IIHE \
+        -o /store/group/CustomNanoAODv15/NanoTuples/2024/mc \
+        -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
+        -i  mc/mc_2024.conf \
+        -e exe_ULv15_nosel.sh \
+        --num-cores 2 \
+        -s FileBased \
+        -n 2 \
+        --work-area crab_projects/crab_projects_mc_2024v15 \
+        --input-files inputs \
+        --max-memory 4500 \
+        --max-job-runtime 2750 \
+        $DRYRUN \
+        $PREPARE_RECOVERY_TASK \
+        $SUBMIT_RECOVERY_TASK \
+        $RECOVERY_PREFIX $FORCE
 fi 
 if [[ $1 == 2025* ]]; then
-    python crab.py \
+    python3 crab.py \
         -p data_2025_NANO.py \
         --site T2_BE_IIHE \
         -o /store/group/CustomNanoAODv15/NanoTuples/2025/data \
@@ -89,7 +89,7 @@ if [[ $1 == 2025* ]]; then
         $RECOVERY_PREFIX $FORCE
 fi 
 if [[ $1 == 2022* ]]; then
-    python crab.py \
+    python3 crab.py \
         -p data_2022_NANO.py \
         --site T2_BE_IIHE \
         -o /store/group/CustomNanoAODv15/NanoTuples/2022/data \
@@ -109,7 +109,7 @@ if [[ $1 == 2022* ]]; then
         $RECOVERY_PREFIX $FORCE
 fi 
 if [[ $1 == 2023* ]]; then
-    python crab.py \
+    python3 crab.py \
         -p data_2023_NANO.py \
         --site T2_BE_IIHE \
         -o /store/group/CustomNanoAODv15/NanoTuples/2023/data \
@@ -127,6 +127,4 @@ if [[ $1 == 2023* ]]; then
         $PREPARE_RECOVERY_TASK \
         $SUBMIT_RECOVERY_TASK \
         $RECOVERY_PREFIX $FORCE
-else
-    echo "Year $1 not supported. Please use 2022, 2023, 2024 or 2025."
 fi
