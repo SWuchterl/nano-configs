@@ -279,7 +279,7 @@ def calcLumiForRecovery(config, status_dict, work_area, work_area_rsb):
 
     outpath = os.path.abspath(os.path.join(
         work_area,
-        'crab_' + config.General.requestName + '/results/lumisToProcess.json',
+        'crab_' + config.General.requestName + '/results/notFinishedLumis.json',
     ))
 
     cmd = "crab report -d " + work_area + "/crab_" + config.General.requestName
