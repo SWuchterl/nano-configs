@@ -49,24 +49,24 @@ if [[ $1 == 2024* ]]; then
         $SUBMIT_RECOVERY_TASK \
         $RECOVERY_PREFIX $FORCE
 
-    python3 crab.py \
-        -p mc_2024_NANO.py \
-        --site T2_BE_IIHE \
-        -o /store/group/CustomNanoAODv15/NanoTuples/2024/mc \
-        -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
-        -i  mc/mc_2024.conf \
-        -e exe_ULv15_nosel.sh \
-        --num-cores 2 \
-        -s FileBased \
-        -n 2 \
-        --work-area crab_projects/crab_projects_mc_2024v15 \
-        --input-files inputs \
-        --max-memory 4500 \
-        --max-job-runtime 2750 \
-        $DRYRUN \
-        $PREPARE_RECOVERY_TASK \
-        $SUBMIT_RECOVERY_TASK \
-        $RECOVERY_PREFIX $FORCE
+    # python3 crab.py \
+    #     -p mc_2024_NANO.py \
+    #     --site T2_BE_IIHE \
+    #     -o /store/group/CustomNanoAODv15/NanoTuples/2024/mc \
+    #     -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
+    #     -i  mc/mc_2024.conf \
+    #     -e exe_ULv15_nosel.sh \
+    #     --num-cores 2 \
+    #     -s FileBased \
+    #     -n 2 \
+    #     --work-area crab_projects/crab_projects_mc_2024v15 \
+    #     --input-files inputs \
+    #     --max-memory 4500 \
+    #     --max-job-runtime 2750 \
+    #     $DRYRUN \
+    #     $PREPARE_RECOVERY_TASK \
+    #     $SUBMIT_RECOVERY_TASK \
+    #     $RECOVERY_PREFIX $FORCE
 fi 
 if [[ $1 == 2025* ]]; then
     python crab.py \
