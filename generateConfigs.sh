@@ -3,7 +3,7 @@
 # technically CMSSW_15_0_15_patch4 but we use the same for 15_0_17
 
 # # MC, 2018UL
-# cmsDriver.py mc_2018UL --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --fileout file:nano.root --conditions 150X_mc2018_realistic_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2018,run2_nanoAOD_106Xv2 --no_exec -n -1 --nThreads 2
+cmsDriver.py mc_2018UL --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --fileout file:nano.root --conditions 150X_mc2018_realistic_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2018,run2_nanoAOD_106Xv2 --no_exec -n -1 --nThreads 2
 
 # # # # Data, 2018UL
 # cmsDriver.py data_2018UL --data --eventcontent NANOAOD --datatier NANOAOD --fileout file:nano.root --conditions 150X_dataRun2_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2018,run2_nanoAOD_106Xv2 --no_exec -n -1 --nThreads 2
@@ -31,20 +31,20 @@
 
 # # MC, 2024 (used for all years with v15)
 # cmsDriver.py TESTORIG --mc --era Run3_2024 --step NANO --conditions 150X_mcRun3_2024_realistic_v2 --datatier NANOAODSIM --eventcontent NANOAODSIM --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1
-cmsDriver.py mc_2024 --mc --era Run3_2024 --step NANO:@PHYS+@Scout --conditions 150X_mcRun3_2024_realistic_v2 --datatier NANOAODSIM --eventcontent NANOAODSIM --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 2
-# --customise_commands=process.load('PhysicsTools.NanoAOD.custom_run3scouting_cff')\n process.nanoScouting_step = cms.Path(process.nanoSequence)\n process.schedule.extend([process.nanoScouting_step])
+# cmsDriver.py mc_2024 --mc --era Run3_2024 --step NANO:@PHYS+@Scout --conditions 150X_mcRun3_2024_realistic_v2 --datatier NANOAODSIM --eventcontent NANOAODSIM --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 2
+# # --customise_commands=process.load('PhysicsTools.NanoAOD.custom_run3scouting_cff')\n process.nanoScouting_step = cms.Path(process.nanoSequence)\n process.schedule.extend([process.nanoScouting_step])
 
-# # Data, 2022+2022EE
-cmsDriver.py data_2022 --data --era Run3,run3_nanoAOD_pre142X --step NANO --conditions 150X_dataRun3_v5 --datatier NANOAOD --eventcontent NANOAOD --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 2
+# # # Data, 2022+2022EE
+# cmsDriver.py data_2022 --data --era Run3,run3_nanoAOD_pre142X --step NANO --conditions 150X_dataRun3_v5 --datatier NANOAOD --eventcontent NANOAOD --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 2
 
-# # Data, 2023+2023BPix
-cmsDriver.py data_2023 --data --era Run3_2023,run3_nanoAOD_pre142X --step NANO --conditions 150X_dataRun3_v5 --datatier NANOAOD --eventcontent NANOAOD --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 2
+# # # Data, 2023+2023BPix
+# cmsDriver.py data_2023 --data --era Run3_2023,run3_nanoAOD_pre142X --step NANO --conditions 150X_dataRun3_v5 --datatier NANOAOD --eventcontent NANOAOD --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 2
 
-# # Data, 2024
-cmsDriver.py data_2024 --data --era Run3_2024 --step NANO --conditions 150X_dataRun3_v2 --datatier NANOAOD --eventcontent NANOAOD --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 2
+# # # Data, 2024
+# cmsDriver.py data_2024 --data --era Run3_2024 --step NANO --conditions 150X_dataRun3_v2 --datatier NANOAOD --eventcontent NANOAOD --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 2
 
-# # Data, 2025
-cmsDriver.py data_2025 --data --era Run3_2025 --step NANO --conditions 150X_dataRun3_Prompt_v1 --datatier NANOAOD --eventcontent NANOAOD --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 2
+# # # Data, 2025
+# cmsDriver.py data_2025 --data --era Run3_2025 --step NANO --conditions 150X_dataRun3_Prompt_v1 --datatier NANOAOD --eventcontent NANOAOD --fileout file:nano.root --filein file:inMINIAOD.root --no_exec -n -1 --nThreads 2
 
 # ----------------------------------------
 # now apply some customizations
@@ -65,6 +65,21 @@ for cfg in $(ls mc_*.py); do
     if [[ ${cfg} == *2024* ]]; then
         echo "--- Adding scouting info to ${cfg}"
         sed -i -e '/# Customisation from command line/a process.load("PhysicsTools.NanoAOD.custom_run3scouting_cff")\nprocess.nanoScouting_step = cms.Path(process.nanoSequence)\nprocess.schedule.extend([process.nanoScouting_step])\n' ${cfg}
+    fi
+    
+    if [[ ${cfg} == *2018* ]]; then
+        echo "--- Adding ParticleNetNtuplizer to ${cfg}"
+        # drop nano output
+        sed -i -e '/# Customisation from command line/a del process.NANOAODSIMoutput\n' ${cfg}
+        sed -i -e '/# Customisation from command line/a del process.NANOAODSIMoutput_step\n' ${cfg}
+        sed -i -e '/# Customisation from command line/a process.schedule.remove(process.NANOAODSIMoutput_step)\n' ${cfg}
+
+        sed -i -e '/# Customisation from command line/a process = customize_ntuplizer_muon(process)\n' ${cfg}
+        sed -i -e '/# Customisation from command line/a process = customize_ntuplizer_electron(process)\n' ${cfg}
+        sed -i -e '/# Customisation from command line/a from ParticleNetNtuplizer.ParticleNetNtuplizer.muon_ntuplizer import customize_ntuplizer as customize_ntuplizer_muon\n' ${cfg}
+        sed -i -e '/# Customisation from command line/a from ParticleNetNtuplizer.ParticleNetNtuplizer.electron_ntuplizer import customize_ntuplizer as customize_ntuplizer_electron\n' ${cfg}
+
+
     fi
 done
 
