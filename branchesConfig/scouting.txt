@@ -8,6 +8,18 @@ keep HLT_DST_PFScouting_JetHT
 keep HLT_DST_PFScouting_SingleMuon
 keep HLT_DST_*
 
+keep L1_HTT280er
+keep L1_SingleJet180
+keep L1_DoubleJet30er2p5_Mass_Min250_dEta_Max1p5
+keep L1_ETT2000
+keep L1_SingleMu11_SQ14_BMTF
+keep L1_SingleMu10_SQ14_BMTF
+keep L1_SingleMu9_SQ14_BMTF
+keep L1_SingleMu8_SQ14_BMTF
+keep L1_SingleMu7_SQ14_BMTF
+keep L1_SingleMu6_SQ14_BMTF
+keep L1_SingleMu5_SQ14_BMTF
+
 # Rho
 keep ScoutingRho_fixedGridRhoFastjetAll
 
@@ -37,6 +49,7 @@ keep ScoutingFatPFJetRecluster_neEmEF
 keep ScoutingFatPFJetRecluster_muEF
 keep ScoutingFatPFJetRecluster_neHEF
 keep ScoutingFatPFJetRecluster_nNh
+keep ScoutingFatPFJetRecluster_area
 
 keep ScoutingFatPFJetRecluster_scoutGlobalParT*
 
@@ -49,6 +62,7 @@ keep ScoutingFatPFJet15Recluster_pt
 keep ScoutingFatPFJet15Recluster_eta
 keep ScoutingFatPFJet15Recluster_phi
 keep ScoutingFatPFJet15Recluster_mass
+keep ScoutingFatPFJet15Recluster_area
 
 keep ScoutingFatPFJet15Recluster_msoftdrop
 keep ScoutingFatPFJet15Recluster_scoutGlobalParT_massCorrResonance
@@ -59,6 +73,14 @@ keep ScoutingFatPFJet15Recluster_tau3
 
 keep ScoutingFatPFJet15Recluster_scoutGlobalParT*
 
+# Needed for jet_id(fj)
+keep ScoutingFatPFJet15Recluster_nConstituents
+keep ScoutingFatPFJet15Recluster_nCh
+keep ScoutingFatPFJet15Recluster_neEmEF
+keep ScoutingFatPFJet15Recluster_muEF
+keep ScoutingFatPFJet15Recluster_neHEF
+keep ScoutingFatPFJet15Recluster_nNh
+
 drop ScoutingMuonNoVtx*
 drop ScoutingPhoton*
 
@@ -68,6 +90,21 @@ keep ScoutingFatPFJet_neEmEF
 keep ScoutingFatPFJet_muEF
 keep ScoutingFatPFJet_neHEF
 keep ScoutingFatPFJet_nNh
+keep ScoutingFatPFJet_jetArea
+keep ScoutingFatPFJet_HFEMEnergy
+keep ScoutingFatPFJet_HFEMMultiplicity
+keep ScoutingFatPFJet_HFHadronEnergy
+keep ScoutingFatPFJet_HFHadronMultiplicity
+keep ScoutingFatPFJet_chargedHadronEnergy
+keep ScoutingFatPFJet_chargedHadronMultiplicity
+keep ScoutingFatPFJet_electronEnergy
+keep ScoutingFatPFJet_electronMultiplicity
+keep ScoutingFatPFJet_muonEnergy
+keep ScoutingFatPFJet_muonMultiplicity
+keep ScoutingFatPFJet_neutralHadronEnergy
+keep ScoutingFatPFJet_neutralHadronMultiplicity
+keep ScoutingFatPFJet_photonEnergy
+keep ScoutingFatPFJet_photonMultiplicity
 
 # AK4 jets
 drop ScoutingPFJetRecluster_*
@@ -75,6 +112,7 @@ keep ScoutingPFJetRecluster_pt
 keep ScoutingPFJetRecluster_eta
 keep ScoutingPFJetRecluster_phi
 keep ScoutingPFJetRecluster_mass
+keep ScoutingPFJetRecluster_area
 
 keep ScoutingPFJetRecluster_particleNet_prob*
 
@@ -97,6 +135,21 @@ keep ScoutingPFJet_eta
 keep ScoutingPFJet_phi
 keep ScoutingPFJet_m
 keep ScoutingPFJet_mass
+keep ScoutingPFJet_jetArea
+keep ScoutingPFJet_HFEMEnergy
+keep ScoutingPFJet_HFEMMultiplicity
+keep ScoutingPFJet_HFHadronEnergy
+keep ScoutingPFJet_HFHadronMultiplicity
+keep ScoutingPFJet_chargedHadronEnergy
+keep ScoutingPFJet_chargedHadronMultiplicity
+keep ScoutingPFJet_electronEnergy
+keep ScoutingPFJet_electronMultiplicity
+keep ScoutingPFJet_muonEnergy
+keep ScoutingPFJet_muonMultiplicity
+keep ScoutingPFJet_neutralHadronEnergy
+keep ScoutingPFJet_neutralHadronMultiplicity
+keep ScoutingPFJet_photonEnergy
+keep ScoutingPFJet_photonMultiplicity
 
 # Electrons
 drop ScoutingElectron_*
