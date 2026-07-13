@@ -541,12 +541,32 @@ def status(args):
                             continue
                     config = loadConfig(work_area, dirname)
                     config.General.workArea = work_area_rsb
+
+                    # modify config if --switch-to-filebased
+                    if args.switch_to_filebased:
+                        config.Data.splitting = 'FileBased'
+                        config.Data.unitsPerJob = 1
+                        logger.info(
+                            'Switching to FileBased splitting with 1 file per job for %s/%s' %
+                            (work_area, dirname)
+                        )
+
                     if config.Data.splitting in ('LumiBased', 'EventAwareLumiBased'):
+                        if args.last_recovery_task_suffix:
+                            logger.error(
+                                'submitting recovery tasks with last-recovery-task-suffix \
+                                    is not implemented yet for \
+                                    EventAwareLumiBased or LumiBased splitting'
+                            )
                         config.Data.lumiMask = calcLumiForRecovery(
                             config, ret, work_area, work_area_rsb)
                     elif config.Data.splitting == 'FileBased':
                         config.Data.userInputFiles = calcFilesForRecovery(
-                            config, ret, work_area, work_area_rsb)
+                            config,
+                            ret,
+                            work_area + (args.last_recovery_task_suffix if args.last_recovery_task_suffix else ''),
+                            work_area_rsb,
+                        )
                     cfgpath = writeConfig(config, work_area_rsb)
                     if args.dryrun:
                         print('-' * 50)
@@ -740,6 +760,14 @@ def main():
     parser.add_argument('--recovery-task-suffix',
                         default='_rsb',
                         help='Suffix for the work area of the recovery tasks. Default: %(default)s'
+                        )
+    parser.add_argument('--last-recovery-task-suffix',
+                        default=None,
+                        help='Suffix for the work area of the last recovery tasks submitted. Used to infer the Missing files. Default: None'
+                        )
+    parser.add_argument('--switch-to-filebased',
+                        action='store_true', default=False,
+                        help='Switch to file-based submission with 1 file per job. Default: %(default)s'
                         )
     parser.add_argument('-y', '--yes',
                         action='store_true', default=False,
