@@ -3,6 +3,7 @@ DRYRUN=""
 PREPARE_RECOVERY_TASK=""
 SUBMIT_RECOVERY_TASK=""
 RECOVERY_PREFIX=""
+SWITH_TO_FILEBASED=""
 FORCE=""
 
 args=()
@@ -17,6 +18,9 @@ for arg in "$@"; do
     if [[ "$arg" == "--submit-recovery-task" ]]; then
         SUBMIT_RECOVERY_TASK="--submit-recovery-task"
         RECOVERY_PREFIX="--recovery-task-suffix _recovery_v1"
+    fi
+    if [[ "$arg" == "--switch-to-filebased" ]]; then
+        SWITH_TO_FILEBASED="--switch-to-filebased"
     fi
     if [[ "$arg" == "--force" && -n "$RECOVERY_PREFIX" ]]; then
         FORCE="--yes"
@@ -44,7 +48,8 @@ if [[ $1 == 2024* ]]; then
         $DRYRUN \
         $PREPARE_RECOVERY_TASK \
         $SUBMIT_RECOVERY_TASK \
-        $RECOVERY_PREFIX $FORCE
+        $RECOVERY_PREFIX $FORCE \
+        $SWITH_TO_FILEBASED
 
     python3 crab.py \
         -p mc_2024_NANO.py \
@@ -63,7 +68,8 @@ if [[ $1 == 2024* ]]; then
         $DRYRUN \
         $PREPARE_RECOVERY_TASK \
         $SUBMIT_RECOVERY_TASK \
-        $RECOVERY_PREFIX $FORCE
+        $RECOVERY_PREFIX $FORCE \
+        $SWITH_TO_FILEBASED
 fi 
 if [[ $1 == 2025* ]]; then
     python3 crab.py \
@@ -83,7 +89,8 @@ if [[ $1 == 2025* ]]; then
         $DRYRUN \
         $PREPARE_RECOVERY_TASK \
         $SUBMIT_RECOVERY_TASK \
-        $RECOVERY_PREFIX $FORCE
+        $RECOVERY_PREFIX $FORCE \
+        $SWITH_TO_FILEBASED
 fi 
 if [[ $1 == 2022* ]]; then
     python3 crab.py \
@@ -103,7 +110,8 @@ if [[ $1 == 2022* ]]; then
         $DRYRUN \
         $PREPARE_RECOVERY_TASK \
         $SUBMIT_RECOVERY_TASK \
-        $RECOVERY_PREFIX $FORCE
+        $RECOVERY_PREFIX $FORCE \
+        $SWITH_TO_FILEBASED
 fi 
 if [[ $1 == 2023* ]]; then
     python3 crab.py \
@@ -123,5 +131,6 @@ if [[ $1 == 2023* ]]; then
         $DRYRUN \
         $PREPARE_RECOVERY_TASK \
         $SUBMIT_RECOVERY_TASK \
-        $RECOVERY_PREFIX $FORCE
+        $RECOVERY_PREFIX $FORCE \
+        $SWITH_TO_FILEBASED
 fi

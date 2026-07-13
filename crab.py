@@ -550,7 +550,7 @@ def status(args):
                             'Switching to FileBased splitting with 1 file per job for %s/%s' %
                             (work_area, dirname)
                         )
-
+                    
                     if config.Data.splitting in ('LumiBased', 'EventAwareLumiBased'):
                         if args.last_recovery_task_suffix:
                             logger.error(

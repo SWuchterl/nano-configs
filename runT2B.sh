@@ -22,6 +22,9 @@ for arg in "$@"; do
     if [[ "$arg" == "--switch-to-filebased" ]]; then
         SWITH_TO_FILEBASED="--switch-to-filebased"
     fi
+    if [[ "$arg" == "--switch-to-filebased" ]]; then
+        SWITH_TO_FILEBASED="--switch-to-filebased"
+    fi
     if [[ "$arg" == "--force" && -n "$RECOVERY_PREFIX" ]]; then
         FORCE="--yes"
     else
