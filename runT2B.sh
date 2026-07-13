@@ -3,6 +3,7 @@ DRYRUN=""
 PREPARE_RECOVERY_TASK=""
 SUBMIT_RECOVERY_TASK=""
 RECOVERY_PREFIX=""
+SWITH_TO_FILEBASED=""
 FORCE=""
 
 args=()
@@ -12,11 +13,14 @@ for arg in "$@"; do
     fi
     if [[ "$arg" == "--prepare-recovery-task" ]]; then
         PREPARE_RECOVERY_TASK="--prepare-recovery-task"
-        RECOVERY_PREFIX="--recovery-task-suffix _recovery_v1"
+        RECOVERY_PREFIX="--recovery-task-suffix filebasedrecovery_v1"
     fi
     if [[ "$arg" == "--submit-recovery-task" ]]; then
         SUBMIT_RECOVERY_TASK="--submit-recovery-task"
-        RECOVERY_PREFIX="--recovery-task-suffix _recovery_v1"
+        RECOVERY_PREFIX="--recovery-task-suffix filebasedrecovery_v1"
+    fi
+    if [[ "$arg" == "--switch-to-filebased" ]]; then
+        SWITH_TO_FILEBASED="--switch-to-filebased"
     fi
     if [[ "$arg" == "--force" && -n "$RECOVERY_PREFIX" ]]; then
         FORCE="--yes"
@@ -47,7 +51,9 @@ if [[ $1 == 2024* ]]; then
         $DRYRUN \
         $PREPARE_RECOVERY_TASK \
         $SUBMIT_RECOVERY_TASK \
-        $RECOVERY_PREFIX $FORCE
+        $RECOVERY_PREFIX \
+        $SWITH_TO_FILEBASED \
+        $FORCE
 
     python3 crab.py \
         -p mc_2024_NANO.py \
@@ -58,7 +64,7 @@ if [[ $1 == 2024* ]]; then
         -e exe_ULv15_nosel.sh \
         --num-cores 2 \
         -s FileBased \
-        -n 2 \
+        -n 1 \
         --work-area crab_projects/crab_projects_mc_2024v15 \
         --input-files inputs \
         --max-memory 4500 \
@@ -66,7 +72,9 @@ if [[ $1 == 2024* ]]; then
         $DRYRUN \
         $PREPARE_RECOVERY_TASK \
         $SUBMIT_RECOVERY_TASK \
-        $RECOVERY_PREFIX $FORCE
+        $RECOVERY_PREFIX \
+        $SWITH_TO_FILEBASED \
+        $FORCE
 fi 
 if [[ $1 == 2025* ]]; then
     python3 crab.py \
@@ -86,7 +94,9 @@ if [[ $1 == 2025* ]]; then
         $DRYRUN \
         $PREPARE_RECOVERY_TASK \
         $SUBMIT_RECOVERY_TASK \
-        $RECOVERY_PREFIX $FORCE
+        $RECOVERY_PREFIX \
+        $SWITH_TO_FILEBASED \
+        $FORCE
 fi 
 if [[ $1 == 2022* ]]; then
     python3 crab.py \
@@ -106,7 +116,9 @@ if [[ $1 == 2022* ]]; then
         $DRYRUN \
         $PREPARE_RECOVERY_TASK \
         $SUBMIT_RECOVERY_TASK \
-        $RECOVERY_PREFIX $FORCE
+        $RECOVERY_PREFIX \
+        $SWITH_TO_FILEBASED \
+        $FORCE
 fi 
 if [[ $1 == 2023* ]]; then
     python3 crab.py \
@@ -119,12 +131,14 @@ if [[ $1 == 2023* ]]; then
         --num-cores 2 \
         -s EventAwareLumiBased \
         -n 100000 \
-        --work-area crab_projects/crab_projects_data_2023v15 \
+        --work-area crab_projects/crab_projects_data_2023v15_recovery_v2 \
         --input-files inputs \
         --max-memory 4500 \
         --max-job-runtime 2750 \
         $DRYRUN \
         $PREPARE_RECOVERY_TASK \
         $SUBMIT_RECOVERY_TASK \
-        $RECOVERY_PREFIX $FORCE
+        $RECOVERY_PREFIX \
+        $SWITH_TO_FILEBASED \
+        $FORCE
 fi
