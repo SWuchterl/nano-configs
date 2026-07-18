@@ -270,8 +270,8 @@ def createConfig(args, dataset):
     cfgpath = writeConfig(config, args.work_area)
     return config, cfgpath
 
-# new implementation
 
+# new implementation
 def calcLumiForRecovery(config, status_dict, work_area, work_area_rsb):
 
     cfgdir_rsb = os.path.join(work_area, 'configs')
@@ -282,6 +282,12 @@ def calcLumiForRecovery(config, status_dict, work_area, work_area_rsb):
         work_area,
         'crab_' + config.General.requestName + '/results/notFinishedLumis.json',
     ))
+    
+    if os.path.exists(outpath):
+        logger.info(
+            'Found existing notFinishedLumis.json file for %s, will use it.' %
+            config.General.requestName)
+        return outpath
 
     cmd = "crab report -d " + work_area + "/crab_" + config.General.requestName
     subprocess.call(cmd, shell=True)
@@ -292,6 +298,7 @@ def calcLumiForRecovery(config, status_dict, work_area, work_area_rsb):
             config.General.requestName)
 
     return outpath
+
 
 def calcFilesForRecovery(config, status_dict, work_area, work_area_rsb):
 
@@ -304,6 +311,12 @@ def calcFilesForRecovery(config, status_dict, work_area, work_area_rsb):
         'crab_' + config.General.requestName + '/results/failedFiles.json',
     ))
 
+    if os.path.exists(outpath):
+        logger.info(
+            'Found existing failedFiles.json file for %s, will use it.' %
+            config.General.requestName)
+        return outpath
+        
     cmd = "crab report -d " + work_area + "/crab_" + config.General.requestName
     subprocess.call(cmd, shell=True)
 
