@@ -315,16 +315,15 @@ def calcFilesForRecovery(config, status_dict, work_area, work_area_rsb):
         logger.info(
             'Found existing failedFiles.json file for %s, will use it.' %
             config.General.requestName)
-        return outpath
-        
-    cmd = "crab report -d " + work_area + "/crab_" + config.General.requestName
-    subprocess.call(cmd, shell=True)
+    else:
+        cmd = "crab report -d " + work_area + "/crab_" + config.General.requestName
+        subprocess.call(cmd, shell=True)
 
-    if not os.path.exists(outpath):
-        logger.error(
-            'Cannot find the failedFiles.json file for %s.' %
-            config.General.requestName
-        )
+        if not os.path.exists(outpath):
+            logger.error(
+                'Cannot find the failedFiles.json file for %s.' %
+                config.General.requestName
+            )
 
     # convert failedFiles.json to a list of files
     from functools import reduce
