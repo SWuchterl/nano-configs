@@ -2,6 +2,11 @@
 
 # technically CMSSW_15_0_15_patch4 but we use the same for 15_0_17
 
+DDD_MAGFIELD=${DDD_MAGFIELD:-0}
+for arg in "$@"; do
+    [[ ${arg} == "--ddd-magfield" ]] && DDD_MAGFIELD=1
+done
+
 # # MC, 2018UL
 # cmsDriver.py mc_2018UL --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --fileout file:nano.root --conditions 150X_mc2018_realistic_v1 --step NANO --filein file:inMINIAOD.root --era Run2_2018,run2_nanoAOD_106Xv2 --no_exec -n -1 --nThreads 2
 
@@ -76,6 +81,10 @@ for cfg in $(ls data_*.py); do
     #     echo "--- Adding scouting info to ${cfg}"
     #     sed -i -e '/# Customisation from command line/a process.load("PhysicsTools.NanoAOD.custom_run3scouting_cff")\nprocess.nanoScouting_step = cms.Path(process.nanoSequence)\nprocess.schedule.extend([process.nanoScouting_step])\n' ${cfg}
     # fi
+    if [[ ${DDD_MAGFIELD} == 1 && ${cfg} == *2023* ]]; then
+        echo "--- Replacing the dd4hep magnetic field ESProducer with the DDD one in ${cfg}"
+        sed -i -e '/# Customisation from command line/a process.VolumeBasedMagneticFieldESProducer = cms.ESProducer("VolumeBasedMagneticFieldESProducerFromDB",\n    label = cms.untracked.string(""),\n    debugBuilder = cms.untracked.bool(False),\n    valueOverride = cms.int32(-1))\n' ${cfg}
+    fi
 done
 
 # ----------------------------------------
