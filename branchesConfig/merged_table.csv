@@ -243,6 +243,7 @@ Flag_eeBadScFilter,,keep,,,,,keep
 Flag_globalSuperTightHalo2016Filter,,keep,,,,,keep
 Flag_goodVertices,,keep,,,,,keep
 Flag_hfNoisyHitsFilter,,keep,,,,,keep
+Flag_METFilters,,keep,,,,,keep
 GenDressedLepton*,,,,,,keep,keep
 Generator*,,,,,,keep,keep
 genEventSumw,,keep,,,,keep,keep
@@ -432,6 +433,8 @@ Muon_pt,keep,keep,keep,,,keep,keep
 Muon_segmentComp,,,,,drop,keep,keep
 Muon_sip3d,,,,,,keep,keep
 Muon_tightId,keep,keep,,,,,keep
+nLHEPdfWeight,,,,keep,,,keep
+nLHEScaleWeight,,,,keep,,,keep
 NumTrueInteractions,,,keep,,,,keep
 OtherPV_z,keep,,,,,,keep
 Photon_*,keep,,,,,,keep
@@ -441,7 +444,7 @@ Photon_phi,,,keep,,,keep,keep
 Photon_pt,,,keep,,,keep,keep
 Photon_r9,,,keep,,,,keep
 Pileup_nPU,keep,,,,,keep,keep
-Pileup_nTrueInt,,,,,,keep,keep
+Pileup_nTrueInt,,keep,,,,keep,keep
 PSWeight,,keep,,keep,,keep,keep
 PuppiMET_*,keep,,,,,,keep
 PuppiMET_phi,,keep,,,,keep,keep
@@ -477,7 +480,12 @@ ScoutingElectron_pt,,,,keep,,,keep
 ScoutingElectron_sigmaIetaIeta,,,,keep,,,keep
 ScoutingElectron_trackIso,,,,keep,,,keep
 ScoutingFatPFJet15Recluster_area,,,,keep,,,keep
+ScoutingFatPFJet15Recluster_chEmEF,,,,keep,,,keep
+ScoutingFatPFJet15Recluster_chHEF,,,,keep,,,keep
 ScoutingFatPFJet15Recluster_eta,,,,keep,,,keep
+ScoutingFatPFJet15Recluster_genJetAK8Idx,,,,keep,,,keep
+ScoutingFatPFJet15Recluster_hfEmEF,,,,keep,,,keep
+ScoutingFatPFJet15Recluster_hfHEF,,,,keep,,,keep
 ScoutingFatPFJet15Recluster_mass,,,,keep,,,keep
 ScoutingFatPFJet15Recluster_msoftdrop,,,,keep,,,keep
 ScoutingFatPFJet15Recluster_muEF,,,,keep,,,keep
@@ -515,7 +523,12 @@ ScoutingFatPFJet_nNh,,,,keep,,,keep
 ScoutingFatPFJet_photonEnergy,,,,keep,,,keep
 ScoutingFatPFJet_photonMultiplicity,,,,keep,,,keep
 ScoutingFatPFJetRecluster_area,,,,keep,,,keep
+ScoutingFatPFJetRecluster_chEmEF,,,,keep,,,keep
+ScoutingFatPFJetRecluster_chHEF,,,,keep,,,keep
 ScoutingFatPFJetRecluster_eta,,,,keep,,,keep
+ScoutingFatPFJetRecluster_genJetAK8Idx,,,,keep,,,keep
+ScoutingFatPFJetRecluster_hfEmEF,,,,keep,,,keep
+ScoutingFatPFJetRecluster_hfHEF,,,,keep,,,keep
 ScoutingFatPFJetRecluster_mass,,,,keep,,,keep
 ScoutingFatPFJetRecluster_msoftdrop,,,,keep,,,keep
 ScoutingFatPFJetRecluster_muEF,,,,keep,,,keep
@@ -572,7 +585,10 @@ ScoutingPFJet_photonEnergy,,,,keep,,,keep
 ScoutingPFJet_photonMultiplicity,,,,keep,,,keep
 ScoutingPFJet_pt,,,,keep,,,keep
 ScoutingPFJetRecluster_area,,,,keep,,,keep
+ScoutingPFJetRecluster_chEmEF,,,,keep,,,keep
+ScoutingPFJetRecluster_chHEF,,,,keep,,,keep
 ScoutingPFJetRecluster_eta,,,,keep,,,keep
+ScoutingPFJetRecluster_genJetIdx,,,,keep,,,keep
 ScoutingPFJetRecluster_mass,,,,keep,,,keep
 ScoutingPFJetRecluster_muEF,,,,keep,,,keep
 ScoutingPFJetRecluster_nCh,,,,keep,,,keep

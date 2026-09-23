@@ -102,6 +102,7 @@ keep Flag_BadPFMuonFilter
 keep Flag_BadPFMuonDzFilter
 keep Flag_hfNoisyHitsFilter
 keep Flag_eeBadScFilter
+keep Flag_METFilters
 
 # GenPart
 keep GenPart_pt
@@ -109,7 +110,7 @@ keep GenPart_pdgId
 keep GenPart_statusFlags
 
 # Pileup
-Pileup_nTrueInt
+keep Pileup_nTrueInt
 
 # Weights
 keep genWeight

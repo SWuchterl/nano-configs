@@ -50,6 +50,11 @@ keep ScoutingFatPFJetRecluster_muEF
 keep ScoutingFatPFJetRecluster_neHEF
 keep ScoutingFatPFJetRecluster_nNh
 keep ScoutingFatPFJetRecluster_area
+keep ScoutingFatPFJetRecluster_chEmEF
+keep ScoutingFatPFJetRecluster_chHEF
+keep ScoutingFatPFJetRecluster_genJetAK8Idx
+keep ScoutingFatPFJetRecluster_hfEmEF
+keep ScoutingFatPFJetRecluster_hfHEF
 
 keep ScoutingFatPFJetRecluster_scoutGlobalParT*
 
@@ -80,6 +85,11 @@ keep ScoutingFatPFJet15Recluster_neEmEF
 keep ScoutingFatPFJet15Recluster_muEF
 keep ScoutingFatPFJet15Recluster_neHEF
 keep ScoutingFatPFJet15Recluster_nNh
+keep ScoutingFatPFJet15Recluster_chEmEF
+keep ScoutingFatPFJet15Recluster_chHEF
+keep ScoutingFatPFJet15Recluster_genJetAK8Idx
+keep ScoutingFatPFJet15Recluster_hfEmEF
+keep ScoutingFatPFJet15Recluster_hfHEF
 
 drop ScoutingMuonNoVtx*
 drop ScoutingPhoton*
@@ -122,6 +132,9 @@ keep ScoutingPFJetRecluster_neEmEF
 keep ScoutingPFJetRecluster_muEF
 keep ScoutingPFJetRecluster_neHEF
 keep ScoutingPFJetRecluster_nNh
+keep ScoutingPFJetRecluster_chEmEF
+keep ScoutingPFJetRecluster_chHEF
+keep ScoutingPFJetRecluster_genJetIdx
 
 drop ScoutingPFJet_*
 keep ScoutingPFJet_nConstituents
@@ -191,6 +204,8 @@ keep ScoutingPrimaryVertex_z
 keep genWeight
 keep LHEScaleWeight
 keep LHEPdfWeight
+keep nLHEPdfWeight
+keep nLHEScaleWeight
 keep PSWeight
 
 # GenPart
@@ -218,3 +233,8 @@ keep GenJetAK15_pt
 keep GenJetAK15_eta
 keep GenJetAK15_phi
 keep GenJetAK15_mass
+
+keep LHEPdfWeight
+keep LHEScaleWeight
+keep nLHEPdfWeight
+keep nLHEScaleWeight

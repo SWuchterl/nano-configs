@@ -242,6 +242,7 @@ keep Flag_eeBadScFilter
 keep Flag_globalSuperTightHalo2016Filter
 keep Flag_goodVertices
 keep Flag_hfNoisyHitsFilter
+keep Flag_METFilters
 keep GenDressedLepton*
 keep Generator*
 keep genEventSumw
@@ -431,6 +432,8 @@ keep Muon_pt
 keep Muon_segmentComp
 keep Muon_sip3d
 keep Muon_tightId
+keep nLHEPdfWeight
+keep nLHEScaleWeight
 keep NumTrueInteractions
 keep OtherPV_z
 keep Photon_*
@@ -476,7 +479,12 @@ keep ScoutingElectron_pt
 keep ScoutingElectron_sigmaIetaIeta
 keep ScoutingElectron_trackIso
 keep ScoutingFatPFJet15Recluster_area
+keep ScoutingFatPFJet15Recluster_chEmEF
+keep ScoutingFatPFJet15Recluster_chHEF
 keep ScoutingFatPFJet15Recluster_eta
+keep ScoutingFatPFJet15Recluster_genJetAK8Idx
+keep ScoutingFatPFJet15Recluster_hfEmEF
+keep ScoutingFatPFJet15Recluster_hfHEF
 keep ScoutingFatPFJet15Recluster_mass
 keep ScoutingFatPFJet15Recluster_msoftdrop
 keep ScoutingFatPFJet15Recluster_muEF
@@ -514,7 +522,12 @@ keep ScoutingFatPFJet_nNh
 keep ScoutingFatPFJet_photonEnergy
 keep ScoutingFatPFJet_photonMultiplicity
 keep ScoutingFatPFJetRecluster_area
+keep ScoutingFatPFJetRecluster_chEmEF
+keep ScoutingFatPFJetRecluster_chHEF
 keep ScoutingFatPFJetRecluster_eta
+keep ScoutingFatPFJetRecluster_genJetAK8Idx
+keep ScoutingFatPFJetRecluster_hfEmEF
+keep ScoutingFatPFJetRecluster_hfHEF
 keep ScoutingFatPFJetRecluster_mass
 keep ScoutingFatPFJetRecluster_msoftdrop
 keep ScoutingFatPFJetRecluster_muEF
@@ -571,7 +584,10 @@ keep ScoutingPFJet_photonEnergy
 keep ScoutingPFJet_photonMultiplicity
 keep ScoutingPFJet_pt
 keep ScoutingPFJetRecluster_area
+keep ScoutingPFJetRecluster_chEmEF
+keep ScoutingPFJetRecluster_chHEF
 keep ScoutingPFJetRecluster_eta
+keep ScoutingPFJetRecluster_genJetIdx
 keep ScoutingPFJetRecluster_mass
 keep ScoutingPFJetRecluster_muEF
 keep ScoutingPFJetRecluster_nCh
