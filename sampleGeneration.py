@@ -30,6 +30,11 @@ SPREADSHEET_URLS = {
         "1LrKEphbzf0Ndt72WLrTjCrIh3_tuOEcQuTPHvCjlpQE/"
         "export?format=csv&gid=837854228"
     ),
+    "2018": (
+        "http://docs.google.com/spreadsheets/d/"
+        "1LrKEphbzf0Ndt72WLrTjCrIh3_tuOEcQuTPHvCjlpQE/"
+        "export?format=csv&gid=1486209551"
+    )
 }
 
 
@@ -115,28 +120,34 @@ def extract_dataset_name(miniaod):
 def extract_campaign_name(miniaod):
     parts = normalize(miniaod).split("/")
     if len(parts) > 2 and parts[2]:
+        if "_PrivateMC" in parts[2]:
+            return parts[2].split("-")[1].split("_PrivateMC")[0]
         return parts[2]
     return ""
 
 
-def build_progress_dataset_name(miniaod, sample_type):
+def build_progress_dataset_names(miniaod, sample_type):
     dataset_name = extract_dataset_name(miniaod)
     campaign_name = extract_campaign_name(miniaod)
 
     if not dataset_name or not campaign_name:
-        return ""
+        return []
 
     if normalize(sample_type).lower() == "data":
         new_campaign = campaign_name
     else:
         new_campaign = campaign_name.replace("_mcRun3_2024_realistic", "")
 
-    return (
-        f"/{dataset_name}/"
-        "CustomNanoAODv15-NanoTuples-uParTv3-parTlepID-"
-        f"NanoAODv15_{new_campaign}-"
-        "00000000000000000000000000000000/USER"
-    )
+    return [
+        (
+            f"/{dataset_name}/"
+            f"{iterator}-NanoTuples-uParTv3-parTlepID-"
+            f"NanoAODv15_{campaign}-"
+            "00000000000000000000000000000000/USER"
+        )
+        for iterator in ("CustomNanoAODv15", "cmst3", "phys_higgs")
+        for campaign in (new_campaign, "phys", f"azaza-{new_campaign}")
+    ]
 
 
 def print_progress_bar(current, total, width=30):
@@ -157,6 +168,76 @@ def format_progress_line(user, dataset_name, miniaod, new_dataset_name,
         f"{user} {dataset_name} {miniaod} {new_dataset_name} "
         f"{expected_events} {found_events}"
     )
+
+
+def query_progress_events(miniaod):
+
+    # also query number of events in the miniaod for reference
+    excepted_events = 0
+    if miniaod.endswith("/USER"):
+        query = f"summary dataset={miniaod} instance=/prod/phys03"
+    else:
+        query = f"summary dataset={miniaod}"
+    completed = subprocess.run(
+        ["dasgoclient", "--query", query],
+        capture_output=True,
+        text=True,
+    )
+    summary_text = completed.stdout.strip()
+    if summary_text:
+        summary_data = json.loads(summary_text)
+        if isinstance(summary_data, list) and summary_data:
+            first_entry = summary_data[0]
+            excepted_events = first_entry.get("num_event", 0) or 0
+
+    # Query for children of the miniaod
+    query = f"child dataset={miniaod} instance=/prod/phys03"
+    completed = subprocess.run(
+        ["dasgoclient", "--query", query],
+        capture_output=True,
+        text=True,
+    )
+
+    children_data = completed.stdout.strip()
+    children_data = children_data.split("\n") if children_data else []
+    if not children_data:
+        return "", 0, excepted_events
+
+    # Search for child with "NanoTuples-uParTv3-parTlepID-NanoAODv15" in the name
+    target_child = None
+
+    for child in children_data:
+        if "NanoTuples-uParTv3-parTlepID-NanoAODv15" in child:
+            target_child = child
+            break
+
+    if not target_child:
+        return "", 0, excepted_events
+
+    # Query for summary of the found child
+    query = f"summary dataset={target_child} instance=/prod/phys03"
+    completed = subprocess.run(
+        ["dasgoclient", "--query", query],
+        capture_output=True,
+        text=True,
+    )
+
+    summary_text = completed.stdout.strip()
+    if not summary_text:
+        return target_child, 0, excepted_events
+
+    try:
+        summary_data = json.loads(summary_text)
+    except json.JSONDecodeError:
+        return target_child, 0, excepted_events
+
+    if not summary_data:
+        return target_child, 0, excepted_events
+
+    first_entry = summary_data[0] if isinstance(summary_data, list) else {}
+    found_events = first_entry.get("num_event", 0) or 0
+
+    return target_child, found_events, excepted_events
 
 
 def parse_assignment_list(value):
@@ -396,63 +477,20 @@ def run_progress_check(entries, year):
     with open(progress_path, "w", encoding="utf-8") as progress_out:
         for index, entry in enumerate(samples, start=1):
             miniaod = entry["miniaod"]
-            user_assignment = entry.get("assignment", "N/A")
-            sample_type = normalize(entry.get("type")).lower()
-            expected_events = entry.get("events")
-
-            if isinstance(expected_events, int) and expected_events > 0:
-                total_expected_events += expected_events
-
-            dataset_name = extract_dataset_name(miniaod)
-            new_dataset_name = build_progress_dataset_name(
-                miniaod, sample_type
-            )
-
-            if not new_dataset_name:
-                found_events = 0
-                progress_out.write(
-                    format_progress_line(
-                        user_assignment,
-                        dataset_name,
-                        miniaod,
-                        new_dataset_name,
-                        expected_events,
-                        found_events,
-                    )
-                    + "\n"
-                )
+            if miniaod.endswith("/USER"):
                 continue
 
-            query = f"summary dataset={new_dataset_name} instance=/prod/phys03"
-            completed = subprocess.run(
-                ["dasgoclient", "--query", query],
-                capture_output=True,
-                text=True,
-            )
+            user_assignment = entry.get("assignment", "N/A")
 
-            summary_text = completed.stdout.strip()
-            found_events = 0
-
-            if summary_text:
-                try:
-                    summary_data = json.loads(summary_text)
-                except json.JSONDecodeError:
-                    summary_data = []
-
-                if summary_data:
-                    first_entry = (
-                        summary_data[0]
-                        if isinstance(summary_data, list)
-                        else {}
-                    )
-                    found_events = first_entry.get("num_event", 0) or 0
+            new_dataset_name, found_events, expected_events = query_progress_events(miniaod)
+            total_expected_events += expected_events
 
             total_published_events += found_events
 
             progress_out.write(
                 format_progress_line(
                     user_assignment,
-                    dataset_name,
+                    extract_dataset_name(miniaod),
                     miniaod,
                     new_dataset_name,
                     expected_events,

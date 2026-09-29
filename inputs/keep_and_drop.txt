@@ -52,9 +52,6 @@ drop Electron_isEcalDriven
 drop Electron_isPFcand
 drop Electron_mvaHZZIso
 drop Electron_mvaIso_WPHZZ
-drop Electron_mvaNoIso
-drop Electron_mvaNoIso_WP80
-drop Electron_mvaNoIso_WP90
 drop Electron_pfRelIso03_chg
 drop Electron_pnScore_*
 drop Electron_PreshowerEnergy
@@ -96,8 +93,6 @@ drop Jet_hfEmEF
 drop Jet_hfHEF
 drop Jet_hfsigmaEtaEta
 drop Jet_hfsigmaPhiPhi
-drop Jet_muonSubtrDeltaEta
-drop Jet_muonSubtrDeltaPhi
 drop Jet_PNetRegPtRawRes
 drop Jet_svIdx1
 drop Jet_svIdx2
@@ -215,6 +210,7 @@ keep Electron_mvaIso
 keep Electron_mvaIso_WP80
 keep Electron_mvaIso_WP90
 keep Electron_parTScore_*
+keep Electron_parTScoreRun2_*
 keep Electron_pdgId
 keep Electron_pfRelIso03_all
 keep Electron_phi
@@ -405,6 +401,7 @@ keep Muon_miniPFRelIso_chg
 keep Muon_nStations
 keep Muon_nTrackerLayers
 keep Muon_parTScore_*
+keep Muon_parTScoreRun2_*
 keep Muon_pdgId
 keep Muon_pfIsoId
 keep Muon_pfRelIso03_all
