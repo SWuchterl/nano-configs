@@ -40,7 +40,7 @@ if [[ $1 == 2018* ]]; then
         -o /store/group/CustomNanoAODv15/NanoTuples/2018/data \
         -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2018.conf \
-        -e exe_ULv15_nosel.sh \
+        -e exe_ULv15_nosel_run2.sh \
         --num-cores 2 \
         -s EventAwareLumiBased \
         -n 100000 \
@@ -60,7 +60,7 @@ if [[ $1 == 2018* ]]; then
         -o /store/group/CustomNanoAODv15/NanoTuples/2018/mc \
         -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i  mc/mc_2018.conf \
-        -e exe_ULv15_nosel.sh \
+        -e exe_ULv15_nosel_run2.sh \
         --num-cores 2 \
         -s FileBased \
         -n 2 \

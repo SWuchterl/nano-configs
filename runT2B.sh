@@ -40,7 +40,7 @@ if [[ $1 == 2024* ]]; then
         -o /store/group/CustomNanoAODv15/NanoTuples/2024/data \
         -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2024.conf \
-        -e exe_ULv15_nosel.sh \
+        -e exe_ULv15_nosel_run3.sh \
         --num-cores 2 \
         -s EventAwareLumiBased \
         -n 100000 \
@@ -60,7 +60,7 @@ if [[ $1 == 2024* ]]; then
         -o /store/group/CustomNanoAODv15/NanoTuples/2024/mc \
         -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i  mc/mc_2024.conf \
-        -e exe_ULv15_nosel.sh \
+        -e exe_ULv15_nosel_run3.sh \
         --num-cores 2 \
         -s FileBased \
         -n 2 \
@@ -81,7 +81,7 @@ if [[ $1 == 2025* ]]; then
         -o /store/group/CustomNanoAODv15/NanoTuples/2025/data \
         -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2025.conf \
-        -e exe_ULv15_nosel.sh \
+        -e exe_ULv15_nosel_run3.sh \
         --num-cores 2 \
         -s EventAwareLumiBased \
         -n 100000 \
@@ -102,7 +102,7 @@ if [[ $1 == 2022* ]]; then
         -o /store/group/CustomNanoAODv15/NanoTuples/2022/data \
         -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2022.conf \
-        -e exe_ULv15_nosel.sh \
+        -e exe_ULv15_nosel_run3.sh \
         --num-cores 2 \
         -s EventAwareLumiBased \
         -n 100000 \
@@ -123,7 +123,7 @@ if [[ $1 == 2023* ]]; then
         -o /store/group/CustomNanoAODv15/NanoTuples/2023/data \
         -t NanoTuples-uParTv3-parTlepID-NanoAODv15 \
         -i data/data_2023.conf \
-        -e exe_ULv15_nosel.sh \
+        -e exe_ULv15_nosel_run3.sh \
         --num-cores 2 \
         -s EventAwareLumiBased \
         -n 100000 \

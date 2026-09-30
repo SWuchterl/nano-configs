@@ -7,7 +7,6 @@ NAME=${4##*=}     # ordered by crab.py script
 
 WORKDIR=$(pwd)
 
-
 # 0) get all data files to bypass crab tarball limitations
 
 # 0) get all data files to bypass crab tarball limitations
@@ -20,16 +19,6 @@ wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0
 
 wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/muon_ParT_2024.onnx -O $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonId/v2/muon_ParT_2024.onnx --tries=0 --retry-connrefused --wait=30
 wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/preprocess.json -O $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonId/v2/preprocess.json --tries=0 --retry-connrefused --wait=30
-
-mkdir -p ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTElectronIdRun2/v2/
-mkdir -p ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTMuonIdRun2/v2
-
-
-wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTElectronIdRun2/v2/electron_ParT_2018.onnx -O ${CMSSW_BASE}/src//PhysicsTools/NanoAOD/data/ParTElectronIdRun2/v2/electron_ParT_2018.onnx --tries=0 --retry-connrefused --wait=30
-wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTElectronIdRun2/v2/preprocess.json -O ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTElectronIdRun2/v2/preprocess.json --tries=0 --retry-connrefused --wait=30
-
-wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonIdRun2/v2/muon_ParT_2018.onnx -O $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonIdRun2/v2/muon_ParT_2018.onnx --tries=0 --retry-connrefused --wait=30
-wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonIdRun2/v2/preprocess.json -O $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonIdRun2/v2/preprocess.json --tries=0 --retry-connrefused --wait=30
 
 # and some more custom models for boosted jets
 mkdir -p ${CMSSW_BASE}/src/RecoBTag/Combined/data/HLT/GlobalParticleTransformerAK15/V00/
@@ -59,7 +48,7 @@ mv nano.root orig_nano.root
 # 2) postprocessing with nano_postproc.py
 
 # run the postprocessor with the final selection
-nano_postproc.py . orig_nano.root -s _keepdrop --bi $WORKDIR/inputs/keep_and_drop.txt
+nano_postproc.py . orig_nano.root -s _keepdrop --bi $WORKDIR/inputs/keep_and_drop_run3.txt
 
 # now merge the output files into one final nanoAOD file to reduce size
 haddnano.py final.root orig_nano_keepdrop.root
