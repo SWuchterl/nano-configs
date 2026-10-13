@@ -14,3 +14,9 @@ rm $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTElectronId/v2/preprocess.json -
 
 rm $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonId/v2/muon_ParT_2024.onnx -v
 rm $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonId/v2/preprocess.json -v
+
+rm ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTElectronIdRun2/v2/electron_ParT_2018.onnx -v
+rm ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTElectronIdRun2/v2/preprocess.json -v
+
+rm $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonIdRun2/v2/muon_ParT_2018.onnx -v
+rm $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonIdRun2/v2/preprocess.json -v
