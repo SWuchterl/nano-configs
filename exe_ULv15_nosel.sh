@@ -21,6 +21,16 @@ wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0
 wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/muon_ParT_2024.onnx -O $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonId/v2/muon_ParT_2024.onnx --tries=0 --retry-connrefused --wait=30
 wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonId/v2/preprocess.json -O $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonId/v2/preprocess.json --tries=0 --retry-connrefused --wait=30
 
+mkdir -p ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTElectronIdRun2/v2/
+mkdir -p ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTMuonIdRun2/v2
+
+
+wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTElectronIdRun2/v2/electron_ParT_2018.onnx -O ${CMSSW_BASE}/src//PhysicsTools/NanoAOD/data/ParTElectronIdRun2/v2/electron_ParT_2018.onnx --tries=0 --retry-connrefused --wait=30
+wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTElectronIdRun2/v2/preprocess.json -O ${CMSSW_BASE}/src/PhysicsTools/NanoAOD/data/ParTElectronIdRun2/v2/preprocess.json --tries=0 --retry-connrefused --wait=30
+
+wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonIdRun2/v2/muon_ParT_2018.onnx -O $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonIdRun2/v2/muon_ParT_2018.onnx --tries=0 --retry-connrefused --wait=30
+wget https://github.com/SWuchterl/PhysicsTools-NanoAOD/raw/refs/heads/CMSSW_15_0_17_leptonParT/ParTMuonIdRun2/v2/preprocess.json -O $CMSSW_BASE/src/PhysicsTools/NanoAOD/data/ParTMuonIdRun2/v2/preprocess.json --tries=0 --retry-connrefused --wait=30
+
 # and some more custom models for boosted jets
 mkdir -p ${CMSSW_BASE}/src/RecoBTag/Combined/data/HLT/GlobalParticleTransformerAK15/V00/
 mkdir -p ${CMSSW_BASE}/src/RecoBTag/Combined/data/InclParticleTransformer-MD/ak15/V02/
