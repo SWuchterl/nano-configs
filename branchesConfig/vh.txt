@@ -1,0 +1,30 @@
+# Jet
+keep Jet_neHEF
+keep Jet_neEmEF
+keep Jet_muEF
+keep Jet_chHEF
+keep Jet_chEmEF
+keep Jet_chMultiplicity
+keep Jet_neMultiplicity
+keep Jet_nConstituents
+
+# FatJet
+keep FatJet_neHEF
+keep FatJet_neEmEF
+keep FatJet_muEF
+keep FatJet_chHEF
+keep FatJet_chEmEF
+keep FatJet_chMultiplicity
+keep FatJet_neMultiplicity
+keep FatJet_nConstituents
+
+# AK15Puppi
+keep AK15Puppi_neHEF
+keep AK15Puppi_neEmEF
+keep AK15Puppi_muEF
+keep AK15Puppi_chHEF
+keep AK15Puppi_chEmEF
+keep AK15Puppi_chMultiplicity
+keep AK15Puppi_neMultiplicity
+keep AK15Puppi_nConstituents
+

@@ -216,3 +216,12 @@ keep FatJet_tau*
 keep Generator*
 keep LHE*
 keep genTtbarId
+
+# Run2 lepton ParT scores and branches kept for the 2018 production (from inputs/keep_and_drop.txt, commit b3f43da)
+keep Electron_parTScoreRun2_*
+keep Muon_parTScoreRun2_*
+keep Electron_mvaNoIso
+keep Electron_mvaNoIso_WP80
+keep Electron_mvaNoIso_WP90
+keep Jet_muonSubtrDeltaEta
+keep Jet_muonSubtrDeltaPhi
