@@ -213,6 +213,8 @@ def createConfig(args, dataset):
     config.JobType.maxJobRuntimeMin = args.max_job_runtime
     if args.set_input_dataset:
         config.JobType.pyCfgParams = ['inputDataset=%s' % dataset]
+    if len(args.pycfg_params) > 0:
+        config.JobType.pyCfgParams = getattr(config.JobType, 'pyCfgParams', []) + args.pycfg_params
     if len(args.input_files) > 0:
         config.JobType.inputFiles = args.input_files
     if len(args.output_files) > 0:
@@ -692,6 +694,10 @@ def main():
     parser.add_argument('--set-input-dataset',
                         action='store_true', default=False,
                         help='Set the inputDataset parameter to the python config file. Default: %(default)s'
+                        )
+    parser.add_argument('--pycfg-params',
+                        default=[], nargs='*',
+                        help='Parameters passed to the python config file (config.JobType.pyCfgParams), e.g. leptons=muon. Default: %(default)s'
                         )
     parser.add_argument('--input-files',
                         default=[], nargs='*',

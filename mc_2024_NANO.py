@@ -140,9 +140,19 @@ del process.selectedUpdatedPatJetsPuppiWithDeepInfo
 from ParticleNetNtuplizer.ParticleNetNtuplizer.electron_ntuplizer import customize_training_ntuplizer as customize_ntuplizer_electron
 from ParticleNetNtuplizer.ParticleNetNtuplizer.muon_ntuplizer import customize_training_ntuplizer as customize_ntuplizer_muon
 
-writeMuonTree = False  # False: electron tree only (the deployed muon NanoAOD scores do not change)
+# which trees to write: leptons=both (default), electron or muon (CRAB: pyCfgParams, local: cmsRun mc_2024_NANO.py leptons=muon)
+from FWCore.ParameterSet.VarParsing import VarParsing
+options = VarParsing()
+options.register('leptons', 'both', VarParsing.multiplicity.singleton, VarParsing.varType.string,
+                 'training trees to write: both, electron or muon')
+options.parseArguments()
+if options.leptons not in ('both', 'electron', 'muon'):
+    raise ValueError("leptons must be both, electron or muon, got '%s'" % options.leptons)
+writeElectronTree = options.leptons in ('both', 'electron')
+writeMuonTree = options.leptons in ('both', 'muon')
 
-process = customize_ntuplizer_electron(process)
+if writeElectronTree:
+    process = customize_ntuplizer_electron(process)
 if writeMuonTree:
     process = customize_ntuplizer_muon(process)
 
