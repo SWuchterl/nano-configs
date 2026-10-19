@@ -13,10 +13,23 @@ parquet in shards of a configurable size.
 ## Splitting
 
 - **pT** (`--pt-threshold`, default 35): `Lepton_pt >= thr` -> high, else low.
-- **gen flavor** (`genPartFlav`): `1`=prompt, `15`=tau, `5`=heavy,
-  `3 or 4`=light, everything else=fake.
+- **truth class** (`Lepton_genCategory`, written by the ntuplizer):
+
+  | class | electron codes | muon codes | content |
+  |---|---|---|---|
+  | `prompt` | 1, 2 | 1, 2 | genPartFlav 1, and prompt leptons recovered after hard brem or FSR |
+  | `tau` | 3 | 3 | leptons from prompt tau decays |
+  | `b` | 4, 5 | 4, 5 | b -> l and b -> c -> l |
+  | `c` | 6 | 6 | c -> l |
+  | `conversion` | 7, 8 | – | photon conversions and Dalitz decays (electrons only) |
+  | `fake` | 9, 10 | 7, 8, 9, 10 | charged hadron at the track or nothing near; muons also decays in flight and light-hadron decays |
+  | `ambiguous` | 11–14 | 11–14 | duplicates, gen lepton only at dR 0.1–0.3, soft QED, prompt fragments. Written out, not for training. |
+
+  The codes are the `GenCategory` enum in
+  `ParticleNetNtuplizer/ParticleNetNtuplizer/plugins/ParticleNetNtuplizer.cc`.
+  Ntuples made before this branch existed cannot be split.
 - **Group folder**: `<category>_ptGe<thr>` or `<category>_ptLt<thr>`
-  (e.g. `prompt_ptGe35`), 10 groups per sample.
+  (e.g. `prompt_ptGe35`): 14 groups per sample for electrons, 12 for muons.
 - **Shard size** (`--leptons-per-group`, default 100000): once a group buffers
   this many leptons it is dumped to one parquet shard and the buffer is cleared;
   remainders are flushed at job end.

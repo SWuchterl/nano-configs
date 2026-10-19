@@ -24,21 +24,33 @@ import awkward as ak
 import numpy as np
 import uproot
 
-# gen-flavor category -> genPartFlav values that map to it. Anything not listed
-# falls into "fake".
+# training class -> Lepton_genCategory codes (see the ntuplizer's GenCategory enum).
+# Anything not listed falls into "fake" (charged hadron at the track or nothing
+# near; for muons also decays in flight and light-hadron decays).
+# "ambiguous" is written out but is not meant for training.
 FLAVOR_CATEGORIES = {
-    "prompt": (1,),
-    "tau": (15,),
-    "heavy": (5,),
-    "light": (3, 4),
+    "electron": {
+        "prompt": (1, 2),
+        "tau": (3,),
+        "b": (4, 5),
+        "c": (6,),
+        "conversion": (7, 8),
+        "ambiguous": (11, 12, 13, 14),
+    },
+    "muon": {
+        "prompt": (1, 2),
+        "tau": (3,),
+        "b": (4, 5),
+        "c": (6,),
+        "ambiguous": (11, 12, 13, 14),
+    },
 }
 FAKE_CATEGORY = "fake"
 
-# Fixed category ordering -> integer code. "fake" is the last index and the
-# default (anything not matching a FLAVOR_CATEGORIES value). Used to turn the
-# per-lepton category into an int code for fast, vectorized splitting.
-ORDER = list(FLAVOR_CATEGORIES) + [FAKE_CATEGORY]
-CAT_INDEX = {name: i for i, name in enumerate(ORDER)}
+
+def category_order(flavor):
+    """Fixed category ordering -> integer code; "fake" is the last index and the default."""
+    return list(FLAVOR_CATEGORIES[flavor]) + [FAKE_CATEGORY]
 
 
 def is_remote(path):
@@ -58,25 +70,26 @@ def group_name(category, high_pt, pt_threshold):
     return "{}_{}".format(category, side)
 
 
-def all_group_names(pt_threshold):
+def all_group_names(flavor, pt_threshold):
     names = []
-    for category in list(FLAVOR_CATEGORIES) + [FAKE_CATEGORY]:
+    for category in category_order(flavor):
         for high_pt in (True, False):
             names.append(group_name(category, high_pt, pt_threshold))
     return names
 
 
-def category_codes(gen_part_flav):
-    """Return an int8 category index per lepton (index into ``ORDER``).
+def category_codes(gen_category, flavor):
+    """Return an int8 category index per lepton (index into ``category_order``).
 
-    Defaults to the ``fake`` index; genPartFlav values listed in
+    Defaults to the ``fake`` index; Lepton_genCategory values listed in
     ``FLAVOR_CATEGORIES`` override it. Pure-numpy and vectorized (no object
     arrays / string comparisons).
     """
-    flav = ak.to_numpy(gen_part_flav)
-    codes = np.full(len(flav), CAT_INDEX[FAKE_CATEGORY], dtype=np.int8)
-    for category, values in FLAVOR_CATEGORIES.items():
-        codes[np.isin(flav, values)] = CAT_INDEX[category]
+    gcat = ak.to_numpy(gen_category)
+    order = category_order(flavor)
+    codes = np.full(len(gcat), order.index(FAKE_CATEGORY), dtype=np.int8)
+    for category, values in FLAVOR_CATEGORIES[flavor].items():
+        codes[np.isin(gcat, values)] = order.index(category)
     return codes
 
 
@@ -185,7 +198,7 @@ class Accumulator:
         Every group is listed (0 when the job produced none) so the counts are
         unambiguous when combined across jobs.
         """
-        groups = {name: 0 for name in all_group_names(self.args.pt_threshold)}
+        groups = {name: 0 for name in all_group_names(self.args.flavor, self.args.pt_threshold)}
         groups.update(self.group_totals)
         summary = {
             "flavor": self.args.flavor,
@@ -250,8 +263,9 @@ class Prefetcher:
 
 def process_file(local, args, tree_name, acc):
     # code -> group folder: high_pt is the even code, low_pt the odd one.
-    group_by_code = [group_name(ORDER[c // 2], (c % 2 == 0), args.pt_threshold)
-                     for c in range(2 * len(ORDER))]
+    order = category_order(args.flavor)
+    group_by_code = [group_name(order[c // 2], (c % 2 == 0), args.pt_threshold)
+                     for c in range(2 * len(order))]
     with uproot.open(local) as f:
         if tree_name not in f:
             print("[warn] {} missing in {}, skipping".format(tree_name, local), flush=True)
@@ -259,7 +273,7 @@ def process_file(local, args, tree_name, acc):
         tree = f[tree_name]
         for chunk in tree.iterate(step_size=args.read_step, library="ak"):
             high = ak.to_numpy(chunk["Lepton_pt"]) >= args.pt_threshold
-            gcode = (category_codes(chunk["genPartFlav"]).astype(np.int64) * 2
+            gcode = (category_codes(chunk["Lepton_genCategory"], args.flavor).astype(np.int64) * 2
                      + np.where(high, 0, 1))
             # One stable gather groups all leptons by code, preserving intra-group
             # order, so a single full-record materialization replaces up to 10
