@@ -3,8 +3,11 @@ import argparse
 import csv
 import json
 import os
+import re
 import subprocess
 import sys
+from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
 
@@ -55,6 +58,7 @@ def find_header_and_indices(rows):
             "type": lowered.index("type"),
             "status": lowered.index("status"),
             "events": lowered.index("events"),
+            "sample": lowered.index("sample") if "sample" in lowered else None,
         }
     raise ValueError(
         "Could not find CSV header with MiniAOD, NanoAOD, Assignment, "
@@ -78,11 +82,12 @@ def parse_spreadsheet(csv_path):
 
     header_idx, col = find_header_and_indices(rows)
     entries = []
+    max_idx = max(v for v in col.values() if v is not None)
 
-    for row in rows[header_idx + 1:]:
+    for row_idx, row in enumerate(rows[header_idx + 1:],
+                                  start=header_idx + 2):
         if not row:
             continue
-        max_idx = max(col.values())
         if len(row) <= max_idx:
             continue
 
@@ -96,8 +101,14 @@ def parse_spreadsheet(csv_path):
         if not nanoaod and not miniaod:
             continue
 
+        sample = (
+            normalize(row[col["sample"]]) if col["sample"] is not None else ""
+        )
+
         entries.append(
             {
+                "row": row_idx,
+                "sample": sample,
                 "miniaod": miniaod,
                 "nanoaod": nanoaod,
                 "assignment": assignment,
@@ -120,34 +131,98 @@ def extract_dataset_name(miniaod):
 def extract_campaign_name(miniaod):
     parts = normalize(miniaod).split("/")
     if len(parts) > 2 and parts[2]:
-        if "_PrivateMC" in parts[2]:
-            return parts[2].split("-")[1].split("_PrivateMC")[0]
         return parts[2]
     return ""
 
 
-def build_progress_dataset_names(miniaod, sample_type):
-    dataset_name = extract_dataset_name(miniaod)
-    campaign_name = extract_campaign_name(miniaod)
+PROGRESS_LISTING_QUERY = (
+    "dataset=/*/*NanoTuples*parTlepID*/USER instance=prod/phys03"
+)
+PUBLISHED_VERNAME_RE = re.compile(r"NanoAODv15_(.+)-[0-9a-f]{32}$")
+COMPLETE_FRACTION = 0.999
 
-    if not dataset_name or not campaign_name:
-        return []
 
-    if normalize(sample_type).lower() == "data":
-        new_campaign = campaign_name
+def crab_vername(miniaod):
+    # Same as the vername in crab.py:parseDatasetName (which can't be
+    # imported here because crab.py needs CRABClient). The output dataset
+    # tag is "<tag>_<vername>", so this is what the NanoAOD name ends with.
+    parts = normalize(miniaod)[1:].split("/")
+    if len(parts) != 3:
+        return ""
+    ver = parts[1]
+    if re.match(r"Run20[0-9][0-9][A-Z]-", ver):
+        return ver
+    ver_pieces = ver.split("_")
+    keep_idx = 1
+    for idx, s in enumerate(ver_pieces):
+        if s.startswith("mc"):
+            keep_idx = idx
+            break
+    rlt = re.search(r"_(v[0-9]+)(_ext[0-9]+|)(_L1v[0-9]+|)(-v[0-9]+)", ver)
+    if rlt:
+        rlt = rlt.groups()
+        ext = "_" + rlt[0] + rlt[1].replace("_", "-") + rlt[-1]
     else:
-        new_campaign = campaign_name.replace("_mcRun3_2024_realistic", "")
+        ext = ""
+    return "_".join(ver_pieces[:keep_idx]) + ext
 
-    return [
-        (
-            f"/{dataset_name}/"
-            f"{iterator}-NanoTuples-uParTv3-parTlepID-"
-            f"NanoAODv15_{campaign}-"
-            "00000000000000000000000000000000/USER"
-        )
-        for iterator in ("CustomNanoAODv15", "cmst3", "phys_higgs")
-        for campaign in (new_campaign, "phys", f"azaza-{new_campaign}")
+
+def list_published_datasets():
+    rc, lines, err = run_dasgoclient_query(PROGRESS_LISTING_QUERY)
+    if rc != 0:
+        raise RuntimeError(f"DAS listing failed: {err}")
+
+    index = {}
+    for name in lines:
+        parts = name[1:].split("/")
+        if len(parts) != 3:
+            continue
+        match = PUBLISHED_VERNAME_RE.search(parts[1])
+        if not match:
+            continue
+        index.setdefault((parts[0], match.group(1)), []).append(name)
+    return index
+
+
+def select_candidates(entry, matches):
+    is_muon_pog = "muonpog" in entry.get("sample", "").lower()
+    candidates = [
+        d for d in matches
+        if ("NanoTuplesMuonPOG" in d.split("/")[2]) == is_muon_pog
     ]
+    group = [
+        d for d in candidates
+        if d.split("/")[2].startswith("CustomNanoAODv15-")
+    ]
+    return group or candidates
+
+
+def query_dataset_events(dataset):
+    query = f"summary dataset={dataset}"
+    if dataset.endswith("/USER"):
+        query += " instance=prod/phys03"
+    rc, lines, err = run_dasgoclient_query(query)
+    if rc != 0:
+        return None
+    try:
+        summary = json.loads("\n".join(lines))
+    except json.JSONDecodeError:
+        return None
+    if not summary:
+        return 0
+    return summary[0].get("num_event", 0) or 0
+
+
+def progress_status(expected, found):
+    if found is None:
+        return "DAS_ERROR"
+    if not expected:
+        return "FOUND"
+    if found > expected:
+        return "OVER"
+    if found >= COMPLETE_FRACTION * expected:
+        return "COMPLETE"
+    return "PARTIAL"
 
 
 def print_progress_bar(current, total, width=30):
@@ -160,84 +235,6 @@ def print_progress_bar(current, total, width=30):
     percent = fraction * 100.0
     sys.stdout.write(f"\r[{bar}] {current}/{total} ({percent:5.1f}%)")
     sys.stdout.flush()
-
-
-def format_progress_line(user, dataset_name, miniaod, new_dataset_name,
-                         expected_events, found_events):
-    return (
-        f"{user} {dataset_name} {miniaod} {new_dataset_name} "
-        f"{expected_events} {found_events}"
-    )
-
-
-def query_progress_events(miniaod):
-
-    # also query number of events in the miniaod for reference
-    excepted_events = 0
-    if miniaod.endswith("/USER"):
-        query = f"summary dataset={miniaod} instance=/prod/phys03"
-    else:
-        query = f"summary dataset={miniaod}"
-    completed = subprocess.run(
-        ["dasgoclient", "--query", query],
-        capture_output=True,
-        text=True,
-    )
-    summary_text = completed.stdout.strip()
-    if summary_text:
-        summary_data = json.loads(summary_text)
-        if isinstance(summary_data, list) and summary_data:
-            first_entry = summary_data[0]
-            excepted_events = first_entry.get("num_event", 0) or 0
-
-    # Query for children of the miniaod
-    query = f"child dataset={miniaod} instance=/prod/phys03"
-    completed = subprocess.run(
-        ["dasgoclient", "--query", query],
-        capture_output=True,
-        text=True,
-    )
-
-    children_data = completed.stdout.strip()
-    children_data = children_data.split("\n") if children_data else []
-    if not children_data:
-        return "", 0, excepted_events
-
-    # Search for child with "NanoTuples-uParTv3-parTlepID-NanoAODv15" in the name
-    target_child = None
-
-    for child in children_data:
-        if "NanoTuples-uParTv3-parTlepID-NanoAODv15" in child:
-            target_child = child
-            break
-
-    if not target_child:
-        return "", 0, excepted_events
-
-    # Query for summary of the found child
-    query = f"summary dataset={target_child} instance=/prod/phys03"
-    completed = subprocess.run(
-        ["dasgoclient", "--query", query],
-        capture_output=True,
-        text=True,
-    )
-
-    summary_text = completed.stdout.strip()
-    if not summary_text:
-        return target_child, 0, excepted_events
-
-    try:
-        summary_data = json.loads(summary_text)
-    except json.JSONDecodeError:
-        return target_child, 0, excepted_events
-
-    if not summary_data:
-        return target_child, 0, excepted_events
-
-    first_entry = summary_data[0] if isinstance(summary_data, list) else {}
-    found_events = first_entry.get("num_event", 0) or 0
-
-    return target_child, found_events, excepted_events
 
 
 def parse_assignment_list(value):
@@ -463,49 +460,151 @@ def validate_datasets(entries, requested_user=None):
     return total, issues
 
 
-def run_progress_check(entries, year):
+def default_progress_dataset_name(miniaod):
+    # Name the CustomNanoAODv15 group would publish under, written for
+    # samples that are not in DAS yet
+    vername = crab_vername(miniaod)
+    if not extract_dataset_name(miniaod) or not vername:
+        return ""
+    return (
+        f"/{extract_dataset_name(miniaod)}/"
+        "CustomNanoAODv15-NanoTuples-uParTv3-parTlepID-"
+        f"NanoAODv15_{vername}-"
+        "00000000000000000000000000000000/USER"
+    )
+
+
+def format_progress_line(user, dataset_name, miniaod, new_dataset_name,
+                         expected_events, found_events):
+    # Format the spreadsheet is updated from: keep it unchanged
+    return (
+        f"{user} {dataset_name} {miniaod} {new_dataset_name} "
+        f"{expected_events} {found_events}"
+    )
+
+
+def run_progress_check(entries, year, requested_user=None, limit=None,
+                       workers=8):
+    samples = [entry for entry in entries if entry.get("miniaod")]
+    if requested_user:
+        samples = [
+            e for e in samples
+            if assignment_matches(e["assignment"], requested_user)
+        ]
+    if limit:
+        samples = samples[:limit]
+
+    print(f"Listing published datasets: {PROGRESS_LISTING_QUERY}")
+    index = list_published_datasets()
+
+    rows = []
+    for entry in samples:
+        miniaod = entry["miniaod"]
+        matches = index.get(
+            (extract_dataset_name(miniaod), crab_vername(miniaod)), []
+        )
+        rows.append((entry, matches, select_candidates(entry, matches)))
+
+    # The MiniAOD counts are the reference: the sheet's Events column can
+    # be stale
+    to_query = sorted(
+        {d for _, _, cands in rows for d in cands}
+        | {e["miniaod"] for e, _, _ in rows}
+    )
+    print(f"Querying event counts of {len(to_query)} datasets "
+          f"for {len(samples)} spreadsheet rows")
+    events = {}
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {
+            pool.submit(query_dataset_events, d): d for d in to_query
+        }
+        for done, future in enumerate(as_completed(futures), start=1):
+            events[futures[future]] = future.result()
+            print_progress_bar(done, len(to_query))
+    if to_query:
+        sys.stdout.write("\n")
+        sys.stdout.flush()
+
     progress_root = Path("sample_progress") / str(year)
     progress_root.mkdir(parents=True, exist_ok=True)
-
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     progress_path = progress_root / f"{timestamp}__{year}.txt"
+
+    status_counts = Counter()
     total_expected_events = 0
     total_published_events = 0
-    samples = [entry for entry in entries if entry.get("miniaod")]
-    total_samples = len(samples)
+    disagreements = []
+    das_errors = []
+    multiple = []
 
     with open(progress_path, "w", encoding="utf-8") as progress_out:
-        for index, entry in enumerate(samples, start=1):
-            miniaod = entry["miniaod"]
-            if miniaod.endswith("/USER"):
-                continue
+        for entry, matches, candidates in rows:
+            sheet_events = entry.get("events")
+            miniaod_events = events[entry["miniaod"]]
+            expected = miniaod_events or sheet_events
+            if candidates:
+                # DAS errors (None) sort last, so a good count wins
+                chosen = max(
+                    candidates,
+                    key=lambda d: -1 if events[d] is None else events[d],
+                )
+                found = events[chosen]
+                status = progress_status(expected, found)
+            else:
+                chosen, found, status = "", None, "NOT_FOUND"
 
-            user_assignment = entry.get("assignment", "N/A")
+            status_counts[status] += 1
+            total_expected_events += expected or 0
+            total_published_events += found or 0
 
-            new_dataset_name, found_events, expected_events = query_progress_events(miniaod)
-            total_expected_events += expected_events
+            sheet_status = entry.get("status", "")
+            if (sheet_status.lower() == "done"
+                    and status not in ("COMPLETE", "FOUND")) or (
+                    sheet_status.lower() == "not started" and candidates):
+                disagreements.append(
+                    f"  row {entry['row']}: sheet '{sheet_status}' vs DAS "
+                    f"{status} ({found or 0}/{expected or '?'}) "
+                    f"{extract_dataset_name(entry['miniaod'])}/"
+                    f"{extract_campaign_name(entry['miniaod'])}"
+                )
 
-            total_published_events += found_events
+            if miniaod_events is None:
+                das_errors.append(f"  row {entry['row']}: {entry['miniaod']}")
+            if status == "DAS_ERROR":
+                das_errors.append(f"  row {entry['row']}: {chosen}")
+            if len(matches) > 1:
+                multiple.append(f"  row {entry['row']}: {chosen}")
 
             progress_out.write(
                 format_progress_line(
-                    user_assignment,
-                    extract_dataset_name(miniaod),
-                    miniaod,
-                    new_dataset_name,
-                    expected_events,
-                    found_events,
+                    entry.get("assignment", "N/A"),
+                    extract_dataset_name(entry["miniaod"]),
+                    entry["miniaod"],
+                    chosen or default_progress_dataset_name(entry["miniaod"]),
+                    miniaod_events or 0,
+                    found or 0,
                 )
                 + "\n"
             )
 
-            print_progress_bar(index, total_samples)
+    print("\n=== Progress Summary ===")
+    for status, count in sorted(status_counts.items()):
+        print(f"  {status:<10} {count}")
+    print(f"  Expected events:  {total_expected_events:,}")
+    print(f"  Published events: {total_published_events:,}")
+    if disagreements:
+        print("\nSpreadsheet status disagrees with DAS "
+              f"({len(disagreements)}):")
+        print("\n".join(disagreements))
+    if multiple:
+        print("\nSeveral published datasets matched, picked "
+              f"({len(multiple)}):")
+        print("\n".join(multiple))
+    if das_errors:
+        print(f"\nDAS query failed, written as 0 events ({len(das_errors)}):")
+        print("\n".join(das_errors))
 
-    if total_samples > 0:
-        sys.stdout.write("\n")
-        sys.stdout.flush()
-
-    print(f"Wrote progress report to {progress_path}")
+    print(f"\nWrote progress report to {progress_path}")
 
 
 def print_report(total_checked, issues):
@@ -569,6 +668,18 @@ def parse_args():
         action="store_true",
         help="Check publication progress of the new NanoAOD samples",
     )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="With --track-progress: only check the first N spreadsheet rows",
+    )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=8,
+        help="With --track-progress: number of parallel DAS queries",
+    )
 
     parser.add_argument(
         "--skip-write",
@@ -602,7 +713,17 @@ def main():
             )
             sys.exit(2)
 
-        run_progress_check(entries, args.year)
+        try:
+            run_progress_check(
+                entries,
+                args.year,
+                requested_user=args.user,
+                limit=args.limit,
+                workers=args.workers,
+            )
+        except RuntimeError as err:
+            print(f"ERROR: {err}", file=sys.stderr)
+            sys.exit(1)
         return
 
     if not args.skip_write:
